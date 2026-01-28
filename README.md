@@ -1,78 +1,110 @@
-# 🤖 Predict.fun Points & Market Maker Bot
+# 🤖 PredFi: Predict.fun Yield & Arbitrage Bot
 
-A high-performance automated trading bot for **Predict.fun** (Blast/BSC). This repository provides a complete suite of tools for **Points Farming**, **Market Making**, and **Drip Arbitrage**, fully integrated with the official Predict.fun SDK.
-
----
-
-## 🚀 Features
-
-### 1. Market Making & Points Farming
-*   **Optimal Yield**: Targeted at "Boosted" markets where Predict.fun provides multiplier points.
-*   **Dual-Sided Quoting**: Places BUY orders for both YES and NO tokens to stay delta-neutral while earning points.
-*   **Smart Spread Targeting**: Automatically snaps to the widest allowed spread to maximize efficiency and minimize risk.
-
-### 2. Dip Arbitrage Strategy
-*   **DIP Detection**: Monitors price drops in YES or NO tokens.
-*   **Leg-Based Execution**: Buys the "dipped" side and completes the completeset at a target sum (e.g., < 0.95 USDT) to lock in profit.
-
-### 3. Integrated Wallet & Discovery Tools
-*   **Live Scanning**: Directly scan the API for the best markets (no stale local files).
-*   **Wallet Management**: Check balances (BNB/USDT), token shares, and manage EOA to Smart Account (Predict Account) transitions.
-*   **Auto-Patching SDK**: Automatically detects market types (Standard, Yield Bearing, Negative Risk) and patches the SDK with the correct contract addresses.
+PredFi is a professional-grade automated trading suite for **Predict.fun** (on Blast and BSC). Designed for maximum efficiency, it combines institutional-grade **Points Farming** with opportunistic **Dip Arbitrage** strategies.
 
 ---
 
-## 📦 Commands & Usage
+## 🌟 Key Strategies
 
-### Discovery & Setup
-| Command | Description |
-| :--- | :--- |
-| `npm run find-market` | **Recommended**: Finds top boosted markets for farming right now. |
-| `npm run search-market -- <keyword>` | Search for specific markets by keyword. |
-| `npm run dump-markets` | Dumps all active markets and their stats to a JSON file. |
-| `npm run find-my-account` | Discover which **Predict Account** is linked to your EIP-1193 Signer. |
-| `npm run approve-1155` | One-time setup: Approve all necessary Predict.fun contracts. |
+### 1. Market Making & Points Farmer (`STRATEGY=MM`)
+*   **Dual-Sided Quoting**: Simulates liquidity by placing BUY orders for both YES and NO tokens simultaneously.
+*   **Delta-Neutral Capture**: Captures the wider spread multiplier on "Boosted" markets while staying market-neutral.
+*   **Exit-on-Fill**: Upon any single-leg fill, the bot immediately cancels outstanding orders and market-dumps the position. This minimizes directional risk and maximizes turnover for points.
+*   **Volatility Protection**: Automatically detects high-frequency re-quotes and widens spreads to avoid being "picked off" during fast moves.
 
-### Wallet & Inventory
-| Command | Description |
-| :--- | :--- |
-| `npm run check-balance` | View your Signer's BNB balance (for gas). |
-| `npm run check-usdt` | View your Trader's USDT collateral balance. |
-| `npm run check-shares` | View YES/NO token balances for the current `MARKET_ID`. |
-| `npm run check-allowance` | Check if you have granted permissions to the exchange. |
-
-### Trading & Strategy
-| Command | Description |
-| :--- | :--- |
-| **`npm start`** | **Run the Market Maker Bot** using the `MARKET_ID` in `.env`. |
-| `npm run sell-all` | **Emergency Exit**: Cancels open orders and dumps all shares at floor price. |
-| `npm run redeem` | **Claim**: Redeem winning shares or Merge YES+NO sets for collateral. |
+### 2. Dip Arbitrage (`STRATEGY=DIP`)
+*   **Sliding Window Monitoring**: Tracks price history over a 3-10 second window to detect sudden price "dips" (>15%).
+*   **Leg-Based Execution**: 
+    1.  Buy the "cheapened" side immediately.
+    2.  Wait for the opposite side's price to align such that `Cost(YES) + Cost(NO) < 1.00` (Target: 0.95).
+    3.  Complete the set and lock in the arbitrage profit.
 
 ---
 
-## ⚙️ Configuration (.env)
+## 🛠 Features
 
-Ensure your `.env` is setup correctly:
+*   **SDK Auto-Patching**: The only bot that dynamically re-configures the `@predictdotfun/sdk` in real-time based on the market type (**Standard**, **Yield Bearing**, or **Negative Risk**).
+*   **Smart Wallet Support**: Fully integrated with Predict.fun's Privy/Smart Account architecture.
+*   **Real-time WebSocket**: Low-latency orderbook and wallet event tracking.
+*   **Dynamic Scaling**: Automatically scales position sizes down if your USDT balance is insufficient for the configured `SIZE`.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Installation
+```bash
+git clone https://github.com/your-repo/PredFi.git
+cd PredFi
+npm install
+```
+
+### 2. Configuration
+Copy the `.env.example` to `.env` and fill in your credentials.
 
 ```env
-PRIVATE_KEY=your_private_key
-API_KEY=your_predict_api_key
-CHAIN_ID=56
-PREDICT_ACCOUNT=0x... (Optional: If you use a Predict Smart Account)
-MARKET_ID=5312
-SIZE=50.0
-SPREAD=0.04
+PRIVATE_KEY=your_eoa_private_key   # Keeps BNB/ETH for gas
+API_KEY=your_predict_api_key      # From settings.predict.fun
+PREDICT_ACCOUNT=0x...             # [REQUIRED] Your Smart Account address from the website
+MARKET_ID=5312                    # Target market (use npm run find-market)
+STRATEGY=MM                       # 'MM' or 'DIP'
+SIZE=50                           # Min 50 shares for points
+SPREAD=0.04                       # 4 cents spread targeting
+```
+
+### 3. Setup Permissions
+Run this once to approve the exchange to spend your collateral and handle your tokens:
+```bash
+npm run approve-1155
+```
+
+### 4. Run the Bot
+```bash
+npm start
 ```
 
 ---
 
-## 🛠 Advanced Features
+## 📦 Command Reference
 
-### SDK Auto-Patching
-This bot leverages a custom `ApiClient` that automatically re-configures the `@predictdotfun/sdk` based on the market type. Whether you are trading on **Yield Bearing Conditional Tokens** or **Negative Risk** markets, the bot handles the contract switching internally.
+### Discovery & Setup
+| Command | Description |
+| :--- | :--- |
+| `npm run find-market` | **Recommended**: Scans the API for the best active "Boosted" markets. |
+| `npm run search-market -- <key>` | Search for specific markets (e.g., `npm run search-market -- "Bitcoin"`). |
+| `npm run inspect-market` | Provides detailed on-chain and off-chain info for the `MARKET_ID` in `.env`. |
+| `npm run dump-markets` | Exports all active market data to `markets_dump.json`. |
+| `npm run find-my-account` | Resolves the Smart Account (Predict Account) linked to your Private Key. |
 
-### Error Handling
-The `ApiClient` includes robust error handling for common issues like `CollateralPerMarketExceededError` or authentication timeouts, ensuring your bot stays online under heavy market load.
+### Wallet Management
+| Command | Description |
+| :--- | :--- |
+| `npm run check-balance` | Check EOA BNB/ETH balance (for gas). |
+| `npm run check-usdt` | Check Smart Account USDT balance (for trading). |
+| `npm run check-shares` | View current YES/NO token holdings for the active `MARKET_ID`. |
+| `npm run check-allowance` | Verify if the CTF Exchange is approved. |
 
-### Position Exit Logic
-In `bot.ts`, any fill event triggers an immediate re-evaluation and potential exit strategy to lock in points and move to the next trade, minimizing exposure to long-term market direction.
+### Trading & Maintenance
+| Command | Description |
+| :--- | :--- |
+| `npm start` | Launches the configured strategy. |
+| `npm run sell-all` | **Emergency**: Cancels all orders and dumps every share you own at market price. |
+| `npm run redeem` | Redeems winning shares or merges YES+NO sets back into USDT. |
+
+---
+
+## ⚠️ Important Considerations
+
+*   **Gas**: Ensure your Signer (EOA) wallet has at least 0.01 BNB/ETH.
+*   **Collateral**: Trading happens with USDT in your **Predict Account** (Smart Wallet).
+*   **Points**: Predict.fun typically requires a minimum of **50 shares** per leg to qualify for points multipliers.
+*   **Errors**: If you see `InsufficientCollateral`, the bot will automatically try to scale down the size, but ensure you have enough USDT for at least the minimum tick.
+
+---
+
+## 📜 Technical Architecture
+The bot uses a modular `ApiClient` service that abstracts the complexities of the Predict.fun protocol:
+- **`src/services/api.ts`**: Handles authentication, SDK patching, and transaction signing.
+- **`src/services/ws.ts`**: Manages stable WebSocket connections and subscriptions.
+- **`src/bot.ts`**: The core Market Making logic.
+- **`src/strategies/`**: Pluggable directory for new trading logic.
