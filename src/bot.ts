@@ -25,6 +25,7 @@ export class MarketMaker {
     private marketId: number;
     private marketParams: MarketParams | null = null;
     private isRunning: boolean = false;
+    private isExiting: boolean = false; // Add Exiting State
     private lastOrderTime: number = 0;
 
     // Internal state for current quotes
@@ -149,7 +150,7 @@ export class MarketMaker {
     private volatilityMultiplier: number = 0;
 
     async onOrderbookUpdate(ob: OrderbookData) {
-        if (!this.isRunning || !this.marketParams) return;
+        if (!this.isRunning || !this.marketParams || this.isExiting) return;
         if (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL) return;
         if (ob.bids.length === 0 || ob.asks.length === 0) return;
 
@@ -314,6 +315,8 @@ export class MarketMaker {
             console.log(`└──────────────────────────────────────────────────┘`);
             console.log("🛑 Canceling ALL orders and Exiting Position immediately...");
 
+            this.isExiting = true; // Block new orders
+
             // 1. Cancel everything first to stop bleeding
             await this.api.removeOrders(this.activeOrders);
             this.activeOrders = [];
@@ -354,6 +357,13 @@ export class MarketMaker {
             }
         } catch (e) {
             console.error("Critical error during exit:", e);
+        } finally {
+            // Optional: Wait a bit before resuming or just stop?
+            // For safety, let's wait 10 seconds then resume
+            setTimeout(() => {
+                console.log("🔄 Resuming Market Making...");
+                this.isExiting = false;
+            }, 10000);
         }
     }
 }
