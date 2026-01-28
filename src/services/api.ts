@@ -27,8 +27,6 @@ export class ApiClient {
             console.log("Predict Account:", CONFIG.PREDICT_ACCOUNT);
 
             // 1. Initialize OrderBuilder
-
-            // 1. Initialize OrderBuilder
             // "This should only be done once per signer"
             // "Include the predictAccount address... known as the deposit address"
             this.orderBuilder = await OrderBuilder.make(CONFIG.CHAIN_ID as ChainId, this.wallet as any, {
@@ -86,6 +84,71 @@ export class ApiClient {
         }
     }
 
+    async getMarketOrderBook(marketId: number) {
+        const res = await this.client.get(`/v1/markets/${marketId}/orderbook`);
+        return res.data.data;
+    }
+
+    async placeMarketOrder(
+        quantityWei: bigint,
+        side: Side,
+        tokenId: string,
+        marketId: number,
+        isNegRisk: boolean = false,
+        isYieldBearing: boolean = false,
+        feeRateBps: number = 0
+    ) {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+
+        try {
+            // 1. Fetch Orderbook
+            const orderbook = await this.getMarketOrderBook(marketId);
+
+            // 2. Calculate Order Amounts
+            const { makerAmount, takerAmount, pricePerShare } = this.orderBuilder.getMarketOrderAmounts(
+                {
+                    side,
+                    quantityWei
+                },
+                orderbook
+            );
+
+            console.log(`Market Order Calc: Maker=${makerAmount.toString()} Taker=${takerAmount.toString()} Price=${pricePerShare.toString()}`);
+
+            // 3. Build Order
+            const order = this.orderBuilder.buildOrder("MARKET", {
+                side,
+                tokenId,
+                makerAmount,
+                takerAmount,
+                nonce: 0n,
+                feeRateBps,
+            });
+
+            // 4. Sign Order
+            const typedData = this.orderBuilder.buildTypedData(order, { isNegRisk, isYieldBearing });
+            const signedOrder = await this.orderBuilder.signTypedDataOrder(typedData);
+            const hash = this.orderBuilder.buildTypedDataHash(typedData);
+
+            // 5. Submit
+            const body = {
+                data: {
+                    order: { ...signedOrder, hash },
+                    pricePerShare: pricePerShare.toString(),
+                    strategy: 'MARKET',
+                },
+            };
+
+            const res = await this.client.post('/v1/orders', body);
+            return res.data;
+
+        } catch (error: any) {
+            const errorData = error.response?.data;
+            console.error('Error placing MARKET order:', JSON.stringify(errorData, null, 2) || error.message);
+            throw error;
+        }
+    }
+
     async placeLimitOrder(
         pricePerShareWei: bigint,
         quantityWei: bigint,
@@ -102,10 +165,7 @@ export class ApiClient {
             if (side === Side.BUY) {
                 const balanceStr = await this.getUSDTBalance();
                 const balanceWei = ethers.parseUnits(balanceStr, 18);
-                const requiredAmount = (pricePerShareWei * quantityWei) / BigInt(1e18); // Approx
-
-                // Use makerAmount from getLimitOrderAmounts for precision if needed, but this is a quick check
-                // actually lets use the SDK helper to get exact amounts
+                // Approx check, SDK handles exact
             }
 
             const { makerAmount, takerAmount, pricePerShare } = this.orderBuilder.getLimitOrderAmounts({
@@ -123,24 +183,15 @@ export class ApiClient {
                 }
             }
 
-            // "Setup approvals" is handled by the user manually or via script, usually not per-order.
-            // But if we wanted to be safe we could check allowance. For now assume approved or use utils.
-
             // Build Order
-            // "Create the order (maker and signer are automatically set to the predictAccount)"
             const order = this.orderBuilder.buildOrder("LIMIT", {
                 side,
                 tokenId,
                 makerAmount,
                 takerAmount,
-                nonce: 0n, // SDK handles random salt? Guide says salt is optional in SDK but API might need it? 
-                // SDK buildOrder generates salt if missing.
+                nonce: 0n,
                 feeRateBps,
             });
-
-            // console.log("Built Order:", JSON.stringify(order, (key, value) =>
-            //     typeof value === 'bigint' ? value.toString() : value
-            // ));
 
             // Sign Order
             const typedData = this.orderBuilder.buildTypedData(order, { isNegRisk, isYieldBearing });
@@ -166,10 +217,6 @@ export class ApiClient {
             } else {
                 console.error('Error placing order:', JSON.stringify(errorData, null, 2) || error.message);
             }
-            // Return error structure to bot instead of throwing to keep bot alive? 
-            // The bot expects { success: false, error: ... } or throws. 
-            // ApiClient methods usually throw or return data. 
-            // Let's rethrow/return consistent with before.
             throw error;
         }
     }
@@ -238,6 +285,20 @@ export class ApiClient {
 
         console.log(`Merging ${ethers.formatUnits(amount, 18)} positions for condition ${conditionId}...`);
         const res = await this.orderBuilder.mergePositions({
+            conditionId,
+            amount,
+            isNegRisk,
+            isYieldBearing
+        });
+
+        return res;
+    }
+
+    async splitPositions(conditionId: string, amount: bigint, isNegRisk: boolean, isYieldBearing: boolean) {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+
+        console.log(`Splitting ${ethers.formatUnits(amount, 18)} collateral to positions for condition ${conditionId}...`);
+        const res = await this.orderBuilder.splitPositions({
             conditionId,
             amount,
             isNegRisk,
@@ -328,4 +389,3 @@ export class ApiClient {
         return correctContractAddress;
     }
 }
-

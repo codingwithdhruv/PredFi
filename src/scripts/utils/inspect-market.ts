@@ -2,20 +2,20 @@
 import { ApiClient } from '../../services/api';
 
 async function inspectMarket() {
+    const marketId = parseInt(process.argv[2] || '785');
     const api = new ApiClient();
     try {
-        const id = 5133;
-        console.log(`Inspecting Market ID: ${id}...`);
-        const market = await api.getMarket(id);
-        console.log("Keys available in market object:");
-        console.log(Object.keys(market));
-        console.log("Full sample:", JSON.stringify(market, null, 2));
+        console.log(`Inspecting Market ID: ${marketId}...`);
+        const market = await api.getMarket(marketId);
+        console.log("Market Title:", market.title);
+        console.log("Question:", market.question);
+        console.log("Status:", market.status);
 
-        const stats = await api.getMarketStats(id);
+        const stats = await api.getMarketStats(marketId);
         console.log("Stats:", stats);
 
     } catch (e: any) {
-        console.error("Error inspecting market:", e.message);
+        console.error("Error inspecting market:", e.response?.data || e.message);
     }
 }
 inspectMarket();

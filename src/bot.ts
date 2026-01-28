@@ -331,21 +331,17 @@ export class MarketMaker {
     private async exitPosition(filledOutcome: 'YES' | 'NO', quantityStr: string) {
         if (!this.marketParams) return;
 
-        console.log(`EXIT: Selling ${quantityStr} of ${filledOutcome} via Market Order (Aggressive Limit)...`);
+        console.log(`EXIT: Selling ${quantityStr} of ${filledOutcome} via Market Order (DUMP)...`);
 
         const tokenIdToSell = filledOutcome === 'YES' ? this.marketParams.yesTokenId : this.marketParams.noTokenId;
-
-        // Aggressive Sell Price (Market Dump)
-        // We use 0.05 (Floor) or 0.01 to ensure fill against any Bid.
-        const aggressivePrice = parseUnits("0.05", 18);
         const sizeWei = parseUnits(quantityStr, 18);
 
         try {
-            const res = await this.api.placeLimitOrder(
-                aggressivePrice,
+            const res = await this.api.placeMarketOrder(
                 sizeWei,
                 Side.SELL,
                 tokenIdToSell,
+                this.marketId,
                 this.marketParams.isNegRisk,
                 this.marketParams.isYieldBearing,
                 this.marketParams.feeRateBps
