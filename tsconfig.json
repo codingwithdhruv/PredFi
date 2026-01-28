@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": ".",
+        "paths": {
+            "@predictdotfun/sdk": [
+                "../sdk/src/index.ts"
+            ],
+            "@predictdotfun/sdk/*": [
+                "../sdk/src/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "../sdk/src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

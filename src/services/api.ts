@@ -1,0 +1,332 @@
+import axios, { AxiosInstance } from 'axios';
+import { ethers } from 'ethers';
+import { CONFIG } from '../config';
+import { OrderBuilder, ChainId, Side } from '@predictdotfun/sdk';
+
+export class ApiClient {
+    private client: AxiosInstance;
+    private wallet: ethers.Wallet;
+    public orderBuilder: OrderBuilder | null = null;
+    private jwtToken: string | null = null;
+
+    constructor() {
+        this.client = axios.create({
+            baseURL: CONFIG.API_BASE_URL,
+            headers: {
+                'x-api-key': CONFIG.API_KEY,
+                'Content-Type': 'application/json',
+            },
+        });
+        this.wallet = new ethers.Wallet(CONFIG.PRIVATE_KEY);
+    }
+
+    async init() {
+        try {
+            console.log("Initializing ApiClient...");
+            console.log("EOA Address:", this.wallet.address);
+            console.log("Predict Account:", CONFIG.PREDICT_ACCOUNT);
+
+            // 1. Initialize OrderBuilder
+
+            // 1. Initialize OrderBuilder
+            // "This should only be done once per signer"
+            // "Include the predictAccount address... known as the deposit address"
+            this.orderBuilder = await OrderBuilder.make(CONFIG.CHAIN_ID as ChainId, this.wallet as any, {
+                predictAccount: CONFIG.PREDICT_ACCOUNT,
+                skipSignerCheck: true
+            });
+
+            // 2. Authenticate
+            await this.authenticate();
+
+        } catch (error: any) {
+            console.error('Initialization failed:', error.response?.data || error.message);
+            throw error;
+        }
+    }
+
+    private async authenticate() {
+        try {
+            console.log("Getting auth message...");
+            const msgRes = await this.client.get('/v1/auth/message');
+            const message = msgRes.data.data.message;
+            console.log("Message to sign:", message);
+
+            let signature: string;
+            let signerAddress: string;
+
+            if (CONFIG.PREDICT_ACCOUNT) {
+                console.log("Signing for Predict Account...");
+                // "The standard `signMessage` won't work" -> Use SDK helper
+                if (!this.orderBuilder) throw new Error("OrderBuilder not ready");
+
+                signature = await this.orderBuilder.signPredictAccountMessage(message);
+                signerAddress = CONFIG.PREDICT_ACCOUNT;
+            } else {
+                console.log("Signing for EOA...");
+                signature = await this.wallet.signMessage(message);
+                signerAddress = this.wallet.address;
+            }
+
+            console.log("Signature generated:", signature);
+            console.log("Sending auth request for signer:", signerAddress);
+
+            const authRes = await this.client.post('/v1/auth', {
+                signer: signerAddress,
+                message,
+                signature,
+            });
+
+            this.jwtToken = authRes.data.data.token;
+            this.client.defaults.headers.common['Authorization'] = `Bearer ${this.jwtToken}`;
+            console.log("✅ Authenticated successfully. JWT Token obtained.");
+
+        } catch (error: any) {
+            console.error("Authentication failed:", error.response?.data || error.message);
+            throw error;
+        }
+    }
+
+    async placeLimitOrder(
+        pricePerShareWei: bigint,
+        quantityWei: bigint,
+        side: Side,
+        tokenId: string,
+        isNegRisk: boolean = false,
+        isYieldBearing: boolean = false,
+        feeRateBps: number = 0
+    ) {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+
+        try {
+            // Safety Check
+            if (side === Side.BUY) {
+                const balanceStr = await this.getUSDTBalance();
+                const balanceWei = ethers.parseUnits(balanceStr, 18);
+                const requiredAmount = (pricePerShareWei * quantityWei) / BigInt(1e18); // Approx
+
+                // Use makerAmount from getLimitOrderAmounts for precision if needed, but this is a quick check
+                // actually lets use the SDK helper to get exact amounts
+            }
+
+            const { makerAmount, takerAmount, pricePerShare } = this.orderBuilder.getLimitOrderAmounts({
+                side,
+                pricePerShareWei,
+                quantityWei,
+            });
+
+            if (side === Side.BUY) {
+                const balanceStr = await this.getUSDTBalance();
+                const balanceWei = ethers.parseUnits(balanceStr, 18);
+                if (balanceWei < makerAmount) {
+                    console.warn(`⚠️ Insufficient Funds: Have ${balanceStr}, Need ${ethers.formatUnits(makerAmount, 18)}`);
+                    return { success: false, error: { _tag: 'InsufficientCollateral', message: 'Balance too low' } };
+                }
+            }
+
+            // "Setup approvals" is handled by the user manually or via script, usually not per-order.
+            // But if we wanted to be safe we could check allowance. For now assume approved or use utils.
+
+            // Build Order
+            // "Create the order (maker and signer are automatically set to the predictAccount)"
+            const order = this.orderBuilder.buildOrder("LIMIT", {
+                side,
+                tokenId,
+                makerAmount,
+                takerAmount,
+                nonce: 0n, // SDK handles random salt? Guide says salt is optional in SDK but API might need it? 
+                // SDK buildOrder generates salt if missing.
+                feeRateBps,
+            });
+
+            // console.log("Built Order:", JSON.stringify(order, (key, value) =>
+            //     typeof value === 'bigint' ? value.toString() : value
+            // ));
+
+            // Sign Order
+            const typedData = this.orderBuilder.buildTypedData(order, { isNegRisk, isYieldBearing });
+            const signedOrder = await this.orderBuilder.signTypedDataOrder(typedData);
+            const hash = this.orderBuilder.buildTypedDataHash(typedData);
+
+            // Submit
+            const body = {
+                data: {
+                    order: { ...signedOrder, hash },
+                    pricePerShare: pricePerShare.toString(),
+                    strategy: 'LIMIT',
+                },
+            };
+
+            const res = await this.client.post('/v1/orders', body);
+            return res.data;
+
+        } catch (error: any) {
+            const errorData = error.response?.data;
+            if (errorData?.error?._tag === 'CollateralPerMarketExceededError') {
+                console.error(`❌ COLLATERAL ERROR: Available balance (${ethers.formatUnits(errorData.error.amountAvailable, 18)} USDT) is less than the required amount.`);
+            } else {
+                console.error('Error placing order:', JSON.stringify(errorData, null, 2) || error.message);
+            }
+            // Return error structure to bot instead of throwing to keep bot alive? 
+            // The bot expects { success: false, error: ... } or throws. 
+            // ApiClient methods usually throw or return data. 
+            // Let's rethrow/return consistent with before.
+            throw error;
+        }
+    }
+
+    async getOpenOrders() {
+        const res = await this.client.get('/v1/orders');
+        return res.data.data;
+    }
+
+    async removeOrders(orderIds: string[]) {
+        const res = await this.client.post('/v1/orders/remove', { data: { ids: orderIds } });
+        return res.data;
+    }
+
+    async getUSDTBalance(): Promise<string> {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+        const bal = await this.orderBuilder.balanceOf();
+        return ethers.formatUnits(bal, 18);
+    }
+
+    // Helper to get raw balance for gas check if needed
+    async getBNBBalance(): Promise<string> {
+        const provider = new ethers.JsonRpcProvider('https://bsc-dataseed.bnbchain.org/');
+        const balance = await provider.getBalance(this.wallet.address);
+        return ethers.formatEther(balance);
+    }
+
+    getJwt() {
+        return this.jwtToken;
+    }
+
+    async getMarket(marketId: number) {
+        const res = await this.client.get(`/v1/markets/${marketId}`);
+        return res.data.data;
+    }
+
+    getAddress(): string {
+        return CONFIG.PREDICT_ACCOUNT || this.wallet.address;
+    }
+
+    getSignerAddress(): string {
+        return this.wallet.address;
+    }
+
+    getTraderAddress(): string {
+        return CONFIG.PREDICT_ACCOUNT || this.wallet.address;
+    }
+
+    async redeemPositions(conditionId: string, indexSet: 1 | 2, amount: bigint, isNegRisk: boolean, isYieldBearing: boolean) {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+
+        console.log(`Redeeming positions for condition ${conditionId}...`);
+        const res = await this.orderBuilder.redeemPositions({
+            conditionId,
+            indexSet,
+            amount, // required for NegRisk
+            isNegRisk,
+            isYieldBearing
+        });
+
+        return res;
+    }
+
+    async mergePositions(conditionId: string, amount: bigint, isNegRisk: boolean, isYieldBearing: boolean) {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+
+        console.log(`Merging ${ethers.formatUnits(amount, 18)} positions for condition ${conditionId}...`);
+        const res = await this.orderBuilder.mergePositions({
+            conditionId,
+            amount,
+            isNegRisk,
+            isYieldBearing
+        });
+
+        return res;
+    }
+
+    async getAccount() {
+        const res = await this.client.get('/v1/account');
+        return res.data.data;
+    }
+
+    async setApprovals() {
+        if (!this.orderBuilder) throw new Error("OrderBuilder not initialized");
+        return await this.orderBuilder.setApprovals();
+    }
+
+    async getPositions() {
+        try {
+            const res = await this.client.get('/v1/positions');
+            return res.data.data;
+        } catch (e: any) {
+            console.error("Failed to fetch positions from API:", e.response?.data || e.message);
+            return [];
+        }
+    }
+
+    async getMarkets(limit: number = 100, cursor: string | null = null) {
+        const res = await this.client.get('/v1/markets', {
+            params: {
+                first: limit,
+                after: cursor
+            }
+        });
+        return res.data; // Returns { success: boolean, data: Market[], cursor: string }
+    }
+
+    async getMarketStats(marketId: number) {
+        try {
+            const res = await this.client.get(`/v1/markets/${marketId}/stats`);
+            return res.data.data;
+        } catch (e: any) {
+            // Return zeroes if stats fail (e.g. 404)
+            return { volume24hUsd: 0, volumeTotalUsd: 0, totalLiquidityUsd: 0 };
+        }
+    }
+
+    async ensureCorrectContract(market: { isYieldBearing: boolean; isNegRisk: boolean }): Promise<string> {
+        if (!this.orderBuilder || !this.orderBuilder.contracts || !this.orderBuilder.contracts.CONDITIONAL_TOKENS) {
+            throw new Error("OrderBuilder not initialized");
+        }
+
+        const ct = this.orderBuilder.contracts.CONDITIONAL_TOKENS.contract;
+        const ctAddress = await (ct as any).getAddress();
+        const chainId = CONFIG.CHAIN_ID as ChainId;
+
+        const { AddressesByChainId } = require('@predictdotfun/sdk');
+        const sdkAddresses = AddressesByChainId[chainId];
+
+        let correctContractAddress = sdkAddresses.CONDITIONAL_TOKENS;
+
+        if (market.isYieldBearing) {
+            if (market.isNegRisk) {
+                correctContractAddress = sdkAddresses.YIELD_BEARING_NEG_RISK_CONDITIONAL_TOKENS;
+            } else {
+                correctContractAddress = sdkAddresses.YIELD_BEARING_CONDITIONAL_TOKENS;
+            }
+        } else {
+            if (market.isNegRisk) {
+                correctContractAddress = sdkAddresses.NEG_RISK_CONDITIONAL_TOKENS;
+            }
+        }
+
+        if (ctAddress.toLowerCase() !== correctContractAddress.toLowerCase()) {
+            console.log(`⚠️  Patching SDK with correct CT Address: ${correctContractAddress}`);
+            const runner = (ct as any).runner;
+            const iface = ct.interface;
+
+            this.orderBuilder.contracts.CONDITIONAL_TOKENS.contract = new ethers.Contract(
+                correctContractAddress,
+                iface as any,
+                runner
+            ) as any;
+        }
+
+        return correctContractAddress;
+    }
+}
+

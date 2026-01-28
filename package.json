@@ -1,0 +1,43 @@
+{
+    "name": "predict.fun",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/predict.fun/src/index.js",
+        "dev": "ts-node -r tsconfig-paths/register --transpile-only src/index.ts",
+        "sell-all": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/trading/sell-all.ts",
+        "redeem": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/trading/redeem.ts",
+        "check-shares": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/wallet/check-shares.ts",
+        "check-balance": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/wallet/check-balance.ts",
+        "check-usdt": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/wallet/check-usdt.ts",
+        "check-allowance": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/wallet/check-allowance.ts",
+        "approve-1155": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/wallet/approve-1155.ts",
+        "find-market": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/discovery/find-market.ts",
+        "dump-markets": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/discovery/dump-markets.ts",
+        "search-market": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/discovery/search-market.ts",
+        "inspect-market": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/utils/inspect-market.ts",
+        "find-my-account": "ts-node -r tsconfig-paths/register --transpile-only src/scripts/utils/find-my-account.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "@predictdotfun/sdk": "file:../sdk",
+        "@types/node": "^25.0.10",
+        "@types/ws": "^8.18.1",
+        "axios": "^1.13.3",
+        "dotenv": "^17.2.3",
+        "ethers": "^6.16.0",
+        "ethers-multicall-provider": "^6.5.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.3",
+        "ws": "^8.19.0"
+    },
+    "devDependencies": {
+        "tsconfig-paths": "^4.2.0"
+    }
+}
