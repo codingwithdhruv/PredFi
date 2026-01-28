@@ -23,7 +23,8 @@ PredFi is a professional-grade automated trading suite for **Predict.fun** (on B
 
 ## 🛠 Features
 
-*   **SDK Auto-Patching**: The only bot that dynamically re-configures the `@predictdotfun/sdk` in real-time based on the market type (**Standard**, **Yield Bearing**, or **Negative Risk**).
+*   **Official SDK Integration**: Built using the official `@predictdotfun/sdk` for maximum stability and easy updates via NPM.
+*   **SDK Auto-Patching**: The only bot that dynamically re-configures the SDK instance in real-time based on the market type (**Standard**, **Yield Bearing**, or **Negative Risk**).
 *   **Smart Wallet Support**: Fully integrated with Predict.fun's Privy/Smart Account architecture.
 *   **Real-time WebSocket**: Low-latency orderbook and wallet event tracking.
 *   **Dynamic Scaling**: Automatically scales position sizes down if your USDT balance is insufficient for the configured `SIZE`.
@@ -33,6 +34,7 @@ PredFi is a professional-grade automated trading suite for **Predict.fun** (on B
 ## 🚀 Quick Start
 
 ### 1. Installation
+
 ```bash
 git clone https://github.com/your-repo/PredFi.git
 cd PredFi

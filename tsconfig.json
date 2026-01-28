@@ -7,19 +7,10 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": {
-            "@predictdotfun/sdk": [
-                "../sdk/src/index.ts"
-            ],
-            "@predictdotfun/sdk/*": [
-                "../sdk/src/*"
-            ]
-        }
+        "baseUrl": "."
     },
     "include": [
-        "src/**/*",
-        "../sdk/src/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "node_modules"

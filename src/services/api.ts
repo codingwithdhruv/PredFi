@@ -32,8 +32,7 @@ export class ApiClient {
             // "This should only be done once per signer"
             // "Include the predictAccount address... known as the deposit address"
             this.orderBuilder = await OrderBuilder.make(CONFIG.CHAIN_ID as ChainId, this.wallet as any, {
-                predictAccount: CONFIG.PREDICT_ACCOUNT,
-                skipSignerCheck: true
+                predictAccount: CONFIG.PREDICT_ACCOUNT
             });
 
             // 2. Authenticate
