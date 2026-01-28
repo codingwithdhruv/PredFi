@@ -42,6 +42,13 @@ export class MarketMaker {
         console.log("Starting Points Farming Bot for Market ID:", this.marketId);
 
         await this.api.init();
+        try {
+            console.log("Checking approvals...");
+            await this.api.setApprovals();
+            console.log("✅ Approvals set.");
+        } catch (e) {
+            console.error("⚠️ Failed to set approvals (might be already set or RPC error):", e);
+        }
 
         // Log Balances
         try {
@@ -78,7 +85,8 @@ export class MarketMaker {
             return;
         }
 
-        await this.cleanupExistingOrders();
+        // await this.cleanupExistingOrders(); // Moved inside cleanupExistingPositions loop
+        await this.cleanupExistingPositions();
 
         const channel: Channel = { name: 'predictOrderbook', marketId: this.marketId };
         this.ws.subscribe(channel, (msg) => {
@@ -143,6 +151,67 @@ export class MarketMaker {
         const ids = myOrders.map((o: any) => o.id);
         console.log(`Canceling ${ids.length} existing orders...`);
         await this.api.removeOrders(ids);
+    }
+
+    private async cleanupExistingPositions() {
+        if (!this.marketParams) return;
+
+        console.log("🧹 Starting Initial Portfolio Cleanup...");
+
+        let attempt = 0;
+        const maxAttempts = 5;
+
+        while (attempt < maxAttempts) {
+            attempt++;
+
+            // 1. Cancel any open orders first (prevent interference)
+            await this.cleanupExistingOrders();
+
+            // 2. Fetch current positions
+            const positions = await this.api.getPositions();
+            if (!positions || !Array.isArray(positions)) {
+                console.warn("Positions API invalid. Retrying...");
+                await new Promise(r => setTimeout(r, 2000));
+                continue;
+            }
+
+            // 3. Filter for THIS market
+            const myPositions = positions.filter((p: any) => p?.market?.id === this.marketId);
+
+            if (myPositions.length === 0) {
+                console.log("✅ No matching positions found. Clean.");
+                return; // SUCCESS - Exit function
+            }
+
+            console.log(`⚠️ Found ${myPositions.length} positions to dump (Attempt ${attempt}/${maxAttempts})...`);
+
+            // 4. Dump each position
+            for (const pos of myPositions) {
+                const balanceWei = BigInt(pos.amount);
+                if (balanceWei > 0n) {
+                    // Determine Outcome
+                    let outcome: 'YES' | 'NO' = 'YES';
+                    if (pos.outcome?.name?.toUpperCase() === 'NO') outcome = 'NO';
+                    else if (pos.outcome?.name?.toUpperCase() === 'YES') outcome = 'YES';
+                    else {
+                        const onChainId = pos.outcome?.onChainId?.toLowerCase();
+                        if (onChainId === this.marketParams.noTokenId.toLowerCase()) outcome = 'NO';
+                    }
+
+                    const qtyStr = ethers.formatUnits(balanceWei, 18);
+                    console.log(`🔥 DUMPING [${outcome}] - Amount: ${qtyStr}`);
+
+                    // Call exit (Market Order)
+                    await this.exitPosition(outcome, qtyStr);
+                }
+            }
+
+            // 5. Wait for settlement/API update
+            console.log("⏳ Waiting 3s for update...");
+            await new Promise(r => setTimeout(r, 3000));
+        }
+
+        console.error("❌ Failed to clean positions after max attempts. Proceeding with caution...");
     }
 
     private requoteCount: number = 0;
@@ -358,12 +427,13 @@ export class MarketMaker {
         } catch (e) {
             console.error("Critical error during exit:", e);
         } finally {
-            // Optional: Wait a bit before resuming or just stop?
-            // For safety, let's wait 10 seconds then resume
+            // Reset isExiting if set, after a delay
             setTimeout(() => {
-                console.log("🔄 Resuming Market Making...");
-                this.isExiting = false;
-            }, 10000);
+                if (this.isExiting) {
+                    console.log("🔄 Resuming Market Making...");
+                    this.isExiting = false;
+                }
+            }, 5000);
         }
     }
 }
