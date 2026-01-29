@@ -508,6 +508,19 @@ export class MarketMaker {
             // 1. Cancel everything first to stop the bleeding
             await this.cancelAllOrders();
 
+            // Safe-guard: Ensure no open orders exist before we assume inventory is free
+            const openOrders = await this.api.getOpenOrders();
+            const myOpenOrders = openOrders.filter((o: any) =>
+                o.order?.marketId === this.marketId &&
+                o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase()
+            );
+
+            if (myOpenOrders.length > 0) {
+                console.log(`[Market ${this.marketId}] ⏳ Orders still pending cancellation. Waiting 2s...`);
+                await new Promise(r => setTimeout(r, 2000));
+                continue; // Retry loop to cancel again
+            }
+
             // 2. Fetch authoritative state
             let positions = [];
             try {
@@ -524,10 +537,15 @@ export class MarketMaker {
             const dustThreshold = parseUnits("0.1", 18); // 0.1 Share Dust
 
             for (const pos of myPositions) {
-                const balanceWei = BigInt(pos.amount);
+                // IMPORTANT: Use amountAvailable, not total amount, to avoid "TokenPerMarketExceededError"
+                // However, getPositions returns 'amount' (total). We need to rely on the fact that we cancelled orders.
+                // If the API lags, 'amount' might include locked shares, but 'amountAvailable' (if present) is better.
+                // Predict API types are loose, but let's check if 'amountAvailable' exists, else fall back to 'amount'.
+                const available = pos.amountAvailable ? BigInt(pos.amountAvailable) : BigInt(pos.amount);
+
                 // Only count substantial positions
-                if (balanceWei > dustThreshold) {
-                    totalShares += balanceWei;
+                if (available > dustThreshold) {
+                    totalShares += available;
                 }
             }
 
@@ -537,19 +555,30 @@ export class MarketMaker {
                 break;
             }
 
-            console.log(`⚠️ Dirty Inventory Detected. Cleaning ${myPositions.length} positions...`);
+            console.log(`⚠️ Dirty Inventory Detected. Cleaning positions...`);
 
             for (const pos of myPositions) {
-                const balanceWei = BigInt(pos.amount);
-                if (balanceWei > dustThreshold) {
+                // Use available balance logic
+                const available = pos.amountAvailable ? BigInt(pos.amountAvailable) : BigInt(pos.amount);
+
+                if (available > dustThreshold) {
                     let outcome: 'YES' | 'NO' = 'YES';
                     if (pos.outcome?.name?.toUpperCase() === 'NO' || pos.outcome?.onChainId?.toLowerCase() === this.marketParams.noTokenId.toLowerCase()) outcome = 'NO';
 
-                    const qtyStr = ethers.formatUnits(balanceWei, 18);
+                    const qtyStr = ethers.formatUnits(available, 18);
                     console.log(`[Market ${this.marketId}] 🔥 DUMP: ${outcome} x ${qtyStr} ...`);
 
-                    // Attempt execute
-                    await this.exitPosition(outcome, qtyStr);
+                    // Attempt execute with specific error handling
+                    try {
+                        await this.exitPosition(outcome, qtyStr);
+                    } catch (e: any) {
+                        if (e?.message?.includes("TokenPerMarketExceededError") || e?.response?.data?.error?._tag === "TokenPerMarketExceededError") {
+                            console.warn(`[Market ${this.marketId}] ⏳ Settlement Lag (TokenPerMarketExceeded). Waiting 2s...`);
+                            await new Promise(r => setTimeout(r, 2000));
+                        } else {
+                            console.error(`[Market ${this.marketId}] Dump Error:`, e);
+                        }
+                    }
                 }
             }
 
@@ -585,18 +614,26 @@ export class MarketMaker {
                 this.marketParams.isYieldBearing,
                 this.marketParams.feeRateBps
             );
-            if (!res.success) console.error(`[Market ${this.marketId}] Exit Failed:`, JSON.stringify(res));
+            if (!res.success) {
+                // Throw to trigger the retry logic in dumpInventory
+                if (res.error && (res.error as any)._tag === 'TokenPerMarketExceededError') {
+                    throw { response: { data: { error: res.error } } };
+                }
+                console.error(`[Market ${this.marketId}] Exit Failed:`, JSON.stringify(res));
+            }
         } catch (e) {
-            console.error(`[Market ${this.marketId}] Exit Error:`, e);
+            // Re-throw so dumpInventory can handle it
+            throw e;
         }
     }
 }
 
 // Main Entry
-export async function runBot() {
+// Main Entry
+export async function runBot(existingApi?: ApiClient) {
     console.log("🚀 Starting Multi-Market Bot...");
-    const api = new ApiClient();
-    await api.init(); // Shared API instance
+    const api = existingApi || new ApiClient();
+    if (!existingApi) await api.init(); // Shared API instance
 
     // Log Balances (once for the shared API client)
     try {

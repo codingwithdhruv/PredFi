@@ -1,4 +1,5 @@
 import { ApiClient } from './api';
+import { DateTime } from 'luxon';
 
 export class MarketScanner {
     private api: ApiClient;
@@ -8,75 +9,78 @@ export class MarketScanner {
     }
 
     /**
-     * Scans for the latest ACTIVE or UPCOMING market for a given ticker and duration.
-     * @param ticker "BTC" or "ETH"
-     * @param duration "15m" or "5m"
+     * Scans for the latest BTC 15m market matching the current ET time slot.
      */
     async findBestMarket(ticker: string = "BTC", duration: string = "15m"): Promise<number | null> {
-        console.log(`🔎 Scanning for ${ticker} ${duration} markets...`);
+        console.log(`🔎 Scanning for ${ticker} ${duration} markets (Category-based)...`);
         try {
-            // Search string e.g. "BTC 15m"
-            const query = `${ticker} ${duration}`;
-            const markets = await this.api.searchMarkets(query);
+            // 1. Determine Current Target Slot & Range
+            const nowET = DateTime.now().setZone('America/New_York');
+            const currentMinute = nowET.minute;
 
-            if (!markets || markets.length === 0) {
-                console.log(`❌ No markets found for "${query}"`);
-                return null;
+            // Format for Title: "January 29"
+            const dateStr = nowET.toFormat('MMMM d');
+
+            // We want the market that STARTS now or NEXT.
+            const startMinute = Math.floor(currentMinute / 15) * 15;
+            const endMinute = startMinute + 15;
+
+            const startTimeET = nowET.set({ minute: startMinute, second: 0, millisecond: 0 });
+            const endTimeET = startTimeET.set({ minute: endMinute % 60 }).plus({ hours: endMinute >= 60 ? 1 : 0 });
+
+            // Range Format: "3:00-3:15AM"
+            const timeRangeStr = `${startTimeET.toFormat('h:mm')}-${endTimeET.toFormat('h:mm a')}`.replace(' ', '');
+            console.log(`🕒 Current ET: ${nowET.toFormat('h:mm a')} | Target: ${dateStr}, ${timeRangeStr} ET`);
+
+            // 2. Fetch Latest Categories to find the correct BTC/USD 15m slot
+            // Predicted slug pattern: btc-usd-up-down-YYYY-MM-DD-HH-MM-15-minutes
+            const catRes = await this.api.client.get('/v1/categories');
+            const categories = catRes.data.data;
+
+            // Search for categories matching btc, 15-minutes, and today's date
+            const todayISO = nowET.toFormat('yyyy-MM-dd');
+            const targetCat = categories.find((c: any) =>
+                c.slug.includes("btc-usd-up-down") &&
+                c.slug.includes(todayISO) &&
+                c.slug.includes("15-minutes") &&
+                (c.slug.includes(startTimeET.toFormat('HH-mm')) || c.slug.includes(endTimeET.toFormat('HH-mm')))
+            );
+
+            if (targetCat) {
+                console.log(`📂 Found Category: ${targetCat.slug}`);
+                // Fetch markets in this category
+                const catInfoRes = await this.api.client.get(`/v1/categories/${targetCat.slug}`);
+                const marketsInCat = catInfoRes.data.data.markets;
+
+                const bestMarket = marketsInCat.find((m: any) =>
+                    !m.resolved &&
+                    m.title.includes(dateStr) && (
+                        m.title.includes(timeRangeStr) ||
+                        m.title.includes(timeRangeStr.replace('-', ' - '))
+                    )
+                );
+
+                if (bestMarket) {
+                    console.log(`✅ Match Found: [${bestMarket.id}] ${bestMarket.title}`);
+                    return bestMarket.id;
+                }
             }
 
-            // Filter for exact match on duration to avoid partial matches
-            // Predict market titles usually look like: "Will BTC be > 90000 at 10:00?"
-            // We want to find the one that is currently LIVE or STARTING SOON.
+            // Fallback: Global search if category fails
+            console.log("⚠️ Category match failed. Falling back to global search...");
+            const markets = await this.api.searchMarkets(`BTC/USD ${duration}`);
+            const activeMarkets = markets.filter((m: any) => !m.resolved && m.title.includes("BTC/USD"));
 
-            const now = Date.now();
-            let bestMarket: any = null;
+            const bestMatch = activeMarkets.find((m: any) =>
+                m.title.includes(dateStr) && (
+                    m.title.includes(timeRangeStr) ||
+                    m.title.includes(timeRangeStr.replace('-', ' - '))
+                )
+            );
 
-            // Sort by start time DESC (newest first)
-            // But we actually want the one that is "in progress" or "just about to start"
-            // Predict markets have 'resolutionDate' and sometimes 'createdAt'.
-
-            // Let's filter for markets that are NOT resolved
-            const activeMarkets = markets.filter((m: any) => !m.resolved);
-
-            if (activeMarkets.length === 0) {
-                console.log("❌ All found markets are resolved.");
-                return null;
-            }
-
-            // Pick the one with the closest resolution date in the future?
-            // "15m" markets resolve every 15 minutes.
-            // We want the ONE currently trading.
-
-            activeMarkets.sort((a: any, b: any) => {
-                const resA = new Date(a.resolutionDate).getTime();
-                const resB = new Date(b.resolutionDate).getTime();
-                return resB - resA; // Newest first
-            });
-
-            // Let's log the top candidates
-            // console.log("Candidates:", activeMarkets.map(m => `${m.id}: ${m.title} (Res: ${m.resolutionDate})`).slice(0, 3));
-
-            // Return the most recent unresolved market
-            // Usually the one closing soonest (but still in future) is the active one? 
-            // Or the one closing furthest? 
-            // "Start market rotation loop" -> "Scan Upcoming Markets" from user prompt suggests we want the next cycle?
-            // "Get the latest btc valid up down market" -> Usually means the current active cycle.
-
-            // Let's grab the one that closes NEXT.
-            const upcoming = activeMarkets.filter((m: any) => new Date(m.resolutionDate).getTime() > now);
-            upcoming.sort((a: any, b: any) => new Date(a.resolutionDate).getTime() - new Date(b.resolutionDate).getTime()); // Ascending (Closing soonest)
-
-            if (upcoming.length > 0) {
-                bestMarket = upcoming[0];
-            } else {
-                // Return latest even if technically past resolution (if API is slow to mark resolved)
-                bestMarket = activeMarkets[0];
-            }
-
-            if (bestMarket) {
-                console.log(`✅ Found Market: [${bestMarket.id}] ${bestMarket.title}`);
-                console.log(`   Resolution: ${bestMarket.resolutionDate}`);
-                return bestMarket.id;
+            if (bestMatch) {
+                console.log(`✅ Global Match Found: [${bestMatch.id}] ${bestMatch.title}`);
+                return bestMatch.id;
             }
 
             return null;

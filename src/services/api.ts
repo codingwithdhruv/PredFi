@@ -4,7 +4,7 @@ import { CONFIG } from '../config';
 import { OrderBuilder, ChainId, Side } from '@predictdotfun/sdk';
 
 export class ApiClient {
-    private client: AxiosInstance;
+    public client: AxiosInstance;
     private wallet: ethers.Wallet;
     public orderBuilder: OrderBuilder | null = null;
     private jwtToken: string | null = null;
@@ -384,6 +384,47 @@ export class ApiClient {
             return { volume24hUsd: 0, volumeTotalUsd: 0, totalLiquidityUsd: 0 };
         }
     }
+
+    async getActivity(limit: number = 50): Promise<any[]> {
+        try {
+            const res = await this.client.get(`/v1/account/activity?limit=${limit}`);
+            return res.data.data || [];
+        } catch (e: any) {
+            console.error("Failed to fetch activity:", e.response?.data || e.message);
+            return [];
+        }
+    }
+
+    async getVolumeStats(): Promise<{ today: number, week: number }> {
+        try {
+            // Fetch enough activity to cover a week. Limit 100 might be enough for moderate traders.
+            const activities = await this.getActivity(100);
+
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const startOfWeek = now.getTime() - (7 * 24 * 60 * 60 * 1000);
+
+            let today = 0;
+            let week = 0;
+
+            for (const act of activities) {
+                // Check relevant activity types for volume
+                if (act.type === 'TRADE' || act.type === 'ORDER_FILLED' || act.type === 'ORDER_MATCH') {
+                    const val = parseFloat(act.valueUsd || '0');
+                    const time = new Date(act.createdAt).getTime();
+
+                    if (time >= startOfDay) today += val;
+                    if (time >= startOfWeek) week += val;
+                }
+            }
+
+            return { today, week };
+        } catch (e) {
+            console.error("Failed to calc volume:", e);
+            return { today: 0, week: 0 };
+        }
+    }
+
 
     async ensureCorrectContract(market: { isYieldBearing: boolean; isNegRisk: boolean }): Promise<string> {
         if (!this.orderBuilder || !this.orderBuilder.contracts || !this.orderBuilder.contracts.CONDITIONAL_TOKENS) {

@@ -24,6 +24,12 @@ export const CONFIG = {
     LIQUIDITY_SCAN_THRESHOLD: parseFloat(process.env.LIQUIDITY_SCAN_THRESHOLD || '500'), // Join walls > 500 shares
     SAFETY_DELAY_AFTER_CANCEL: 10000, // 10s delay after cancelling before placing new orders
 
+    // TELEGRAM BOT SETTINGS
+    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || '',
+    ALLOWED_USER_IDS: process.env.ALLOWED_USER_IDS
+        ? process.env.ALLOWED_USER_IDS.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id))
+        : [],
+
     // DIP STRATEGY SETTINGS
     DIP_MAX_RISK_PCT: parseFloat(process.env.DIP_MAX_RISK_PCT || '0.15'),
     DIP_THRESHOLD: parseFloat(process.env.DIP_THRESHOLD || '0.15'),   // 15% drop

@@ -27,12 +27,15 @@
     "type": "commonjs",
     "dependencies": {
         "@predictdotfun/sdk": "latest",
+        "@types/luxon": "^3.7.1",
         "@types/node": "^25.0.10",
         "@types/ws": "^8.18.1",
         "axios": "^1.13.3",
         "dotenv": "^17.2.3",
         "ethers": "^6.16.0",
         "ethers-multicall-provider": "^6.5.0",
+        "grammy": "^1.39.3",
+        "luxon": "^3.7.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",
         "ws": "^8.19.0"
