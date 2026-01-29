@@ -265,6 +265,15 @@ export class ApiClient {
         return res.data.data;
     }
 
+    async searchMarkets(query: string) {
+        // predict.fun API uses /v1/markets?search=... or similar filters
+        // Based on docs, GET /v1/markets accepts query params
+        const res = await this.client.get(`/v1/markets`, {
+            params: { search: query, limit: 10 }
+        });
+        return res.data.data;
+    }
+
     getAddress(): string {
         return CONFIG.PREDICT_ACCOUNT || this.wallet.address;
     }

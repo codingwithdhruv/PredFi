@@ -21,6 +21,14 @@ export const CONFIG = {
     PREDICT_ACCOUNT: process.env.PREDICT_ACCOUNT?.trim(), // Optional: Correct EOA address or Smart Wallet address
     MIN_DIST_FROM_MID: parseFloat(process.env.MIN_DIST_FROM_MID || '0.03'), // Min 3 cents away from mid
     LIQUIDITY_SCAN_THRESHOLD: parseFloat(process.env.LIQUIDITY_SCAN_THRESHOLD || '500'), // Join walls > 500 shares
+
+    // DIP STRATEGY SETTINGS
+    DIP_MAX_RISK_PCT: parseFloat(process.env.DIP_MAX_RISK_PCT || '0.15'),
+    DIP_THRESHOLD: parseFloat(process.env.DIP_THRESHOLD || '0.15'),   // 15% drop
+    DIP_WINDOW_MS: parseInt(process.env.DIP_WINDOW_MS || '3000'),     // 3s window
+    DIP_SUM_TARGET: parseFloat(process.env.DIP_SUM_TARGET || '0.95'), // Entry Sum <= 0.95
+    DIP_SHARES: 50, // Fixed 50 shares
+    DIP_LEG2_TIMEOUT_MS: 60000, // 60s force hedge
 };
 
 if (CONFIG.PREDICT_ACCOUNT && !CONFIG.PREDICT_ACCOUNT.startsWith('0x')) {

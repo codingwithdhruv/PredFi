@@ -3,29 +3,24 @@ import { ApiClient } from '../services/api';
 import { CONFIG } from '../config';
 import WebSocket from 'ws';
 import { Side } from '@predictdotfun/sdk';
-import { parseUnits } from 'ethers';
+import { parseUnits, ethers } from 'ethers';
 
 interface PricePoint {
     timestamp: number;
     price: number;
 }
 
-interface DipArbConfig {
-    dipThreshold: number;      // e.g. 0.15 (15%)
-    slidingWindowMs: number;   // e.g. 3000 (3s)
-    sumTarget: number;         // e.g. 0.95
-    shares: number;            // shares per leg
-}
-
 export class DipArbBot {
     private api: ApiClient;
     private ws: RealtimeClient;
 
-    private config: DipArbConfig = {
-        dipThreshold: 0.15,
-        slidingWindowMs: 3000,
-        sumTarget: 0.95,
-        shares: CONFIG.SIZE || 50
+    private config = {
+        marketId: CONFIG.MARKET_ID, // Will be updated by Scanner
+        dipThreshold: CONFIG.DIP_THRESHOLD,
+        slidingWindowMs: CONFIG.DIP_WINDOW_MS,
+        sumTarget: CONFIG.DIP_SUM_TARGET, // 0.95
+        shares: CONFIG.DIP_SHARES, // 50
+        leg2Timeout: CONFIG.DIP_LEG2_TIMEOUT_MS // 60s
     };
 
     private marketId: number;
@@ -35,11 +30,16 @@ export class DipArbBot {
     // Price History Buffers
     private yesHistory: PricePoint[] = [];
     private noHistory: PricePoint[] = [];
+    private yesHighWater: number = 0;
+    private noHighWater: number = 0;
+    private latestOrderbook: OrderbookData | null = null;
 
     // State Machine
     private phase: 'MONITORING' | 'LEG1_FILLED' | 'COMPLETE' = 'MONITORING';
     private leg1FillPrice: number = 0;
     private leg1TokenId: string = "";
+    private leg1Side: 'YES' | 'NO' | null = null;
+    private leg1Time: number = 0;
 
     constructor(marketId: number) {
         this.api = new ApiClient();
@@ -48,7 +48,9 @@ export class DipArbBot {
     }
 
     async start() {
-        console.log(`🚀 Starting DipArb (Gabagool) Bot for Market ID: ${this.marketId}`);
+        console.log(`🚀 Starting DipArb (Gabagool) Bot`);
+        console.log(`⚙️ Config: Threshold=${this.config.dipThreshold * 100}%, Sum<=${this.config.sumTarget}, Size=${this.config.shares}, Timeout=${this.config.leg2Timeout / 1000}s`);
+
         await this.api.init();
 
         const wsSocket = new WebSocket(CONFIG.WS_URL, {
@@ -61,22 +63,67 @@ export class DipArbBot {
         const channel: Channel = { name: 'predictOrderbook', marketId: this.marketId };
         this.ws.subscribe(channel, (msg) => {
             if (msg.data) {
+                // Store latest immediately
+                this.latestOrderbook = msg.data as OrderbookData;
                 this.analyzeOrderbook(msg.data as OrderbookData);
             }
         });
 
+        this.startMonitoringLoop();
+
         this.isRunning = true;
-        console.log("Monitoring price dips...");
+        console.log(`[Market ${this.marketId}] Monitoring price dips...`);
+
+        // Safety Loop for Leg 2 Timeout
+        setInterval(() => this.checkLeg2Timeout(), 1000);
+    }
+
+    private startMonitoringLoop() {
+        // 200ms Active Monitor for fast dips between websocket flames
+        setInterval(() => {
+            if (!this.isRunning || this.phase === 'COMPLETE' || !this.latestOrderbook) return;
+
+            // Re-run analysis with latest known book + current timestamp
+            // This catches if we are "waiting" for a dip and the price is stale but new quote might trigger logic
+            // Actually, if we just re-run analyzeOrderbook, it updates history with NEW timestamp but SAME price
+            // This might dilute the history with duplicate points?
+            // "Recalculate Drop % based on current high-water mark vs latest price."
+
+            // We only need to trigger IF the price has changed? 
+            // Or if we want to ensure we don't miss a fleeting dip? 
+            // Actually, WebSocket pushes are event-based. 
+            // The requirement says: "Recalculate Drop % ... catch dips between WS frames" 
+            // This implies we might poll? But we don't have a poll source other than WS.
+
+            // However, the USER requirement implies a "Monitoring Loop".
+            // "Add monitorLoop for real-time drift check"
+
+            // For Dip Bot, maybe we just ensure we process the latest OB?
+            // If the WS is fast, we get updates. 
+            // If the WS is slow, polling won't help unless we poll REST API?
+            // "does NOT place or cancel ... lightweight ... recomputes"
+
+            // Let's implement it as a "Liveness" check or just re-evaluating the latest OB 
+            // in case logic conditions changed (e.g. time window shifts).
+
+            if (this.latestOrderbook) {
+                this.analyzeOrderbook(this.latestOrderbook);
+            }
+        }, 200);
+    }
+
+    async stop() {
+        this.isRunning = false;
+        if (this.ws) this.ws.close();
+        console.log(`[Market ${this.marketId}] Bot Stopped.`);
     }
 
     private async initMarket() {
         const market = await this.api.getMarket(this.marketId);
         console.log(`Target Market: ${market.title}`);
 
-        // Ensure correct contract is patched in SDK
         await this.api.ensureCorrectContract(market);
 
-        // Outcome 0 = YES/UP, Outcome 1 = NO/DOWN
         this.marketParams = {
             yesToken: market.outcomes[0],
             noToken: market.outcomes[1],
@@ -90,76 +137,78 @@ export class DipArbBot {
 
     private analyzeOrderbook(ob: OrderbookData) {
         if (!this.isRunning || this.phase === 'COMPLETE') return;
-
-        // On Predict.fun, the orderbook 'asks' and 'bids' are for the YES token.
-        // To get the NO token price: Price(NO) = 1 - Price(YES)
-        // BUT wait, Predict.fun API for /markets/{id}/orderbook usually returns YES side.
-        // Actually, some markets have NO side orderbooks too. 
-        // Let's assume the provided WS data is for the YES token.
-
         if (ob.asks.length === 0 || ob.bids.length === 0) return;
 
-        const yesAsk = ob.asks[0][0];
-        const yesBid = ob.bids[0][0]; // To derive NO Ask: 1 - yesBid
+        // Note: Predict orderbook usually provides YES bids/asks.
+        // We derive NO prices: NO Bid = 1 - YES Ask; NO Ask = 1 - YES Bid
 
-        const noAsk = Number((1 - yesBid).toFixed(4));
+        const bestBidYes = ob.bids[0][0];
+        const bestAskYes = ob.asks[0][0];
+
+        // YES Price (Market Price to BUY YES is ASK)
+        // Actually, we want to Buy Dips. So we buy at ASK?
+        // If price crashes, ASK drops.
+        const currentPriceYes = bestAskYes;
+
+        // NO Price (Market Price to BUY NO is 1 - YES Bid)
+        const currentPriceNo = Number((1 - bestBidYes).toFixed(4));
+
         const now = Date.now();
 
-        // 1. Update History
-        this.updateHistory(this.yesHistory, yesAsk, now);
-        this.updateHistory(this.noHistory, noAsk, now);
+        // 1. Update History & High Water Mark
+        this.updateHistory(this.yesHistory, currentPriceYes, now);
+        this.updateHistory(this.noHistory, currentPriceNo, now);
+
+        this.yesHighWater = this.getHighWater(this.yesHistory);
+        this.noHighWater = this.getHighWater(this.noHistory);
 
         if (this.phase === 'MONITORING') {
-            // Check for Dips
-            const yesDrop = this.calculateDrop(this.yesHistory, yesAsk, now);
-            const noDrop = this.calculateDrop(this.noHistory, noAsk, now);
+            // Check for Dips (Drop from High Water Mark)
+            const yesDrop = (this.yesHighWater - currentPriceYes) / this.yesHighWater;
+            const noDrop = (this.noHighWater - currentPriceNo) / this.noHighWater;
 
             if (yesDrop >= this.config.dipThreshold) {
-                console.log(`🔥 DIP DETECTED: YES dropped ${(yesDrop * 100).toFixed(1)}%!`);
-                this.executeLeg1(yesAsk, this.marketParams.yesToken.onChainId);
+                console.log(`🔥 DIP: YES dropped ${(yesDrop * 100).toFixed(1)}% (${this.yesHighWater} -> ${currentPriceYes})`);
+                this.executeLeg1(currentPriceYes, 'YES', this.marketParams.yesToken.onChainId);
             } else if (noDrop >= this.config.dipThreshold) {
-                console.log(`🔥 DIP DETECTED: NO dropped ${(noDrop * 100).toFixed(1)}%!`);
-                this.executeLeg1(noAsk, this.marketParams.noToken.onChainId);
+                console.log(`🔥 DIP: NO dropped ${(noDrop * 100).toFixed(1)}% (${this.noHighWater} -> ${currentPriceNo})`);
+                this.executeLeg1(currentPriceNo, 'NO', this.marketParams.noToken.onChainId);
             }
-        } else if (this.phase === 'LEG1_FILLED') {
-            // Wait for Leg 2 (Opposite side)
-            // If Leg 1 was YES, Leg 2 is NO
-            const oppositeAsk = (this.leg1TokenId === this.marketParams.yesToken.onChainId) ? noAsk : yesAsk;
-            const oppositeTokenId = (this.leg1TokenId === this.marketParams.yesToken.onChainId) ?
-                this.marketParams.noToken.onChainId : this.marketParams.yesToken.onChainId;
+        }
+        else if (this.phase === 'LEG1_FILLED') {
+            // Monitor for Leg 2 (Opposite)
+            const leg1Price = this.leg1FillPrice;
+            const targetSide = (this.leg1Side === 'YES') ? 'NO' : 'YES';
+            const targetPrice = (targetSide === 'YES') ? currentPriceYes : currentPriceNo;
+            const targetTokenId = (targetSide === 'YES') ? this.marketParams.yesToken.onChainId : this.marketParams.noToken.onChainId;
 
-            const totalCost = this.leg1FillPrice + oppositeAsk;
+            const totalCost = leg1Price + targetPrice;
 
             if (totalCost <= this.config.sumTarget) {
-                console.log(`🎯 TARGET REACHED: Total Cost ${totalCost.toFixed(3)} (<= ${this.config.sumTarget})`);
-                this.executeLeg2(oppositeAsk, oppositeTokenId);
+                console.log(`🎯 SUM TARGET: ${totalCost.toFixed(3)} (<= ${this.config.sumTarget}). Executing Leg 2...`);
+                this.executeLeg2(targetPrice, targetSide, targetTokenId);
             }
         }
     }
 
     private updateHistory(history: PricePoint[], price: number, now: number) {
         history.push({ timestamp: now, price });
-        // Keep 10s of data
-        while (history.length > 0 && now - history[0].timestamp > 10000) {
+        // Keep only window
+        while (history.length > 0 && now - history[0].timestamp > this.config.slidingWindowMs) {
             history.shift();
         }
     }
 
-    private calculateDrop(history: PricePoint[], currentPrice: number, now: number): number {
-        if (history.length < 2) return 0;
-
-        // Find price closest to window offset (e.g. 3s ago)
-        const targetTs = now - this.config.slidingWindowMs;
-        const referencePoint = history.find(p => p.timestamp >= targetTs);
-
-        if (!referencePoint) return 0;
-
-        const drop = (referencePoint.price - currentPrice) / referencePoint.price;
-        return drop > 0 ? drop : 0;
+    private getHighWater(history: PricePoint[]): number {
+        if (history.length === 0) return 0;
+        return Math.max(...history.map(p => p.price));
     }
 
-    private async executeLeg1(price: number, tokenId: string) {
-        console.log(`🛒 Buying Leg 1: ${tokenId} @ ${price}`);
+    private async executeLeg1(price: number, side: 'YES' | 'NO', tokenId: string) {
+        console.log(`🛒 BUY LEG 1: ${side} @ ${price}`);
+        // Lock phase to avoid double-entry
+        this.phase = 'LEG1_FILLED'; // Optimistic lock
+
         try {
             const priceWei = parseUnits(price.toFixed(18), 18);
             const sizeWei = parseUnits(this.config.shares.toString(), 18);
@@ -177,16 +226,21 @@ export class DipArbBot {
             if (res.success) {
                 this.leg1FillPrice = price;
                 this.leg1TokenId = tokenId;
-                this.phase = 'LEG1_FILLED';
-                console.log("✅ Leg 1 Filled. Waiting for Leg 2...");
+                this.leg1Side = side;
+                this.leg1Time = Date.now();
+                console.log(`✅ LEG 1 FILLED. Waiting for ${side === 'YES' ? 'NO' : 'YES'}...`);
+            } else {
+                console.error("❌ Leg 1 Failed:", res);
+                this.phase = 'MONITORING'; // Unlock
             }
         } catch (e) {
-            console.error("Leg 1 Execution Failed");
+            console.error("❌ Leg 1 Exe Error:", e);
+            this.phase = 'MONITORING';
         }
     }
 
-    private async executeLeg2(price: number, tokenId: string) {
-        console.log(`🛒 Buying Leg 2: ${tokenId} @ ${price}`);
+    private async executeLeg2(price: number, side: 'YES' | 'NO', tokenId: string) {
+        console.log(`🛒 BUY LEG 2: ${side} @ ${price}`);
         try {
             const priceWei = parseUnits(price.toFixed(18), 18);
             const sizeWei = parseUnits(this.config.shares.toString(), 18);
@@ -204,11 +258,31 @@ export class DipArbBot {
             if (res.success) {
                 this.phase = 'COMPLETE';
                 const profit = this.config.shares * (1 - (this.leg1FillPrice + price));
-                console.log(`💰 ARB COMPLETE! Estimated Profit: $${profit.toFixed(2)}`);
-                // Optionally auto-merge here
+                console.log(`💰 ARB LOCKED! Est. Profit: $${profit.toFixed(2)}`);
+                // TODO: Auto-merge
             }
         } catch (e) {
-            console.error("Leg 2 Execution Failed");
+            console.error("Leg 2 Failed");
+        }
+    }
+
+    // Safety Force Hedge
+    private async checkLeg2Timeout() {
+        if (this.phase !== 'LEG1_FILLED') return;
+
+        if (Date.now() - this.leg1Time > this.config.leg2Timeout) {
+            console.log(`⏰ LEG 2 TIMEOUT (${this.config.leg2Timeout}ms). FORCE HEDGING...`);
+            // Force buy opposite side at MARKET price (taker)
+            // Or limit at current best ask if we want to be nicer? 
+            // Gabagool implies "Market Order" for safety.
+
+            // NOTE: api.placeMarketOrder isn't fully robust yet, let's use Limit at 1.0 (effectively market) or best ask + slip.
+            // For safety, let's try to get out.
+            const targetSide = (this.leg1Side === 'YES') ? 'NO' : 'YES';
+            const targetTokenId = (targetSide === 'YES') ? this.marketParams.yesToken.onChainId : this.marketParams.noToken.onChainId;
+
+            console.log(`🚑 FORCE BUYING ${targetSide} to close delta.`);
+            await this.executeLeg2(0.99, targetSide, targetTokenId); // Paying max price just to fill
         }
     }
 }

@@ -38,6 +38,13 @@ export class MarketMaker {
     private isTradingHalted: boolean = false; // Hard Kill Switch
     private isDumping: boolean = false; // Lock for dump routine
 
+    // Monitoring State
+    private lastQuotedBid: number | null = null;
+    private lastQuotedAsk: number | null = null;
+    private latestOrderbook: OrderbookData | null = null;
+    private needsRequote: boolean = false;
+    private monitorInterval: NodeJS.Timeout | null = null;
+
     constructor(marketId: number, existingApi?: ApiClient) {
         this.api = existingApi || new ApiClient();
         this.marketId = marketId;
@@ -77,23 +84,54 @@ export class MarketMaker {
         const channel: Channel = { name: 'predictOrderbook', marketId: this.marketId };
         this.ws.subscribe(channel, (msg) => {
             if (msg.data) {
+                // Update local cache immediately, logic happens in loop or on update
+                this.latestOrderbook = msg.data as OrderbookData;
                 this.onOrderbookUpdate(msg.data as OrderbookData);
             }
         });
 
-        // JWT subscription is now handled in main() for shared API client
-        // const jwt = this.api.getJwt();
-        // if (jwt) {
-        //     const walletChannel: Channel = { name: 'predictWalletEvents', jwt };
-        //     this.ws.subscribe(walletChannel, (msg) => {
-        //         if (msg.data) {
-        //             this.onWalletEvent(msg.data as PredictWalletEvents);
-        //         }
-        //     });
-        // }
+        this.startMonitoringLoop();
 
         this.isRunning = true;
         console.log(`[Market ${this.marketId}] Bot is running.`);
+    }
+
+    private startMonitoringLoop() {
+        // Lightweight 200ms loop to check for DRIFT
+        this.monitorInterval = setInterval(() => {
+            if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted || this.isDumping || !this.latestOrderbook) return;
+
+            const ob = this.latestOrderbook;
+            if (ob.bids.length === 0 || ob.asks.length === 0) return;
+
+            const bestBid = ob.bids[0][0];
+            const bestAsk = ob.asks[0][0];
+            const mid = (bestBid + bestAsk) / 2;
+
+            // Check DRIFT from my last QUOTED price
+            // Distance = Mid - MyBid. If Distance < MinDist, I am too close.
+            const minDist = CONFIG.MIN_DIST_FROM_MID;
+            let driftDetected = false;
+
+            if (this.lastQuotedBid !== null) {
+                // If Mid dropped towards my Bid (Distance < MinDist)
+                if ((mid - this.lastQuotedBid) < minDist) driftDetected = true;
+            }
+
+            if (this.lastQuotedAsk !== null) {
+                // If Mid rose towards my Ask (Distance < MinDist)
+                if ((this.lastQuotedAsk - mid) < minDist) driftDetected = true;
+            }
+
+            if (driftDetected && !this.needsRequote) {
+                console.log(`[Market ${this.marketId}] ⚠️ DRIFT DETECTED! Quotes too close to Mid. Flagging Re-quote.`);
+                this.needsRequote = true;
+                // Force trigger update logic immediately reusing existing flow
+                if (this.latestOrderbook) {
+                    this.onOrderbookUpdate(this.latestOrderbook);
+                }
+            }
+        }, 200);
     }
 
     private async initMarketParams() {
@@ -180,7 +218,9 @@ export class MarketMaker {
             return;
         }
 
-        if (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL) return;
+        // TIME CHECK: Skip if too fast, UNLESS we have a pending DRIFT alert (Safety)
+        if (!this.needsRequote && (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL)) return;
+
         if (ob.bids.length === 0 || ob.asks.length === 0) return;
 
         const bestBid = ob.bids[0][0];
@@ -209,22 +249,18 @@ export class MarketMaker {
         for (const [price, size] of ob.bids) {
             if (price <= maxSafeBid) {
                 targetBid = price;
-                // Optional: Prioritize large walls?
-                // if (size >= CONFIG.LIQUIDITY_SCAN_THRESHOLD) { ... }
                 foundWallBid = true;
-                break; // Found the best (highest) safe bid
+                break;
             }
         }
 
         // 2. Scan ASKS for a "Liquidity Wall" to join
         let foundWallAsk = false;
-        // Asks are usually sorted ascending, but let's be safe or just iterate logic
-        // predict.fun API asks are Price ASC (lowest first)
         for (const [price, size] of ob.asks) {
             if (price >= minSafeAsk) {
                 targetAsk = price;
                 foundWallAsk = true;
-                break; // Found the best (lowest) safe ask
+                break;
             }
         }
 
@@ -251,13 +287,17 @@ export class MarketMaker {
         const bidDiff = Math.abs(targetBid - this.currentBid);
         const askDiff = Math.abs(targetAsk - this.currentAsk);
 
-        if (bidDiff > CONFIG.REQUOTE_THRESHOLD || askDiff > CONFIG.REQUOTE_THRESHOLD) {
-            this.requoteCount++;
-            if (this.requoteCount > 2) {
-                console.log(`[Market ${this.marketId}] ⚠️ Volatility ${this.requoteCount}/5.`);
+        // If 'needsRequote' is false, apply standard threshold check
+        // If 'needsRequote' is true, we force update anyway
+        if (!this.needsRequote) {
+            if (bidDiff > CONFIG.REQUOTE_THRESHOLD || askDiff > CONFIG.REQUOTE_THRESHOLD) {
+                this.requoteCount++;
+                if (this.requoteCount > 2) {
+                    console.log(`[Market ${this.marketId}] ⚠️ Volatility ${this.requoteCount}/5.`);
+                }
+            } else {
+                return;
             }
-        } else {
-            return;
         }
 
         const timestamp = new Date().toLocaleTimeString();
@@ -270,9 +310,17 @@ export class MarketMaker {
         console.log(`└────────────────────────────┴─────────────────────────────┘`);
 
         await this.updateOrders(targetBid, targetAsk);
+
+        // UPDATE STATE
         this.currentBid = targetBid;
         this.currentAsk = targetAsk;
+
+        // Track the Authoritative "Currently on Book" Price
+        this.lastQuotedBid = targetBid;
+        this.lastQuotedAsk = targetAsk;
+
         this.lastOrderTime = Date.now();
+        this.needsRequote = false; // Reset Drift Flag
     }
 
     private async cancelAllOrders() {
