@@ -79,6 +79,9 @@ export class MarketMaker {
             return;
         }
 
+        // Strict Cleanup on Start
+        console.log(`[Market ${this.marketId}] 🧹 Checking for orphaned orders...`);
+        await this.cancelAllOrders();
         await this.cleanupExistingPositions();
 
         const channel: Channel = { name: 'predictOrderbook', marketId: this.marketId };
@@ -109,22 +112,31 @@ export class MarketMaker {
             const mid = (bestBid + bestAsk) / 2;
 
             // Check DRIFT from my last QUOTED price
-            // Distance = Mid - MyBid. If Distance < MinDist, I am too close.
+            // 1. DANGER: Distance < MinDist (Too Close)
+            // 2. STALE: Distance > MaxDist (Too Far)
             const minDist = CONFIG.MIN_DIST_FROM_MID;
+            const maxDist = CONFIG.MAX_DIST_FROM_MID || 0.10;
             let driftDetected = false;
+            let driftReason = "";
 
             if (this.lastQuotedBid !== null) {
-                // If Mid dropped towards my Bid (Distance < MinDist)
-                if ((mid - this.lastQuotedBid) < minDist) driftDetected = true;
+                // Danger: Mid drops towards Bid (Mid - Bid < Min)
+                // Stale: Mid rises away from Bid (Mid - Bid > Max)
+                const dist = mid - this.lastQuotedBid;
+                if (dist < minDist) { driftDetected = true; driftReason = "Bid Too Close"; }
+                if (dist > maxDist) { driftDetected = true; driftReason = "Bid Too Far"; }
             }
 
             if (this.lastQuotedAsk !== null) {
-                // If Mid rose towards my Ask (Distance < MinDist)
-                if ((this.lastQuotedAsk - mid) < minDist) driftDetected = true;
+                // Danger: Mid rises towards Ask (Ask - Mid < Min)
+                // Stale: Mid drops away from Ask (Ask - Mid > Max)
+                const dist = this.lastQuotedAsk - mid;
+                if (dist < minDist) { driftDetected = true; driftReason = "Ask Too Close"; }
+                if (dist > maxDist) { driftDetected = true; driftReason = "Ask Too Far"; }
             }
 
             if (driftDetected && !this.needsRequote) {
-                console.log(`[Market ${this.marketId}] ⚠️ DRIFT DETECTED! Quotes too close to Mid. Flagging Re-quote.`);
+                console.log(`[Market ${this.marketId}] ⚠️ DRIFT (${driftReason})! Flagging Re-quote.`);
                 this.needsRequote = true;
                 // Force trigger update logic immediately reusing existing flow
                 if (this.latestOrderbook) {
@@ -164,27 +176,30 @@ export class MarketMaker {
         }
     }
 
-    private async cleanupExistingOrders() {
-        // We only cancel orders related to THIS market (global cancel would hurt other instance)
-        // Ideally API allows filtering by marketId, but if not, we must be careful.
-        // For safety/simplicity in V2, we just cancel local activeOrders if known,
-        // OR we can fetch open orders and filter by market.
+    async cancelAllOrders(): Promise<boolean> {
+        // STRICT CANCELLATION: Always fetch from API
+        try {
+            const orders = await this.api.getOpenOrders();
+            const myOrders = orders.filter((o: any) =>
+                o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase() &&
+                (o.tokenId === this.marketParams?.yesTokenId || o.tokenId === this.marketParams?.noTokenId)
+            );
 
-        const orders = await this.api.getOpenOrders();
-        // Filter by Market ID if possible? Standard API might not verify market ID easily in OpenOrders list
-        // Update: predict.fun API Order object usually has marketID or tokenId.
-        // We will do a best effort filter by tokenId if available.
+            if (myOrders.length === 0) {
+                // Also clear local activeOrders if they drift
+                this.activeOrders = [];
+                return false; // Clean
+            }
 
-        const myOrders = orders.filter((o: any) =>
-            o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase() &&
-            (o.tokenId === this.marketParams?.yesTokenId || o.tokenId === this.marketParams?.noTokenId)
-        );
-
-        if (myOrders.length === 0) return;
-
-        const ids = myOrders.map((o: any) => o.id);
-        console.log(`[Market ${this.marketId}] Canceling ${ids.length} existing orders...`);
-        await this.api.removeOrders(ids);
+            const ids = myOrders.map((o: any) => o.id);
+            console.log(`[Market ${this.marketId}] 🛑 Strict Cancel: Removing ${ids.length} open orders...`);
+            await this.api.removeOrders(ids);
+            this.activeOrders = [];
+            return true; // Had orders, cancelled them
+        } catch (e) {
+            console.error(`[Market ${this.marketId}] Cancel Error:`, e);
+            return true; // Assume dirty if error
+        }
     }
 
     private async cleanupExistingPositions() {
@@ -323,24 +338,29 @@ export class MarketMaker {
         this.needsRequote = false; // Reset Drift Flag
     }
 
-    private async cancelAllOrders() {
-        if (this.activeOrders.length === 0) return;
 
-        try {
-            const ordersToCancel = [...this.activeOrders];
-            this.activeOrders = [];
-            await this.api.removeOrders(ordersToCancel);
-        } catch (e) {
-            console.error(`[Market ${this.marketId}] Error canceling:`, e);
-        }
-    }
 
     async updateOrders(bidPrice: number, askPrice: number) {
         if (!this.marketParams || this.isTradingHalted || this.isExiting) return;
 
-        // 1. Strict Cancel Before Replace
-        if (this.activeOrders.length > 0) {
-            await this.cancelAllOrders();
+        // 1. Strict Cancel Before Replace using Blocking Pattern
+        // Loop until API confirms 0 orders.
+        let wasDirty = false;
+        while (true) {
+            const ordersFoundDirty = await this.cancelAllOrders();
+            if (ordersFoundDirty) wasDirty = true;
+
+            if (!ordersFoundDirty) break;
+
+            console.log(`[Market ${this.marketId}] ⏳ Blocking: Orders remain. Waiting 5s before retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+
+        // Safety Delay AFTER clean slate if we had to cancel
+        if (wasDirty) {
+            const delay = CONFIG.SAFETY_DELAY_AFTER_CANCEL || 2000;
+            console.log(`[Market ${this.marketId}] 🛑 Safety Delay: Waiting ${delay}ms before placing new orders...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
         }
 
         // 2. Strict Exposure Control Check
