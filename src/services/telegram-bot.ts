@@ -62,11 +62,21 @@ export function startTelegramBot(client: ApiClient) {
     bot.command('start', async (ctx) => {
         await ctx.reply(
             "👋 *Welcome to Predict\\.fun Tracker\\!* \n\n" +
-            "Use /stats to view your wallet performance\\.\n" +
-            "Use /balance for wallet balance\\.\n" +
-            "Use /positions for active positions\\.\n" +
-            "Use /orders for open orders\\.\n" +
-            "Use /activity for recent activity\\.",
+            "Your powerful companion for monitoring and discovering prediction markets on Predict\\.fun\\.\n\n" +
+            "📊 *Wallet & Portfolio*\n" +
+            "• /balance \\- View your current USDT balance\n" +
+            "• /positions \\- See your active market holdings\n" +
+            "• /stats \\- Full performance dashboard\n\n" +
+            "🔍 *Market Discovery*\n" +
+            "• `/search <query>` \\- Search for active markets by question, ID, or keyword\n" +
+            "  _Example:_ `/search CZ tweets`\n\n" +
+            "📜 *Order History*\n" +
+            "• /orders \\- View your currently open limit orders\n" +
+            "• /activity \\- See your recent fills, merges, and trades\n\n" +
+            "💡 *Quick Tutorial*\n" +
+            "1\\. Use `/search` to find a market ID\\.\n" +
+            "2\\. All results are grouped by category for clarity\\.\n" +
+            "3\\. You can deep\\-link to any market on the web using its ID\\.",
             { parse_mode: "MarkdownV2" }
         );
     });
