@@ -4,6 +4,7 @@ import { CONFIG } from './config';
 import WebSocket from 'ws';
 import { Side, AddressesByChainId, ChainId } from '@predictdotfun/sdk';
 import { parseUnits, Contract, Wallet, ethers } from 'ethers';
+import { sendAlert, escapeMarkdown } from './services/telegram-bot';
 
 interface MarketParams {
     yesTokenId: string;
@@ -23,6 +24,7 @@ export class MarketMaker {
     private activeOrders: string[] = [];
 
     private marketId: number;
+    private marketTitle: string = "";
     private marketParams: MarketParams | null = null;
     private isRunning: boolean = false;
     private isExiting: boolean = false; // Add Exiting State
@@ -177,7 +179,8 @@ export class MarketMaker {
     private async initMarketParams() {
         try {
             const market = await this.api.getMarket(this.marketId);
-            console.log(`[Market ${this.marketId}] Found: ${market.title}`);
+            this.marketTitle = market.question || market.title || `Market #${this.marketId}`;
+            console.log(`[Market ${this.marketId}] Found: ${this.marketTitle}`);
             const outcomeYes = market.outcomes[0];
             const outcomeNo = market.outcomes[1];
 
@@ -476,14 +479,30 @@ export class MarketMaker {
     }
 
     private async onWalletEvent(event: PredictWalletEvents) {
+        if (!this.marketParams || !this.isRunning) return;
+
         // Handle "FILL" events - TRIGGER ONLY
         if (event.type === 'orderTransactionSuccess') {
+            // Verify if this event belongs to this market
+            // Note: marketQuestion in event might have different formatting, but it's our best link
+            if (event.details.marketQuestion && this.marketTitle &&
+                !this.marketTitle.includes(event.details.marketQuestion) &&
+                !event.details.marketQuestion.includes(this.marketTitle)) {
+                return;
+            }
+
             const outcome = event.details.outcome;
             const price = parseFloat(event.details.price);
             const qtyStr = event.details.quantity;
 
-            console.log(`\n🚨 FILL HINT: ${outcome} @ ${price} (Qty: ${qtyStr})`);
-            console.log(`🛑 SETTING HARD STOP. Signaling Dump Loop...`);
+            console.log(`\n🚨 FILL ALERT: ${outcome} @ ${price} (Qty: ${qtyStr})`);
+
+            const alertMsg = `🚀 *FILL ALERT*\n\n` +
+                `*Market*: ${escapeMarkdown(this.marketTitle)}\n` +
+                `*Predict*: *${escapeMarkdown(outcome)}* @ $${escapeMarkdown(price.toFixed(3))}\n` +
+                `*Qty*: ${escapeMarkdown(qtyStr)}\n\n` +
+                `🛑 *Halted*: Dumping positions\\.\\.\\.`;
+            sendAlert(alertMsg);
 
             this.isExiting = true; // Block new orders
             this.isTradingHalted = true; // Hard Halt
@@ -620,6 +639,13 @@ export class MarketMaker {
                     throw { response: { data: { error: res.error } } };
                 }
                 console.error(`[Market ${this.marketId}] Exit Failed:`, JSON.stringify(res));
+            } else {
+                const alertMsg = `✅ *SELL ALERT*\n\n` +
+                    `*Market*: ${escapeMarkdown(this.marketTitle)}\n` +
+                    `*Sold*: *${escapeMarkdown(filledOutcome)}*\n` +
+                    `*Qty*: ${escapeMarkdown(quantityStr)}\n` +
+                    `*Status*: Success`;
+                sendAlert(alertMsg);
             }
         } catch (e) {
             // Re-throw so dumpInventory can handle it

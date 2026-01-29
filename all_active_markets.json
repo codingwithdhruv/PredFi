@@ -1,44 +1,338 @@
 [
   {
     "imageUrl": "https://static.predict.fun/automarket-btc-usd-15-minutes-gold",
-    "title": "BTC/USD Up or Down - January 29, 9:30-9:45AM ET",
-    "question": "BTC/USD Up or Down - January 29, 9:30-9:45AM ET",
-    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 09:44:59 AM ET is higher than the starting price of $87,686.0727703.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 09:44:59 AM ET is lower than the starting price of $87,686.0727703.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 09:30:00 AM ET",
-    "status": "REGISTERED",
+    "title": "BTC/USD Up or Down - January 29, 1:30-1:45PM ET",
+    "question": "BTC/USD Up or Down - January 29, 1:30-1:45PM ET",
+    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 01:44:59 PM ET is higher than the starting price of $83,741.43085081.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 01:44:59 PM ET is lower than the starting price of $83,741.43085081.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 01:30:00 PM ET",
+    "status": "PRICE_PROPOSED",
     "isNegRisk": false,
     "isYieldBearing": true,
     "resolution": null,
-    "oracleQuestionId": "0x71829a3505ebb53aaf0e951e0a2d3c0c302b64d3e89b29afa9a4170607e14e70",
-    "conditionId": "0xe2f6c5dfbb65d4903c5382d6e38b6211438f18965b33d2ca60fc468e88c96410",
+    "oracleQuestionId": "0x490019ce70c368248407d71926cb37f7e82bb78fb37d345b6a731910f386e22a",
+    "conditionId": "0x41c7b63e7b7188bc76a91c94a0dee5b3dd954539387dd22675cda58f4bceb7e5",
     "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
     "questionIndex": null,
     "spreadThreshold": 0.06,
     "shareThreshold": 50,
     "polymarketConditionIds": [],
     "kalshiMarketTicker": null,
-    "categorySlug": "btc-usd-up-down-2026-01-29-09-30-15-minutes",
-    "createdAt": "2026-01-29T14:30:02.816Z",
+    "categorySlug": "btc-usd-up-down-2026-01-29-13-30-15-minutes",
+    "createdAt": "2026-01-29T18:30:07.290Z",
     "decimalPrecision": 2,
-    "id": 5645,
+    "id": 5693,
     "feeRateBps": 200,
     "outcomes": [
       {
         "name": "Up",
         "indexSet": 1,
         "status": null,
-        "onChainId": "87491489722044440330973257896489321551128788573941997020263579355911303197518"
+        "onChainId": "28809902870979971590161293268155315841939571739703397027883986287379442295855"
       },
       {
         "name": "Down",
         "indexSet": 2,
         "status": null,
-        "onChainId": "34402635733680915234427751562780121343235353457446211671887542797362222528886"
+        "onChainId": "103698999126311959583473976600741591466321153346521504853402127148976762043992"
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 646.72,
-      "volumeTotalUsd": 3.93,
-      "volume24hUsd": 3.93
+      "totalLiquidityUsd": 0,
+      "volumeTotalUsd": 1390.28,
+      "volume24hUsd": 1390.28
+    }
+  },
+  {
+    "imageUrl": "https://static.predict.fun/automarket-btc-usd-15-minutes-gold",
+    "title": "BTC/USD Up or Down - January 29, 1:45-2:00PM ET",
+    "question": "BTC/USD Up or Down - January 29, 1:45-2:00PM ET",
+    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 01:59:59 PM ET is higher than the starting price of $83,886.78091318.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 01:59:59 PM ET is lower than the starting price of $83,886.78091318.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 01:45:00 PM ET",
+    "status": "REGISTERED",
+    "isNegRisk": false,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0xc941129db9a810d6acc07449429315293cf0c80b1bc998b4b9413282630d57aa",
+    "conditionId": "0xa25e969f7438e2a07adf01119ed9ffa948ef1524621d79eb9fcd0075fa6ad035",
+    "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
+    "questionIndex": null,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 50,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "btc-usd-up-down-2026-01-29-13-45-15-minutes",
+    "createdAt": "2026-01-29T18:45:07.283Z",
+    "decimalPrecision": 2,
+    "id": 5698,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Up",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "110290051875621457549939012408033705906203216762343261725638255964996168768924"
+      },
+      {
+        "name": "Down",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "54438462897261942874372629578947637560849390841289093896805451978789115341695"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 527.25,
+      "volumeTotalUsd": 0,
+      "volume24hUsd": 0
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-0-5",
+    "title": "0-5",
+    "question": "0-5",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0xfcc35f0c06b5454362fd23aaa411cd9d40f50036e86e88b90252b798eefda761",
+    "conditionId": "0x4a5f889a2154e28585f7bd6990ff2191a6d2b0da71e74003f5835622be70d42f",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 0,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:22:35.476Z",
+    "decimalPrecision": 3,
+    "id": 5679,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "73109083365533430986723940253609529705190034406478627994657250078122490512773"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "80315663062305443341624908728235078395966329298074826074483605313767777397900"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 21512.07,
+      "volumeTotalUsd": 20.4,
+      "volume24hUsd": 20.4
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-6-10",
+    "title": "6-10",
+    "question": "6-10",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0x4b1c6ba52499e21d94e310c9c1512fa0e1b9ba6e34ba10ef6bc17cc249cb31d8",
+    "conditionId": "0xb1e589f74a15a16c48f652306046b3834101286fb97f880e2dd759eeb4dad332",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 1,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:23:05.909Z",
+    "decimalPrecision": 3,
+    "id": 5680,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "6233755582836605695312256673853573015002514464241087486728652808830526670876"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "81643585325231659660575232600240110794007102316793637968006803340412286126930"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 22490570.94,
+      "volumeTotalUsd": 523.92,
+      "volume24hUsd": 523.92
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-11-15",
+    "title": "11-15",
+    "question": "11-15",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0x48b3ba6890d1eb5244c6f764265f3c40f790239f37e133c4e658cb69bb9351f7",
+    "conditionId": "0x1c90e0c01220de7bb56cc117fd0e5151c8948b5369e2c9b3bad6e77c35efee48",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 2,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:23:37.991Z",
+    "decimalPrecision": 3,
+    "id": 5681,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "85313769894356152256305886813471792089240751159512662120322947842924949872701"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "98230497552057006650234979744158439350357222522759329496907762418108712566665"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 27957.52,
+      "volumeTotalUsd": 710.3,
+      "volume24hUsd": 710.3
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-16-20",
+    "title": "16-20",
+    "question": "16-20",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0x6fb1c22e5189d8ae59ad693737c2dc82813fb9cddd1908ee02a596bef018a956",
+    "conditionId": "0xec47110cffa95ec639196d57edf3be1658b74d3fa97ce1614cde7dcd373cc614",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 3,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:23:57.398Z",
+    "decimalPrecision": 3,
+    "id": 5682,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "109409159142481035977352580288595703610783916851427481772240876384304466615224"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "27394964662790070337979502640821543726951108571392266490954869974401473415725"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 22489105.91,
+      "volumeTotalUsd": 0,
+      "volume24hUsd": 0
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-21-25",
+    "title": "21-25",
+    "question": "21-25",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0x39c180e6af43217c409e887e28a4e7762bb861a457e2ecc7f66e3e162f1f5831",
+    "conditionId": "0x471a0beca02021a457511486bf631980c1c18f6ab6e6d6fb4be235f6a2fc1d02",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 4,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:24:15.793Z",
+    "decimalPrecision": 3,
+    "id": 5683,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "38182634785334625451719710371933593685829781289373371406727340518865536427786"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "12580776877779433952164889337024130356291767128750900938987459991852078245093"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 22485896.69,
+      "volumeTotalUsd": 0,
+      "volume24hUsd": 0
+    }
+  },
+  {
+    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-29th-feb-5th-2026-26",
+    "title": "26+",
+    "question": "26+",
+    "description": "This market will resolve according to the number of times @cz_binance posts on X from Jan 29, 2026, 12:00 PM ET to Feb 5, 2026, 12:00 PM ET (exclusive).\n\n**Date Range (Exclusive):**\nTweets up to the last second before the end date will count. For example, if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count, but tweets at or after 12:00:00 PM ET will not count.\n\n**Posts That Count:**\n- Main feed posts\n- Quote posts\n- Reposts\n\n**Replies:**\nRequirements for rules to count:\n- The entire \"reply chain\" all the way up to the original post MUST belong to the tracked user.\n- Replies to reposts only count IF the original post is from the same user. Replies to reposts of other users' posts do not count.\n\n**Examples:**\n- Reply to own quote post that counts: https://x.com/cz_binance/status/2015101858034110785\n- Reply on main feed that counts: https://x.com/elonmusk/status/1786073478711353576\n- Reply chain that does not count: https://x.com/elonmusk/status/2015300934029484133\n- Reply to repost from different user that does not count: https://x.com/elonmusk/status/2014774464047718450\n\n**Additional Rules:**\n- Deleted posts will count as long as they remain available long enough to be captured by the tracker\n- Community reposts which are not counted by the tracker will not count toward the total\n\n**Resolution Source:**\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+    "status": "REGISTERED",
+    "isNegRisk": true,
+    "isYieldBearing": true,
+    "resolution": null,
+    "oracleQuestionId": "0xe422c69d18b7b5a0fe6846f75a0a860ed323ca7c8e08e749f85a0590736c40de",
+    "conditionId": "0x38f4c075fc02a5fe31aa72d432dbc353da781508965a0155458cdde0da62a1b3",
+    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
+    "questionIndex": 5,
+    "spreadThreshold": 0.06,
+    "shareThreshold": 100,
+    "polymarketConditionIds": [],
+    "kalshiMarketTicker": null,
+    "categorySlug": "number-of-cz-tweets-jan-29th-feb-5th-2026",
+    "createdAt": "2026-01-29T17:25:09.229Z",
+    "decimalPrecision": 3,
+    "id": 5684,
+    "feeRateBps": 200,
+    "outcomes": [
+      {
+        "name": "Yes",
+        "indexSet": 1,
+        "status": null,
+        "onChainId": "84117563818816727798584416164925104448888347457406780329694340752054947506661"
+      },
+      {
+        "name": "No",
+        "indexSet": 2,
+        "status": null,
+        "onChainId": "60223261070350025622177423178962700031396262137879823201824187868546821601388"
+      }
+    ],
+    "stats": {
+      "totalLiquidityUsd": 22489349.5,
+      "volumeTotalUsd": 0,
+      "volume24hUsd": 0
     }
   },
   {
@@ -80,9 +374,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5168.59,
-      "volumeTotalUsd": 521.4,
-      "volume24hUsd": 521.4
+      "totalLiquidityUsd": 53863.07,
+      "volumeTotalUsd": 10855.56,
+      "volume24hUsd": 10855.56
     }
   },
   {
@@ -124,9 +418,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5294.23,
-      "volumeTotalUsd": 216.02,
-      "volume24hUsd": 216.02
+      "totalLiquidityUsd": 72001.41,
+      "volumeTotalUsd": 4516.74,
+      "volume24hUsd": 4516.74
     }
   },
   {
@@ -168,9 +462,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14435.72,
-      "volumeTotalUsd": 145.06,
-      "volume24hUsd": 143.37
+      "totalLiquidityUsd": 141321.03,
+      "volumeTotalUsd": 6584.89,
+      "volume24hUsd": 6584.89
     }
   },
   {
@@ -212,9 +506,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 28508.3,
-      "volumeTotalUsd": 2689.74,
-      "volume24hUsd": 2689.74
+      "totalLiquidityUsd": 163610.23,
+      "volumeTotalUsd": 15713.71,
+      "volume24hUsd": 15713.71
     }
   },
   {
@@ -256,9 +550,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9685.62,
-      "volumeTotalUsd": 41.2,
-      "volume24hUsd": 41.2
+      "totalLiquidityUsd": 72143.8,
+      "volumeTotalUsd": 2874.9,
+      "volume24hUsd": 2874.9
     }
   },
   {
@@ -300,9 +594,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7318.15,
-      "volumeTotalUsd": 402.9,
-      "volume24hUsd": 402.9
+      "totalLiquidityUsd": 61873.73,
+      "volumeTotalUsd": 3901.71,
+      "volume24hUsd": 3901.71
     }
   },
   {
@@ -344,9 +638,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 27970.58,
-      "volumeTotalUsd": 1394.26,
-      "volume24hUsd": 1394.26
+      "totalLiquidityUsd": 232390.53,
+      "volumeTotalUsd": 4900.51,
+      "volume24hUsd": 4900.51
     }
   },
   {
@@ -388,9 +682,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8511.96,
-      "volumeTotalUsd": 428.36,
-      "volume24hUsd": 428.36
+      "totalLiquidityUsd": 59687.94,
+      "volumeTotalUsd": 3507.52,
+      "volume24hUsd": 3507.52
     }
   },
   {
@@ -432,9 +726,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6865.33,
-      "volumeTotalUsd": 617.83,
-      "volume24hUsd": 617.83
+      "totalLiquidityUsd": 62821.07,
+      "volumeTotalUsd": 3517.02,
+      "volume24hUsd": 3517.02
     }
   },
   {
@@ -476,9 +770,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 26775.36,
-      "volumeTotalUsd": 431.44,
-      "volume24hUsd": 429.4
+      "totalLiquidityUsd": 122244.17,
+      "volumeTotalUsd": 6759.5,
+      "volume24hUsd": 6759.5
     }
   },
   {
@@ -520,9 +814,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11457.64,
-      "volumeTotalUsd": 109.4,
-      "volume24hUsd": 109.4
+      "totalLiquidityUsd": 71863.27,
+      "volumeTotalUsd": 1056.1,
+      "volume24hUsd": 1056.1
     }
   },
   {
@@ -564,9 +858,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9659.07,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 76480.26,
+      "volumeTotalUsd": 3004.23,
+      "volume24hUsd": 2793.8
     }
   },
   {
@@ -606,9 +900,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 190477.51,
-      "volumeTotalUsd": 8164.41,
-      "volume24hUsd": 7670.53
+      "totalLiquidityUsd": 156001.61,
+      "volumeTotalUsd": 26556.48,
+      "volume24hUsd": 25904.02
     }
   },
   {
@@ -648,9 +942,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 102458.24,
-      "volumeTotalUsd": 3457.56,
-      "volume24hUsd": 3457.56
+      "totalLiquidityUsd": 87601.78,
+      "volumeTotalUsd": 15071.64,
+      "volume24hUsd": 15071.64
     }
   },
   {
@@ -692,9 +986,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45183.28,
-      "volumeTotalUsd": 15635.6,
-      "volume24hUsd": 15596.26
+      "totalLiquidityUsd": 51703.77,
+      "volumeTotalUsd": 17601.94,
+      "volume24hUsd": 17601.94
     }
   },
   {
@@ -736,9 +1030,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 57118.29,
-      "volumeTotalUsd": 2103.06,
-      "volume24hUsd": 2103.06
+      "totalLiquidityUsd": 54980.95,
+      "volumeTotalUsd": 3027.04,
+      "volume24hUsd": 3027.04
     }
   },
   {
@@ -780,9 +1074,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16286658.16,
-      "volumeTotalUsd": 1816.64,
-      "volume24hUsd": 1816.64
+      "totalLiquidityUsd": 16261183.41,
+      "volumeTotalUsd": 8471.91,
+      "volume24hUsd": 8471.91
     }
   },
   {
@@ -824,177 +1118,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 22498288.47,
-      "volumeTotalUsd": 6134.56,
-      "volume24hUsd": 6134.56
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-23rd-29th-2026-11-20",
-    "title": "11-20",
-    "question": "11-20",
-    "description": "This market will resolve according to the number of times (@cz_binance), posts on X from January 23, 2026 at 12:00 PM ET to January 29, 2026 at 12:00 PM ET (exclusive). Exclusive here means tweets up to the last second before the end date will count. E.g. if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count but not at or after 12:00:00 PM ET\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker.\n\nCommunity reposts which are not counted by the tracker will not count toward the total.\n\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
-    "status": "REGISTERED",
-    "isNegRisk": true,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x59c7abac96850c7e45425e42415ef52d4f99c32cedcfe998343f9a65c0602494",
-    "conditionId": "0x15040b90c71913dbd1398246be3def370616b705aca9b90e75826acf32c45058",
-    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
-    "questionIndex": 1,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [],
-    "kalshiMarketTicker": null,
-    "categorySlug": "number-of-cz-tweets-jan-23rd-29th-2026",
-    "createdAt": "2026-01-22T14:44:11.339Z",
-    "decimalPrecision": 3,
-    "id": 4057,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "Yes",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "6342803944001680688980675893471123064406722413686422476302566777938465912180"
-      },
-      {
-        "name": "No",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "51296280297254070270696667032724773030286808461465495639227836591100367119938"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 4571.37,
-      "volumeTotalUsd": 223379.17,
-      "volume24hUsd": 38036.94
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-23rd-29th-2026-21-30",
-    "title": "21-30",
-    "question": "21-30",
-    "description": "This market will resolve according to the number of times (@cz_binance), posts on X from January 23, 2026 at 12:00 PM ET to January 29, 2026 at 12:00 PM ET (exclusive). Exclusive here means tweets up to the last second before the end date will count. E.g. if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count but not at or after 12:00:00 PM ET\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker.\n\nCommunity reposts which are not counted by the tracker will not count toward the total.\n\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
-    "status": "REGISTERED",
-    "isNegRisk": true,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x1a7d556f315c220ede6cafc0aff36564e4715d5e15857728865f51f82c095210",
-    "conditionId": "0xeaa280711402a7729de04d09b6fc3cb4c81a4a33daa291038a0283966776b09d",
-    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
-    "questionIndex": 2,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [],
-    "kalshiMarketTicker": null,
-    "categorySlug": "number-of-cz-tweets-jan-23rd-29th-2026",
-    "createdAt": "2026-01-22T14:44:33.212Z",
-    "decimalPrecision": 3,
-    "id": 4058,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "Yes",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "7488020058612500762549849556983276858303321400934975194978208070009591726454"
-      },
-      {
-        "name": "No",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "1836195443451459134705934279585862683322304792283401688682719130202174020375"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 1791.81,
-      "volumeTotalUsd": 152377.43,
-      "volume24hUsd": 6902.93
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-23rd-29th-2026-31-40",
-    "title": "31-40",
-    "question": "31-40",
-    "description": "This market will resolve according to the number of times (@cz_binance), posts on X from January 23, 2026 at 12:00 PM ET to January 29, 2026 at 12:00 PM ET (exclusive). Exclusive here means tweets up to the last second before the end date will count. E.g. if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count but not at or after 12:00:00 PM ET\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker.\n\nCommunity reposts which are not counted by the tracker will not count toward the total.\n\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
-    "status": "REGISTERED",
-    "isNegRisk": true,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x3754cd8cad9b7c7b342bb7f43a0c688ec1bf7e24607475e68ddcf579ae39ffd0",
-    "conditionId": "0xf5f97b1718c7bb3ae9084384608ddd720f6d00e6ea4b81b51c1072345be11ebc",
-    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
-    "questionIndex": 3,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [],
-    "kalshiMarketTicker": null,
-    "categorySlug": "number-of-cz-tweets-jan-23rd-29th-2026",
-    "createdAt": "2026-01-22T14:44:49.055Z",
-    "decimalPrecision": 3,
-    "id": 4059,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "Yes",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "22428055632255884868113304893024825673636317665762895392776206982250848047990"
-      },
-      {
-        "name": "No",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "22620543008086186626113858143023979002128997311400319546513830001164805679589"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 1002.38,
-      "volumeTotalUsd": 133752.66,
-      "volume24hUsd": 5230.88
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/number-of-cz-tweets-jan-23rd-29th-2026-41",
-    "title": "41+",
-    "question": "41+",
-    "description": "This market will resolve according to the number of times (@cz_binance), posts on X from January 23, 2026 at 12:00 PM ET to January 29, 2026 at 12:00 PM ET (exclusive). Exclusive here means tweets up to the last second before the end date will count. E.g. if the market ends at 12:00 PM ET, any tweet up to 11:59:59 AM ET will count but not at or after 12:00:00 PM ET\n\nFor the purposes of this market, only main feed posts, quote posts and reposts will count.\n\nReplies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker.\n\nDeleted posts will count as long as they remain available long enough to be captured by the tracker.\n\nCommunity reposts which are not counted by the tracker will not count toward the total.\n\nThe main resolution source for this market will be the 'Tweet Counter' figure for posts found at https://predict.fun/x/cz_binance. If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
-    "status": "REGISTERED",
-    "isNegRisk": true,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x2c8fa2956bc3fa044aa6f317cced52d200f5b59305f06d685368cecde42b0f1a",
-    "conditionId": "0x3bcef4c65547cbd8b4b6b29549b0326fcf40a9004fc5ca9db0b8d9c2b55bc0a2",
-    "resolverAddress": "0x26B366Ab634C43BdA6D784fDCe34F24A37DF8172",
-    "questionIndex": 4,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [],
-    "kalshiMarketTicker": null,
-    "categorySlug": "number-of-cz-tweets-jan-23rd-29th-2026",
-    "createdAt": "2026-01-22T14:45:02.925Z",
-    "decimalPrecision": 3,
-    "id": 4060,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "Yes",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "12980835239477770756468344104720691462395444059898411615393234857505695287227"
-      },
-      {
-        "name": "No",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "44470373782032726178677155978832079949978059445358453119077548434053269765904"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 1177.2,
-      "volumeTotalUsd": 266181.84,
-      "volume24hUsd": 15235.71
+      "totalLiquidityUsd": 22504917.53,
+      "volumeTotalUsd": 9338.92,
+      "volume24hUsd": 9338.92
     }
   },
   {
@@ -1034,9 +1160,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 27183.97,
-      "volumeTotalUsd": 564528.2,
-      "volume24hUsd": 15084.32
+      "totalLiquidityUsd": 23674.87,
+      "volumeTotalUsd": 566994.66,
+      "volume24hUsd": 12331.55
     }
   },
   {
@@ -1076,9 +1202,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 53354.8,
-      "volumeTotalUsd": 370441.11,
-      "volume24hUsd": 2358.21
+      "totalLiquidityUsd": 49703.05,
+      "volumeTotalUsd": 384565.84,
+      "volume24hUsd": 16415.61
     }
   },
   {
@@ -1118,9 +1244,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 153314.6,
-      "volumeTotalUsd": 763720.5,
-      "volume24hUsd": 8794.99
+      "totalLiquidityUsd": 155266.8,
+      "volumeTotalUsd": 767320.11,
+      "volume24hUsd": 11635.62
     }
   },
   {
@@ -1162,9 +1288,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 13764.69,
-      "volumeTotalUsd": 80781.91,
-      "volume24hUsd": 9315.66
+      "totalLiquidityUsd": 17547.57,
+      "volumeTotalUsd": 80880.11,
+      "volume24hUsd": 9164.73
     }
   },
   {
@@ -1206,9 +1332,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15899.61,
-      "volumeTotalUsd": 104043.8,
-      "volume24hUsd": 5877.09
+      "totalLiquidityUsd": 13487.42,
+      "volumeTotalUsd": 104393.95,
+      "volume24hUsd": 5696.12
     }
   },
   {
@@ -1248,9 +1374,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8591.52,
+      "totalLiquidityUsd": 7741.21,
       "volumeTotalUsd": 29558.88,
-      "volume24hUsd": 2465.61
+      "volume24hUsd": 2425.02
     }
   },
   {
@@ -1292,9 +1418,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 87350.35,
-      "volumeTotalUsd": 2107666.08,
-      "volume24hUsd": 53585.76
+      "totalLiquidityUsd": 90186.75,
+      "volumeTotalUsd": 2145450.5,
+      "volume24hUsd": 81339.2
     }
   },
   {
@@ -1336,135 +1462,135 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 26760.96,
-      "volumeTotalUsd": 664473.97,
-      "volume24hUsd": 118789.28
+      "totalLiquidityUsd": 27175.88,
+      "volumeTotalUsd": 668879.92,
+      "volume24hUsd": 119334.78
     }
   },
   {
     "imageUrl": "https://static.predict.fun/automarket-bnb-usd-daily",
-    "title": "BNB/USD Up or Down on Jan 29",
-    "question": "BNB/USD Up or Down on Jan 29",
-    "description": "This market will resolve to \"Up\" if the Pyth BNB/USD price at January 29th, 2026 at 12:00:00 PM ET is higher than the starting price of $898.82064475.\n\nThis market will resolve to \"Down\" if the Pyth BNB/USD price at January 29th, 2026 at 12:00:00 PM ET is lower than the starting price of $898.82064475.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BNB/USD price feed (0x2f95862b045670cd22bee3114c39763a4a08beeb663b145d283c31d7d1101c4f). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 28th, 2026 at 12:00:00 PM ET",
+    "title": "BNB/USD Up or Down on Jan 30",
+    "question": "BNB/USD Up or Down on Jan 30",
+    "description": "This market will resolve to \"Up\" if the Pyth BNB/USD price at January 30th, 2026 at 12:00:00 PM ET is higher than the starting price of $864.20341025.\n\nThis market will resolve to \"Down\" if the Pyth BNB/USD price at January 30th, 2026 at 12:00:00 PM ET is lower than the starting price of $864.20341025.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BNB/USD price feed (0x2f95862b045670cd22bee3114c39763a4a08beeb663b145d283c31d7d1101c4f). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 12:00:00 PM ET",
     "status": "REGISTERED",
     "isNegRisk": false,
     "isYieldBearing": true,
     "resolution": null,
-    "oracleQuestionId": "0x9cf3be73c351022c71e2ca7414f278757c896e256492274bb578a368df915f19",
-    "conditionId": "0xde63a108d630aa1550ddd76c75dd703d90b7fde76987fa849372f92ca8a56472",
+    "oracleQuestionId": "0xcb6839ef3cf49eedf7310e08ea73fbf73c0075a68f32d4d2229e0b6bbb5341dc",
+    "conditionId": "0x898586f8276a0e21169d9edab92abfad700a4b939b42d88f967c272387210002",
     "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
     "questionIndex": null,
     "spreadThreshold": 0.03,
     "shareThreshold": 200,
     "polymarketConditionIds": [],
     "kalshiMarketTicker": null,
-    "categorySlug": "bnb-usd-up-down-2026-01-28-12-00-daily",
-    "createdAt": "2026-01-28T17:00:08.095Z",
+    "categorySlug": "bnb-usd-up-down-2026-01-29-12-00-daily",
+    "createdAt": "2026-01-29T17:00:07.377Z",
     "decimalPrecision": 2,
-    "id": 5362,
+    "id": 5675,
     "feeRateBps": 200,
     "outcomes": [
       {
         "name": "Up",
         "indexSet": 1,
         "status": null,
-        "onChainId": "108338478864488773956081792950823500582451445450151011312717714127601115024333"
+        "onChainId": "43197927652035442318182468178045435093258187824216108909785290571116936063280"
       },
       {
         "name": "Down",
         "indexSet": 2,
         "status": null,
-        "onChainId": "85446078843862422390192292088794635587474474503734256511957405687276336723733"
+        "onChainId": "6991221834802110462685853458073645550760125267771371962169984879135552637190"
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 139.73,
-      "volumeTotalUsd": 373.04,
-      "volume24hUsd": 373.04
+      "totalLiquidityUsd": 298.5,
+      "volumeTotalUsd": 5.55,
+      "volume24hUsd": 5.55
     }
   },
   {
     "imageUrl": "https://static.predict.fun/automarket-btc-usd-daily",
-    "title": "BTC/USD Up or Down on Jan 29",
-    "question": "BTC/USD Up or Down on Jan 29",
-    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 12:00:00 PM ET is higher than the starting price of $89,515.5.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 12:00:00 PM ET is lower than the starting price of $89,515.5.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 28th, 2026 at 12:00:00 PM ET",
+    "title": "BTC/USD Up or Down on Jan 30",
+    "question": "BTC/USD Up or Down on Jan 30",
+    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 30th, 2026 at 12:00:00 PM ET is higher than the starting price of $85,143.94841095.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 30th, 2026 at 12:00:00 PM ET is lower than the starting price of $85,143.94841095.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 12:00:00 PM ET",
     "status": "REGISTERED",
     "isNegRisk": false,
     "isYieldBearing": true,
     "resolution": null,
-    "oracleQuestionId": "0xfdfae8109aabcf7ccb7346f93dce754eb8d0a6706f84ccac9485be69ebfc4476",
-    "conditionId": "0x66e78dbbcac2300ddf19c9fd6a8db6b545fdd87a426187a49f3bd7eab038496c",
+    "oracleQuestionId": "0x05f1f23e73bcd49f7321476874ce03a24dffde618c1fb2ce079c6d3155ef76d5",
+    "conditionId": "0xfffce0ac62270b18042531dae34f5e57194aa196868b378f29d3e5044634cd1d",
     "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
     "questionIndex": null,
     "spreadThreshold": 0.03,
     "shareThreshold": 200,
     "polymarketConditionIds": [],
     "kalshiMarketTicker": null,
-    "categorySlug": "btc-usd-up-down-2026-01-28-12-00-daily",
-    "createdAt": "2026-01-28T17:00:08.132Z",
+    "categorySlug": "btc-usd-up-down-2026-01-29-12-00-daily",
+    "createdAt": "2026-01-29T17:00:07.423Z",
     "decimalPrecision": 2,
-    "id": 5363,
+    "id": 5676,
     "feeRateBps": 200,
     "outcomes": [
       {
         "name": "Up",
         "indexSet": 1,
         "status": null,
-        "onChainId": "77125315539466613155202373444318335367760735327450406563780219381408669368736"
+        "onChainId": "57037941811397195287058485431543387098319994369426475951000079391358752056540"
       },
       {
         "name": "Down",
         "indexSet": 2,
         "status": null,
-        "onChainId": "103529345206786089608231253415921085088433948406079252165093107459593594479732"
+        "onChainId": "104381591542162834189768903074864435265394770538927460953468531222516093077524"
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 239.33,
-      "volumeTotalUsd": 1943.3,
-      "volume24hUsd": 1943.3
+      "totalLiquidityUsd": 633.68,
+      "volumeTotalUsd": 65.83,
+      "volume24hUsd": 65.83
     }
   },
   {
     "imageUrl": "https://static.predict.fun/automarket-btc-usd-hourly",
-    "title": "BTC/USD Up or Down - January 29, 9AM ET",
-    "question": "BTC/USD Up or Down - January 29, 9AM ET",
-    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 09:59:59 AM ET is higher than the starting price of $87,910.02855891.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 09:59:59 AM ET is lower than the starting price of $87,910.02855891.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 09:00:00 AM ET",
+    "title": "BTC/USD Up or Down - January 29, 1PM ET",
+    "question": "BTC/USD Up or Down - January 29, 1PM ET",
+    "description": "This market will resolve to \"Up\" if the Pyth BTC/USD price at January 29th, 2026 at 01:59:59 PM ET is higher than the starting price of $84,121.5.\n\nThis market will resolve to \"Down\" if the Pyth BTC/USD price at January 29th, 2026 at 01:59:59 PM ET is lower than the starting price of $84,121.5.\n\nIf the two prices are exactly equal, this market will resolve 50-50.\n\nThe resolution source for this market is the Pyth Network BTC/USD price feed (0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43). If Pyth data is unavailable, admin may use Binance, Coinbase or any other exchange as fallback.\n\nCreated At: January 29th, 2026 at 01:00:00 PM ET",
     "status": "REGISTERED",
     "isNegRisk": false,
     "isYieldBearing": true,
     "resolution": null,
-    "oracleQuestionId": "0x8e93ee4d513bb48dd1e6d1c279ec13dc2332fe388d6d8880ea72dda9d5f68138",
-    "conditionId": "0xb7ecfbb41615070332641eeb617ded64ff6e9395fcba6488ac23e63031fe7c34",
+    "oracleQuestionId": "0x4da5939983f9c2bdbd874c43a9a302c4ce83acb506455f643fdc5713ad30a7aa",
+    "conditionId": "0x155b717c81b5bf9e474ad7a0ba6ed8076fb48a3dcdb23d234dd669417d7ee1ce",
     "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
     "questionIndex": null,
     "spreadThreshold": 0.03,
     "shareThreshold": 200,
     "polymarketConditionIds": [],
     "kalshiMarketTicker": null,
-    "categorySlug": "btc-usd-up-down-2026-01-29-09-00-hourly",
-    "createdAt": "2026-01-29T14:00:02.860Z",
+    "categorySlug": "btc-usd-up-down-2026-01-29-13-00-hourly",
+    "createdAt": "2026-01-29T18:00:07.351Z",
     "decimalPrecision": 2,
-    "id": 5634,
+    "id": 5691,
     "feeRateBps": 200,
     "outcomes": [
       {
         "name": "Up",
         "indexSet": 1,
         "status": null,
-        "onChainId": "103839215932014379581334430371497816062072396077699071696194832097375687770416"
+        "onChainId": "44969580754774947343600587714478339610201321550155342847537255352405204678815"
       },
       {
         "name": "Down",
         "indexSet": 2,
         "status": null,
-        "onChainId": "114432868963055254326847468597183635235330706955737956161816875893995789185150"
+        "onChainId": "109412769408147636368024117637994863935845363343806947367409519097235236537936"
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 121.88,
-      "volumeTotalUsd": 12.55,
-      "volume24hUsd": 12.55
+      "totalLiquidityUsd": 126,
+      "volumeTotalUsd": 7.14,
+      "volume24hUsd": 7.14
     }
   },
   {
@@ -1506,9 +1632,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16952.15,
-      "volumeTotalUsd": 98392.53,
-      "volume24hUsd": 3628.77
+      "totalLiquidityUsd": 19032.06,
+      "volumeTotalUsd": 98421.86,
+      "volume24hUsd": 3184.5
     }
   },
   {
@@ -1550,9 +1676,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14548.51,
-      "volumeTotalUsd": 472191.99,
-      "volume24hUsd": 3462.62
+      "totalLiquidityUsd": 15299.21,
+      "volumeTotalUsd": 472240.58,
+      "volume24hUsd": 3427.44
     }
   },
   {
@@ -1594,7 +1720,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7526.1,
+      "totalLiquidityUsd": 7578.09,
       "volumeTotalUsd": 591834.25,
       "volume24hUsd": 6376.29
     }
@@ -1638,9 +1764,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7459.82,
-      "volumeTotalUsd": 275485.98,
-      "volume24hUsd": 4831.69
+      "totalLiquidityUsd": 7531.93,
+      "volumeTotalUsd": 275569.56,
+      "volume24hUsd": 4085.28
     }
   },
   {
@@ -1680,9 +1806,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10443.2,
+      "totalLiquidityUsd": 10446.7,
       "volumeTotalUsd": 71999.1,
-      "volume24hUsd": 0.01
+      "volume24hUsd": 0
     }
   },
   {
@@ -1724,9 +1850,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 251738.5,
-      "volumeTotalUsd": 2587603.27,
-      "volume24hUsd": 563092.33
+      "totalLiquidityUsd": 251800.23,
+      "volumeTotalUsd": 2587804.46,
+      "volume24hUsd": 508002.51
     }
   },
   {
@@ -1768,9 +1894,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49262.7,
-      "volumeTotalUsd": 810672.43,
-      "volume24hUsd": 28858.99
+      "totalLiquidityUsd": 53299.37,
+      "volumeTotalUsd": 862437.63,
+      "volume24hUsd": 80498.74
     }
   },
   {
@@ -1812,7 +1938,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 100437.18,
+      "totalLiquidityUsd": 100548.62,
       "volumeTotalUsd": 2982247.59,
       "volume24hUsd": 3330.48
     }
@@ -1856,7 +1982,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 120333.17,
+      "totalLiquidityUsd": 120464.77,
       "volumeTotalUsd": 1738677.26,
       "volume24hUsd": 1.92
     }
@@ -1900,9 +2026,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5007793.68,
-      "volumeTotalUsd": 1425830.74,
-      "volume24hUsd": 995.84
+      "totalLiquidityUsd": 5008035.49,
+      "volumeTotalUsd": 1426090.11,
+      "volume24hUsd": 1195.56
     }
   },
   {
@@ -1942,9 +2068,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8557.23,
-      "volumeTotalUsd": 5113714.63,
-      "volume24hUsd": 212
+      "totalLiquidityUsd": 8543.97,
+      "volumeTotalUsd": 5118061.5,
+      "volume24hUsd": 4448.87
     }
   },
   {
@@ -1984,9 +2110,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 37402.83,
-      "volumeTotalUsd": 7077444.28,
-      "volume24hUsd": 39403.37
+      "totalLiquidityUsd": 37713.54,
+      "volumeTotalUsd": 7078994.21,
+      "volume24hUsd": 39703.18
     }
   },
   {
@@ -2026,9 +2152,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33444.57,
-      "volumeTotalUsd": 400845.93,
-      "volume24hUsd": 3456.89
+      "totalLiquidityUsd": 33456.73,
+      "volumeTotalUsd": 404972.76,
+      "volume24hUsd": 4141.82
     }
   },
   {
@@ -2068,9 +2194,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21303.12,
-      "volumeTotalUsd": 2285976.21,
-      "volume24hUsd": 1109.45
+      "totalLiquidityUsd": 21286.98,
+      "volumeTotalUsd": 2289146.54,
+      "volume24hUsd": 4279.78
     }
   },
   {
@@ -2110,9 +2236,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 17637.67,
-      "volumeTotalUsd": 944834.62,
-      "volume24hUsd": 48.57
+      "totalLiquidityUsd": 17552.58,
+      "volumeTotalUsd": 945248.49,
+      "volume24hUsd": 462.43
     }
   },
   {
@@ -2152,9 +2278,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 12175.01,
-      "volumeTotalUsd": 568137.06,
-      "volume24hUsd": 1.08
+      "totalLiquidityUsd": 61395.69,
+      "volumeTotalUsd": 571933.04,
+      "volume24hUsd": 3797.05
     }
   },
   {
@@ -2196,9 +2322,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 72587.96,
-      "volumeTotalUsd": 467241.42,
-      "volume24hUsd": 13711.51
+      "totalLiquidityUsd": 70694.77,
+      "volumeTotalUsd": 472597.64,
+      "volume24hUsd": 17762.51
     }
   },
   {
@@ -2240,9 +2366,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 132951.95,
-      "volumeTotalUsd": 1352210.16,
-      "volume24hUsd": 2835.7
+      "totalLiquidityUsd": 126500.45,
+      "volumeTotalUsd": 1354906.2,
+      "volume24hUsd": 5065.05
     }
   },
   {
@@ -2284,9 +2410,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 28594.08,
-      "volumeTotalUsd": 1855899.33,
-      "volume24hUsd": 57830.18
+      "totalLiquidityUsd": 37484.58,
+      "volumeTotalUsd": 1860418.33,
+      "volume24hUsd": 53669.36
     }
   },
   {
@@ -2328,9 +2454,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10210976.62,
-      "volumeTotalUsd": 12030437.08,
-      "volume24hUsd": 38544.68
+      "totalLiquidityUsd": 10080327.54,
+      "volumeTotalUsd": 12056219.36,
+      "volume24hUsd": 59977.33
     }
   },
   {
@@ -2370,9 +2496,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 36704.62,
-      "volumeTotalUsd": 3180214.71,
-      "volume24hUsd": 145645.39
+      "totalLiquidityUsd": 32016.1,
+      "volumeTotalUsd": 3192436.22,
+      "volume24hUsd": 156665.1
     }
   },
   {
@@ -2412,9 +2538,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54989.51,
-      "volumeTotalUsd": 1972068.74,
-      "volume24hUsd": 94324.51
+      "totalLiquidityUsd": 50991.09,
+      "volumeTotalUsd": 1998313.05,
+      "volume24hUsd": 120427.14
     }
   },
   {
@@ -2456,9 +2582,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 220258.67,
-      "volumeTotalUsd": 2442945.46,
-      "volume24hUsd": 63489.34
+      "totalLiquidityUsd": 214408.7,
+      "volumeTotalUsd": 2446901.13,
+      "volume24hUsd": 35770.47
     }
   },
   {
@@ -2500,9 +2626,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 155641.36,
-      "volumeTotalUsd": 7846139.96,
-      "volume24hUsd": 62606.33
+      "totalLiquidityUsd": 149084.69,
+      "volumeTotalUsd": 7850489.37,
+      "volume24hUsd": 48055.47
     }
   },
   {
@@ -2544,7 +2670,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54319.66,
+      "totalLiquidityUsd": 55143.87,
       "volumeTotalUsd": 510282.55,
       "volume24hUsd": 7040.16
     }
@@ -2588,9 +2714,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 60400.73,
-      "volumeTotalUsd": 285661.52,
-      "volume24hUsd": 16270.66
+      "totalLiquidityUsd": 55035.58,
+      "volumeTotalUsd": 291215.35,
+      "volume24hUsd": 21824.49
     }
   },
   {
@@ -2632,9 +2758,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 79684.62,
-      "volumeTotalUsd": 1165068.36,
-      "volume24hUsd": 20434.39
+      "totalLiquidityUsd": 77010.29,
+      "volumeTotalUsd": 1177154.82,
+      "volume24hUsd": 32313.5
     }
   },
   {
@@ -2676,9 +2802,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 496956.47,
-      "volumeTotalUsd": 1134742.3,
-      "volume24hUsd": 15038.06
+      "totalLiquidityUsd": 463212.05,
+      "volumeTotalUsd": 1168804.96,
+      "volume24hUsd": 47778.31
     }
   },
   {
@@ -2720,9 +2846,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 121463.12,
-      "volumeTotalUsd": 5637206.49,
-      "volume24hUsd": 21113.43
+      "totalLiquidityUsd": 97842.79,
+      "volumeTotalUsd": 5656626.84,
+      "volume24hUsd": 40513.98
     }
   },
   {
@@ -2764,9 +2890,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 90517.13,
-      "volumeTotalUsd": 626417.51,
-      "volume24hUsd": 5865.68
+      "totalLiquidityUsd": 78519.09,
+      "volumeTotalUsd": 627366.02,
+      "volume24hUsd": 2545.74
     }
   },
   {
@@ -2808,9 +2934,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 69789.09,
-      "volumeTotalUsd": 648826.74,
-      "volume24hUsd": 5239.18
+      "totalLiquidityUsd": 68304.73,
+      "volumeTotalUsd": 654550.88,
+      "volume24hUsd": 10942.93
     }
   },
   {
@@ -2852,7 +2978,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 60026.83,
+      "totalLiquidityUsd": 57782.43,
       "volumeTotalUsd": 1718543.71,
       "volume24hUsd": 3704.7
     }
@@ -2896,9 +3022,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 204243.71,
-      "volumeTotalUsd": 7865321.58,
-      "volume24hUsd": 50304.62
+      "totalLiquidityUsd": 202678.05,
+      "volumeTotalUsd": 7865687.11,
+      "volume24hUsd": 29343.25
     }
   },
   {
@@ -2940,9 +3066,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 211194.35,
-      "volumeTotalUsd": 3806751.43,
-      "volume24hUsd": 27099.31
+      "totalLiquidityUsd": 146641.17,
+      "volumeTotalUsd": 3823588.19,
+      "volume24hUsd": 34293.28
     }
   },
   {
@@ -2984,9 +3110,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10181863.43,
-      "volumeTotalUsd": 1352969.19,
-      "volume24hUsd": 18876.57
+      "totalLiquidityUsd": 10162765.22,
+      "volumeTotalUsd": 1379708.3,
+      "volume24hUsd": 45594.21
     }
   },
   {
@@ -3028,9 +3154,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 170426.21,
-      "volumeTotalUsd": 564868.21,
-      "volume24hUsd": 1116.58
+      "totalLiquidityUsd": 162832.95,
+      "volumeTotalUsd": 588244.63,
+      "volume24hUsd": 24493
     }
   },
   {
@@ -3072,9 +3198,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 175513.11,
-      "volumeTotalUsd": 1401674.28,
-      "volume24hUsd": 4651.58
+      "totalLiquidityUsd": 175756.74,
+      "volumeTotalUsd": 1401895.77,
+      "volume24hUsd": 1678.79
     }
   },
   {
@@ -3116,9 +3242,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 175221.09,
-      "volumeTotalUsd": 217496.1,
-      "volume24hUsd": 11637.53
+      "totalLiquidityUsd": 158679.09,
+      "volumeTotalUsd": 242093.72,
+      "volume24hUsd": 35836.52
     }
   },
   {
@@ -3160,9 +3286,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15790,
+      "totalLiquidityUsd": 15765.51,
       "volumeTotalUsd": 605426.76,
-      "volume24hUsd": 93108.86
+      "volume24hUsd": 91931.38
     }
   },
   {
@@ -3204,9 +3330,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16507.86,
-      "volumeTotalUsd": 1392677.33,
-      "volume24hUsd": 2994.44
+      "totalLiquidityUsd": 16688.79,
+      "volumeTotalUsd": 1393031.55,
+      "volume24hUsd": 3348.66
     }
   },
   {
@@ -3248,9 +3374,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 12608.06,
-      "volumeTotalUsd": 3033043.65,
-      "volume24hUsd": 794263.49
+      "totalLiquidityUsd": 13095.25,
+      "volumeTotalUsd": 3035282.93,
+      "volume24hUsd": 796284.71
     }
   },
   {
@@ -3292,9 +3418,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 73934.04,
-      "volumeTotalUsd": 5445038.81,
-      "volume24hUsd": 17065.04
+      "totalLiquidityUsd": 16441.28,
+      "volumeTotalUsd": 5449337.79,
+      "volume24hUsd": 21364.02
     }
   },
   {
@@ -3336,9 +3462,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 125328.37,
-      "volumeTotalUsd": 9777827.52,
-      "volume24hUsd": 1951.37
+      "totalLiquidityUsd": 113986.45,
+      "volumeTotalUsd": 9780282.52,
+      "volume24hUsd": 3633.03
     }
   },
   {
@@ -3380,9 +3506,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15847.81,
-      "volumeTotalUsd": 15121445.95,
-      "volume24hUsd": 14929.24
+      "totalLiquidityUsd": 13260.59,
+      "volumeTotalUsd": 15122865.55,
+      "volume24hUsd": 16348.84
     }
   },
   {
@@ -3424,9 +3550,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 18014.04,
-      "volumeTotalUsd": 2421940.18,
-      "volume24hUsd": 10370.71
+      "totalLiquidityUsd": 15483.95,
+      "volumeTotalUsd": 2422368.68,
+      "volume24hUsd": 10797.65
     }
   },
   {
@@ -3468,9 +3594,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16258.76,
-      "volumeTotalUsd": 8686381.88,
-      "volume24hUsd": 32063
+      "totalLiquidityUsd": 13745.36,
+      "volumeTotalUsd": 8692326.42,
+      "volume24hUsd": 11234.76
     }
   },
   {
@@ -3512,9 +3638,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 25109.22,
-      "volumeTotalUsd": 294888.6,
-      "volume24hUsd": 41325.68
+      "totalLiquidityUsd": 21456.71,
+      "volumeTotalUsd": 295204.35,
+      "volume24hUsd": 40302.18
     }
   },
   {
@@ -3556,9 +3682,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14935.25,
-      "volumeTotalUsd": 249704.78,
-      "volume24hUsd": 34264.24
+      "totalLiquidityUsd": 16739.88,
+      "volumeTotalUsd": 252183.19,
+      "volume24hUsd": 35819.85
     }
   },
   {
@@ -3600,9 +3726,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 26719.46,
-      "volumeTotalUsd": 189374.16,
-      "volume24hUsd": 325.43
+      "totalLiquidityUsd": 38491.53,
+      "volumeTotalUsd": 190435.55,
+      "volume24hUsd": 1386.82
     }
   },
   {
@@ -3644,9 +3770,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 52259.3,
-      "volumeTotalUsd": 269876.43,
-      "volume24hUsd": 1616.23
+      "totalLiquidityUsd": 71342.92,
+      "volumeTotalUsd": 270303.39,
+      "volume24hUsd": 1343.66
     }
   },
   {
@@ -3688,9 +3814,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 85360.97,
-      "volumeTotalUsd": 447655.14,
-      "volume24hUsd": 6347.93
+      "totalLiquidityUsd": 85251.75,
+      "volumeTotalUsd": 451656.72,
+      "volume24hUsd": 7553.72
     }
   },
   {
@@ -3732,9 +3858,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 25771.18,
-      "volumeTotalUsd": 165141.15,
-      "volume24hUsd": 6130.01
+      "totalLiquidityUsd": 27878.8,
+      "volumeTotalUsd": 165847.96,
+      "volume24hUsd": 6006.93
     }
   },
   {
@@ -3776,9 +3902,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 46809.77,
-      "volumeTotalUsd": 1310371.36,
-      "volume24hUsd": 76279.6
+      "totalLiquidityUsd": 47092.83,
+      "volumeTotalUsd": 1312202.4,
+      "volume24hUsd": 76464.8
     }
   },
   {
@@ -3820,9 +3946,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 63366.06,
-      "volumeTotalUsd": 362982.95,
-      "volume24hUsd": 8334.22
+      "totalLiquidityUsd": 78092.44,
+      "volumeTotalUsd": 366161.17,
+      "volume24hUsd": 8246.76
     }
   },
   {
@@ -3864,9 +3990,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54594.36,
+      "totalLiquidityUsd": 54569.17,
       "volumeTotalUsd": 898503.54,
-      "volume24hUsd": 24673.71
+      "volume24hUsd": 18021.98
     }
   },
   {
@@ -3908,9 +4034,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 61542.74,
-      "volumeTotalUsd": 1468277.6,
-      "volume24hUsd": 41393.96
+      "totalLiquidityUsd": 62520.06,
+      "volumeTotalUsd": 1468819.87,
+      "volume24hUsd": 35401.29
     }
   },
   {
@@ -3952,9 +4078,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 224051.84,
-      "volumeTotalUsd": 1284242.16,
-      "volume24hUsd": 71001.08
+      "totalLiquidityUsd": 150146.58,
+      "volumeTotalUsd": 1284410.56,
+      "volume24hUsd": 68454.41
     }
   },
   {
@@ -3994,9 +4120,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33719.16,
-      "volumeTotalUsd": 19339110.96,
-      "volume24hUsd": 25979.12
+      "totalLiquidityUsd": 30409.88,
+      "volumeTotalUsd": 19385667.94,
+      "volume24hUsd": 70167.77
     }
   },
   {
@@ -4036,9 +4162,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15573.04,
-      "volumeTotalUsd": 8704770.12,
-      "volume24hUsd": 4872.56
+      "totalLiquidityUsd": 15556.41,
+      "volumeTotalUsd": 8708544.61,
+      "volume24hUsd": 8647.05
     }
   },
   {
@@ -4078,9 +4204,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7027.77,
-      "volumeTotalUsd": 504403.82,
-      "volume24hUsd": 779.03
+      "totalLiquidityUsd": 6556.72,
+      "volumeTotalUsd": 512605.21,
+      "volume24hUsd": 8960
     }
   },
   {
@@ -4120,9 +4246,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5204.42,
-      "volumeTotalUsd": 531075.44,
-      "volume24hUsd": 11092.69
+      "totalLiquidityUsd": 5069.33,
+      "volumeTotalUsd": 531355.52,
+      "volume24hUsd": 11372.78
     }
   },
   {
@@ -4162,9 +4288,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9724.14,
-      "volumeTotalUsd": 304583.84,
-      "volume24hUsd": 13698.42
+      "totalLiquidityUsd": 9660.05,
+      "volumeTotalUsd": 304936.61,
+      "volume24hUsd": 13451.18
     }
   },
   {
@@ -4204,9 +4330,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 12032.83,
-      "volumeTotalUsd": 174938.25,
-      "volume24hUsd": 14710.5
+      "totalLiquidityUsd": 6398.4,
+      "volumeTotalUsd": 176348.78,
+      "volume24hUsd": 14313.11
     }
   },
   {
@@ -4246,9 +4372,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7075.89,
-      "volumeTotalUsd": 7329219.19,
-      "volume24hUsd": 1458.14
+      "totalLiquidityUsd": 6653.19,
+      "volumeTotalUsd": 7330730.09,
+      "volume24hUsd": 2747.99
     }
   },
   {
@@ -4288,9 +4414,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14070.16,
-      "volumeTotalUsd": 1313562.39,
-      "volume24hUsd": 490935.3
+      "totalLiquidityUsd": 13994.12,
+      "volumeTotalUsd": 1320545.59,
+      "volume24hUsd": 402929.84
     }
   },
   {
@@ -4330,9 +4456,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10801.74,
+      "totalLiquidityUsd": 10886.64,
       "volumeTotalUsd": 4357301.48,
-      "volume24hUsd": 699.35
+      "volume24hUsd": 494.16
     }
   },
   {
@@ -4372,9 +4498,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8627.52,
-      "volumeTotalUsd": 264779.73,
-      "volume24hUsd": 3204.8
+      "totalLiquidityUsd": 5778.63,
+      "volumeTotalUsd": 277272.26,
+      "volume24hUsd": 12931.8
     }
   },
   {
@@ -4414,9 +4540,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9405.11,
-      "volumeTotalUsd": 80122.44,
-      "volume24hUsd": 8837.47
+      "totalLiquidityUsd": 9134.94,
+      "volumeTotalUsd": 92341.35,
+      "volume24hUsd": 20217.94
     }
   },
   {
@@ -4456,9 +4582,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 56183.78,
-      "volumeTotalUsd": 60982.64,
-      "volume24hUsd": 104.08
+      "totalLiquidityUsd": 56187.02,
+      "volumeTotalUsd": 61517.81,
+      "volume24hUsd": 576.82
     }
   },
   {
@@ -4498,9 +4624,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11983.21,
+      "totalLiquidityUsd": 12165.81,
       "volumeTotalUsd": 150669.78,
-      "volume24hUsd": 1924.21
+      "volume24hUsd": 572.17
     }
   },
   {
@@ -4540,7 +4666,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9525.48,
+      "totalLiquidityUsd": 9521.99,
       "volumeTotalUsd": 6351201.13,
       "volume24hUsd": 546.59
     }
@@ -4582,9 +4708,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 19018.39,
-      "volumeTotalUsd": 426025.94,
-      "volume24hUsd": 9.61
+      "totalLiquidityUsd": 18964.12,
+      "volumeTotalUsd": 467592.76,
+      "volume24hUsd": 41571.89
     }
   },
   {
@@ -4624,7 +4750,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 18404.86,
+      "totalLiquidityUsd": 18455.61,
       "volumeTotalUsd": 169337.45,
       "volume24hUsd": 6239.38
     }
@@ -4666,7 +4792,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 18080.23,
+      "totalLiquidityUsd": 18080.21,
       "volumeTotalUsd": 219569.1,
       "volume24hUsd": 7811.02
     }
@@ -4708,9 +4834,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 19614.23,
-      "volumeTotalUsd": 359521.28,
-      "volume24hUsd": 2477.46
+      "totalLiquidityUsd": 19569.05,
+      "volumeTotalUsd": 360145.33,
+      "volume24hUsd": 3101.51
     }
   },
   {
@@ -4750,9 +4876,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15264.79,
-      "volumeTotalUsd": 90974.1,
-      "volume24hUsd": 712.94
+      "totalLiquidityUsd": 14252.19,
+      "volumeTotalUsd": 92085.31,
+      "volume24hUsd": 1237.41
     }
   },
   {
@@ -4792,9 +4918,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 20642.57,
-      "volumeTotalUsd": 255589.41,
-      "volume24hUsd": 642.92
+      "totalLiquidityUsd": 20632.49,
+      "volumeTotalUsd": 256186.81,
+      "volume24hUsd": 1240.32
     }
   },
   {
@@ -4834,7 +4960,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 19136.41,
+      "totalLiquidityUsd": 19137.11,
       "volumeTotalUsd": 2116443.37,
       "volume24hUsd": 4205.74
     }
@@ -4876,9 +5002,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 113318.12,
-      "volumeTotalUsd": 279036.02,
-      "volume24hUsd": 22469.3
+      "totalLiquidityUsd": 113770.61,
+      "volumeTotalUsd": 279046.78,
+      "volume24hUsd": 21287.54
     }
   },
   {
@@ -4918,9 +5044,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 139274.38,
-      "volumeTotalUsd": 544034.23,
-      "volume24hUsd": 34678.19
+      "totalLiquidityUsd": 138442.61,
+      "volumeTotalUsd": 551408.84,
+      "volume24hUsd": 36311.81
     }
   },
   {
@@ -4960,9 +5086,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 31925.56,
-      "volumeTotalUsd": 1579947.5,
-      "volume24hUsd": 4898.18
+      "totalLiquidityUsd": 31928.48,
+      "volumeTotalUsd": 1580051.45,
+      "volume24hUsd": 2321.26
     }
   },
   {
@@ -5002,9 +5128,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 1564183.73,
-      "volumeTotalUsd": 2180662.62,
-      "volume24hUsd": 29746.96
+      "totalLiquidityUsd": 1532705.64,
+      "volumeTotalUsd": 2181726.68,
+      "volume24hUsd": 30271.72
     }
   },
   {
@@ -5044,9 +5170,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 741222.26,
+      "totalLiquidityUsd": 726885.49,
       "volumeTotalUsd": 2288891.34,
-      "volume24hUsd": 95827.51
+      "volume24hUsd": 94825.61
     }
   },
   {
@@ -5086,9 +5212,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 883726.53,
-      "volumeTotalUsd": 14437034.59,
-      "volume24hUsd": 32467.73
+      "totalLiquidityUsd": 858871.98,
+      "volumeTotalUsd": 14438966.41,
+      "volume24hUsd": 31122.29
     }
   },
   {
@@ -5128,9 +5254,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 149306.52,
-      "volumeTotalUsd": 1135485.02,
-      "volume24hUsd": 34216.94
+      "totalLiquidityUsd": 149215.99,
+      "volumeTotalUsd": 1145902.61,
+      "volume24hUsd": 44334.28
     }
   },
   {
@@ -5170,9 +5296,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21556317.61,
-      "volumeTotalUsd": 2479867.9,
-      "volume24hUsd": 110680.98
+      "totalLiquidityUsd": 21527106.52,
+      "volumeTotalUsd": 2504144.47,
+      "volume24hUsd": 124017.71
     }
   },
   {
@@ -5212,9 +5338,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39351.66,
-      "volumeTotalUsd": 170277.65,
-      "volume24hUsd": 14668.74
+      "totalLiquidityUsd": 39222.89,
+      "volumeTotalUsd": 170747.33,
+      "volume24hUsd": 15138.42
     }
   },
   {
@@ -5254,9 +5380,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40343,
-      "volumeTotalUsd": 110200.16,
-      "volume24hUsd": 3305.83
+      "totalLiquidityUsd": 40977.14,
+      "volumeTotalUsd": 111969.09,
+      "volume24hUsd": 5074.76
     }
   },
   {
@@ -5296,9 +5422,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 51054.63,
-      "volumeTotalUsd": 262671.44,
-      "volume24hUsd": 162.11
+      "totalLiquidityUsd": 53082.36,
+      "volumeTotalUsd": 268207.53,
+      "volume24hUsd": 5698.2
     }
   },
   {
@@ -5338,9 +5464,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 20480554.93,
-      "volumeTotalUsd": 8117119.12,
-      "volume24hUsd": 198726.78
+      "totalLiquidityUsd": 20360004.27,
+      "volumeTotalUsd": 8142114.2,
+      "volume24hUsd": 196392.76
     }
   },
   {
@@ -5380,9 +5506,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10241817.2,
-      "volumeTotalUsd": 890012.07,
-      "volume24hUsd": 4360.63
+      "totalLiquidityUsd": 10248774.89,
+      "volumeTotalUsd": 893590.24,
+      "volume24hUsd": 7095.29
     }
   },
   {
@@ -5422,9 +5548,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 107668.55,
-      "volumeTotalUsd": 857009.74,
-      "volume24hUsd": 23278.96
+      "totalLiquidityUsd": 108237.35,
+      "volumeTotalUsd": 865607.58,
+      "volume24hUsd": 25069.84
     }
   },
   {
@@ -5464,9 +5590,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54756.77,
-      "volumeTotalUsd": 789604.14,
-      "volume24hUsd": 10477.83
+      "totalLiquidityUsd": 41321.9,
+      "volumeTotalUsd": 793250.47,
+      "volume24hUsd": 12461.16
     }
   },
   {
@@ -5506,9 +5632,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 75035.77,
-      "volumeTotalUsd": 776071.97,
-      "volume24hUsd": 110708.77
+      "totalLiquidityUsd": 72617.78,
+      "volumeTotalUsd": 776653.97,
+      "volume24hUsd": 104783.12
     }
   },
   {
@@ -5548,9 +5674,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 22059.63,
-      "volumeTotalUsd": 99824.42,
-      "volume24hUsd": 64.58
+      "totalLiquidityUsd": 21946.98,
+      "volumeTotalUsd": 102252.77,
+      "volume24hUsd": 2492.93
     }
   },
   {
@@ -5590,9 +5716,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21207.95,
-      "volumeTotalUsd": 121297.77,
-      "volume24hUsd": 2898.98
+      "totalLiquidityUsd": 30335.3,
+      "volumeTotalUsd": 123691.83,
+      "volume24hUsd": 5293.04
     }
   },
   {
@@ -5634,9 +5760,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9997161.2,
-      "volumeTotalUsd": 545178.1,
-      "volume24hUsd": 4095.21
+      "totalLiquidityUsd": 9997839.08,
+      "volumeTotalUsd": 545508.74,
+      "volume24hUsd": 4425.86
     }
   },
   {
@@ -5678,9 +5804,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 133517.79,
-      "volumeTotalUsd": 7996749,
-      "volume24hUsd": 27737.18
+      "totalLiquidityUsd": 130855.13,
+      "volumeTotalUsd": 7997929.43,
+      "volume24hUsd": 13614.91
     }
   },
   {
@@ -5722,9 +5848,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33981.98,
-      "volumeTotalUsd": 369626.09,
-      "volume24hUsd": 3850.17
+      "totalLiquidityUsd": 35323.88,
+      "volumeTotalUsd": 369931.86,
+      "volume24hUsd": 3502.68
     }
   },
   {
@@ -5766,9 +5892,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 78111.81,
-      "volumeTotalUsd": 1327555.59,
-      "volume24hUsd": 13895.92
+      "totalLiquidityUsd": 81872.53,
+      "volumeTotalUsd": 1330574.36,
+      "volume24hUsd": 5537.6
     }
   },
   {
@@ -5810,9 +5936,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39113.97,
-      "volumeTotalUsd": 84748.57,
-      "volume24hUsd": 6060.28
+      "totalLiquidityUsd": 33179.98,
+      "volumeTotalUsd": 91196.57,
+      "volume24hUsd": 12225.28
     }
   },
   {
@@ -5854,7 +5980,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 43796.96,
+      "totalLiquidityUsd": 43753.05,
       "volumeTotalUsd": 220725.57,
       "volume24hUsd": 13.15
     }
@@ -5898,7 +6024,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54773.78,
+      "totalLiquidityUsd": 54661.87,
       "volumeTotalUsd": 2034433.35,
       "volume24hUsd": 25
     }
@@ -5942,9 +6068,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 52530.07,
-      "volumeTotalUsd": 50408.61,
-      "volume24hUsd": 6171.66
+      "totalLiquidityUsd": 52363.5,
+      "volumeTotalUsd": 51736.62,
+      "volume24hUsd": 7499.67
     }
   },
   {
@@ -5986,9 +6112,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 51649.62,
-      "volumeTotalUsd": 422595.76,
-      "volume24hUsd": 42866.58
+      "totalLiquidityUsd": 48859.36,
+      "volumeTotalUsd": 424563.76,
+      "volume24hUsd": 44834.58
     }
   },
   {
@@ -6030,9 +6156,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40657.81,
-      "volumeTotalUsd": 686830.81,
-      "volume24hUsd": 3319.66
+      "totalLiquidityUsd": 37908.5,
+      "volumeTotalUsd": 687224.81,
+      "volume24hUsd": 952.86
     }
   },
   {
@@ -6074,9 +6200,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42347.98,
+      "totalLiquidityUsd": 40745.41,
       "volumeTotalUsd": 1705647.98,
-      "volume24hUsd": 92983.96
+      "volume24hUsd": 92863.38
     }
   },
   {
@@ -6118,9 +6244,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 269837.28,
-      "volumeTotalUsd": 1815797.61,
-      "volume24hUsd": 32983.92
+      "totalLiquidityUsd": 250043.86,
+      "volumeTotalUsd": 1816535.63,
+      "volume24hUsd": 24339.88
     }
   },
   {
@@ -6162,9 +6288,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 72318.79,
-      "volumeTotalUsd": 535905.9,
-      "volume24hUsd": 233.37
+      "totalLiquidityUsd": 73409.5,
+      "volumeTotalUsd": 537431.46,
+      "volume24hUsd": 1756.87
     }
   },
   {
@@ -6206,9 +6332,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 53214.14,
+      "totalLiquidityUsd": 53552.6,
       "volumeTotalUsd": 187293.24,
-      "volume24hUsd": 314.69
+      "volume24hUsd": 222.69
     }
   },
   {
@@ -6250,9 +6376,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 52931.11,
-      "volumeTotalUsd": 194107.06,
-      "volume24hUsd": 525.26
+      "totalLiquidityUsd": 53026.34,
+      "volumeTotalUsd": 195467.06,
+      "volume24hUsd": 1361.28
     }
   },
   {
@@ -6294,9 +6420,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 51205.28,
+      "totalLiquidityUsd": 52554.61,
       "volumeTotalUsd": 85665.19,
-      "volume24hUsd": 2514.19
+      "volume24hUsd": 2.39
     }
   },
   {
@@ -6338,9 +6464,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 55471.77,
-      "volumeTotalUsd": 193459.34,
-      "volume24hUsd": 23893.71
+      "totalLiquidityUsd": 55691.13,
+      "volumeTotalUsd": 201431.71,
+      "volume24hUsd": 31383.33
     }
   },
   {
@@ -6382,9 +6508,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 48180.74,
-      "volumeTotalUsd": 215245.35,
-      "volume24hUsd": 9419.34
+      "totalLiquidityUsd": 48686.01,
+      "volumeTotalUsd": 215961.35,
+      "volume24hUsd": 9932.75
     }
   },
   {
@@ -6426,9 +6552,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38909.33,
-      "volumeTotalUsd": 464057.65,
-      "volume24hUsd": 1034.89
+      "totalLiquidityUsd": 40569.65,
+      "volumeTotalUsd": 469340.78,
+      "volume24hUsd": 6318.02
     }
   },
   {
@@ -6470,9 +6596,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 43505.99,
-      "volumeTotalUsd": 148493.91,
-      "volume24hUsd": 4.39
+      "totalLiquidityUsd": 43195.06,
+      "volumeTotalUsd": 148815.78,
+      "volume24hUsd": 326.26
     }
   },
   {
@@ -6514,9 +6640,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42875.8,
-      "volumeTotalUsd": 169842.51,
-      "volume24hUsd": 4.4
+      "totalLiquidityUsd": 43332.42,
+      "volumeTotalUsd": 169857.96,
+      "volume24hUsd": 19.84
     }
   },
   {
@@ -6558,9 +6684,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39819.12,
-      "volumeTotalUsd": 88768.97,
-      "volume24hUsd": 1702.18
+      "totalLiquidityUsd": 40610.29,
+      "volumeTotalUsd": 88784.35,
+      "volume24hUsd": 1717.56
     }
   },
   {
@@ -6602,9 +6728,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38545.68,
+      "totalLiquidityUsd": 39788.35,
       "volumeTotalUsd": 188060.22,
-      "volume24hUsd": 243.59
+      "volume24hUsd": 43.6
     }
   },
   {
@@ -6646,9 +6772,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38808.1,
-      "volumeTotalUsd": 1403252.72,
-      "volume24hUsd": 10240.4
+      "totalLiquidityUsd": 39054.86,
+      "volumeTotalUsd": 1403255.27,
+      "volume24hUsd": 10242.94
     }
   },
   {
@@ -6690,9 +6816,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39968.68,
-      "volumeTotalUsd": 30297.3,
-      "volume24hUsd": 2698.34
+      "totalLiquidityUsd": 40021.78,
+      "volumeTotalUsd": 31041.85,
+      "volume24hUsd": 3442.89
     }
   },
   {
@@ -6734,9 +6860,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38545.17,
-      "volumeTotalUsd": 993685.76,
-      "volume24hUsd": 3583.05
+      "totalLiquidityUsd": 38593.74,
+      "volumeTotalUsd": 993690.17,
+      "volume24hUsd": 3587.47
     }
   },
   {
@@ -6778,9 +6904,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39691.29,
-      "volumeTotalUsd": 116843.54,
-      "volume24hUsd": 2728.45
+      "totalLiquidityUsd": 39849.43,
+      "volumeTotalUsd": 118558.38,
+      "volume24hUsd": 1724.04
     }
   },
   {
@@ -6822,9 +6948,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39772.89,
-      "volumeTotalUsd": 3703781.26,
-      "volume24hUsd": 2471.75
+      "totalLiquidityUsd": 40047.36,
+      "volumeTotalUsd": 3705913.86,
+      "volume24hUsd": 2625.07
     }
   },
   {
@@ -6866,9 +6992,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39632.94,
-      "volumeTotalUsd": 4172127.07,
-      "volume24hUsd": 8986.11
+      "totalLiquidityUsd": 39302.45,
+      "volumeTotalUsd": 4173847.96,
+      "volume24hUsd": 10213.65
     }
   },
   {
@@ -6910,9 +7036,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38240.35,
-      "volumeTotalUsd": 601133.71,
-      "volume24hUsd": 65.09
+      "totalLiquidityUsd": 38494.84,
+      "volumeTotalUsd": 601217.25,
+      "volume24hUsd": 148.62
     }
   },
   {
@@ -6954,9 +7080,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40361.02,
-      "volumeTotalUsd": 467725.57,
-      "volume24hUsd": 9.2
+      "totalLiquidityUsd": 40445.65,
+      "volumeTotalUsd": 468978.54,
+      "volume24hUsd": 1254.17
     }
   },
   {
@@ -6998,9 +7124,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39661.28,
-      "volumeTotalUsd": 1405627.63,
-      "volume24hUsd": 1.2
+      "totalLiquidityUsd": 41221.1,
+      "volumeTotalUsd": 1406322.46,
+      "volume24hUsd": 696.03
     }
   },
   {
@@ -7042,9 +7168,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39438.71,
-      "volumeTotalUsd": 433727.38,
-      "volume24hUsd": 4.4
+      "totalLiquidityUsd": 39524.82,
+      "volumeTotalUsd": 439949.33,
+      "volume24hUsd": 6226.34
     }
   },
   {
@@ -7086,9 +7212,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 43716.2,
-      "volumeTotalUsd": 285860.76,
-      "volume24hUsd": 28.65
+      "totalLiquidityUsd": 43966.25,
+      "volumeTotalUsd": 291486.55,
+      "volume24hUsd": 5654.44
     }
   },
   {
@@ -7130,9 +7256,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44845.97,
-      "volumeTotalUsd": 896877.38,
-      "volume24hUsd": 1.2
+      "totalLiquidityUsd": 44987.19,
+      "volumeTotalUsd": 912754.37,
+      "volume24hUsd": 15878.18
     }
   },
   {
@@ -7174,9 +7300,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33083.2,
-      "volumeTotalUsd": 1422437.38,
-      "volume24hUsd": 203.55
+      "totalLiquidityUsd": 33222.41,
+      "volumeTotalUsd": 1438660.02,
+      "volume24hUsd": 16223.83
     }
   },
   {
@@ -7218,9 +7344,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42085.75,
-      "volumeTotalUsd": 2815633.79,
-      "volume24hUsd": 981.2
+      "totalLiquidityUsd": 42281.93,
+      "volumeTotalUsd": 2826299.93,
+      "volume24hUsd": 11647.34
     }
   },
   {
@@ -7262,9 +7388,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45742.48,
-      "volumeTotalUsd": 3218018.35,
-      "volume24hUsd": 2856.89
+      "totalLiquidityUsd": 46089.66,
+      "volumeTotalUsd": 3218934.35,
+      "volume24hUsd": 3772.89
     }
   },
   {
@@ -7306,9 +7432,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 32920,
-      "volumeTotalUsd": 475538.13,
-      "volume24hUsd": 2.67
+      "totalLiquidityUsd": 32947.16,
+      "volumeTotalUsd": 492651.03,
+      "volume24hUsd": 17216.57
     }
   },
   {
@@ -7350,9 +7476,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44797.3,
-      "volumeTotalUsd": 1395329.77,
-      "volume24hUsd": 9464.72
+      "totalLiquidityUsd": 45083,
+      "volumeTotalUsd": 1412645.21,
+      "volume24hUsd": 26780.16
     }
   },
   {
@@ -7394,9 +7520,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33497.48,
-      "volumeTotalUsd": 7281016,
-      "volume24hUsd": 4318743.82
+      "totalLiquidityUsd": 33768.8,
+      "volumeTotalUsd": 7290238.59,
+      "volume24hUsd": 1208042.38
     }
   },
   {
@@ -7438,9 +7564,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 66263.83,
-      "volumeTotalUsd": 2379279.91,
-      "volume24hUsd": 7654.51
+      "totalLiquidityUsd": 54271.99,
+      "volumeTotalUsd": 2389012.12,
+      "volume24hUsd": 17340.28
     }
   },
   {
@@ -7482,9 +7608,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 229078.2,
-      "volumeTotalUsd": 4612077.13,
-      "volume24hUsd": 1370.99
+      "totalLiquidityUsd": 156814.22,
+      "volumeTotalUsd": 4618726.39,
+      "volume24hUsd": 7820.37
     }
   },
   {
@@ -7526,9 +7652,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 32351.33,
+      "totalLiquidityUsd": 28232.3,
       "volumeTotalUsd": 2156406.67,
-      "volume24hUsd": 12801.59
+      "volume24hUsd": 10304.05
     }
   },
   {
@@ -7570,7 +7696,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 27949.87,
+      "totalLiquidityUsd": 27976.66,
       "volumeTotalUsd": 782434.42,
       "volume24hUsd": 2426.07
     }
@@ -7614,9 +7740,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38395.08,
-      "volumeTotalUsd": 696139.28,
-      "volume24hUsd": 30793.91
+      "totalLiquidityUsd": 38711.64,
+      "volumeTotalUsd": 696139.29,
+      "volume24hUsd": 30791.26
     }
   },
   {
@@ -7656,9 +7782,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49183.81,
-      "volumeTotalUsd": 3458716.6,
-      "volume24hUsd": 49310.74
+      "totalLiquidityUsd": 48736.67,
+      "volumeTotalUsd": 3459011.8,
+      "volume24hUsd": 37406.94
     }
   },
   {
@@ -7700,9 +7826,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 186858.44,
-      "volumeTotalUsd": 1256854.61,
-      "volume24hUsd": 32036.5
+      "totalLiquidityUsd": 163444.3,
+      "volumeTotalUsd": 1259735.29,
+      "volume24hUsd": 19509.53
     }
   },
   {
@@ -7744,9 +7870,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 138435.4,
-      "volumeTotalUsd": 1009747.42,
-      "volume24hUsd": 8594.95
+      "totalLiquidityUsd": 170894.46,
+      "volumeTotalUsd": 1011110.75,
+      "volume24hUsd": 9956
     }
   },
   {
@@ -7788,9 +7914,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 100014.62,
-      "volumeTotalUsd": 789606.19,
-      "volume24hUsd": 10130.95
+      "totalLiquidityUsd": 149919.96,
+      "volumeTotalUsd": 811314.79,
+      "volume24hUsd": 25578.25
     }
   },
   {
@@ -7832,9 +7958,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 101095.89,
-      "volumeTotalUsd": 779943.62,
-      "volume24hUsd": 3615.37
+      "totalLiquidityUsd": 130743.02,
+      "volumeTotalUsd": 780480.9,
+      "volume24hUsd": 4152.65
     }
   },
   {
@@ -7876,9 +8002,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 93484.61,
-      "volumeTotalUsd": 615052.78,
-      "volume24hUsd": 2754.15
+      "totalLiquidityUsd": 159481.86,
+      "volumeTotalUsd": 638243.66,
+      "volume24hUsd": 25945.03
     }
   },
   {
@@ -7920,9 +8046,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 89064.92,
-      "volumeTotalUsd": 355575.56,
-      "volume24hUsd": 2487.52
+      "totalLiquidityUsd": 112413.68,
+      "volumeTotalUsd": 355859.9,
+      "volume24hUsd": 2771.86
     }
   },
   {
@@ -7964,9 +8090,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 80573.58,
-      "volumeTotalUsd": 284053.66,
-      "volume24hUsd": 1803.79
+      "totalLiquidityUsd": 95839.59,
+      "volumeTotalUsd": 284293.94,
+      "volume24hUsd": 2044.07
     }
   },
   {
@@ -8008,9 +8134,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 57732.75,
-      "volumeTotalUsd": 370915.13,
-      "volume24hUsd": 15930.55
+      "totalLiquidityUsd": 62346.4,
+      "volumeTotalUsd": 372917.53,
+      "volume24hUsd": 17932.95
     }
   },
   {
@@ -8052,9 +8178,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 47672.31,
-      "volumeTotalUsd": 327486.13,
-      "volume24hUsd": 1086.97
+      "totalLiquidityUsd": 68588.74,
+      "volumeTotalUsd": 355511.89,
+      "volume24hUsd": 29112.73
     }
   },
   {
@@ -8096,9 +8222,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 48436.92,
-      "volumeTotalUsd": 277264.6,
-      "volume24hUsd": 15024.39
+      "totalLiquidityUsd": 54241.27,
+      "volumeTotalUsd": 279679.4,
+      "volume24hUsd": 17439.19
     }
   },
   {
@@ -8140,9 +8266,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44758.52,
-      "volumeTotalUsd": 385709.77,
-      "volume24hUsd": 18986.69
+      "totalLiquidityUsd": 50044.34,
+      "volumeTotalUsd": 387717.78,
+      "volume24hUsd": 20994.7
     }
   },
   {
@@ -8184,9 +8310,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 47339.68,
-      "volumeTotalUsd": 366375.59,
-      "volume24hUsd": 20076.82
+      "totalLiquidityUsd": 51498.52,
+      "volumeTotalUsd": 368378.39,
+      "volume24hUsd": 22079.63
     }
   },
   {
@@ -8228,9 +8354,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 31565.85,
-      "volumeTotalUsd": 268466.42,
-      "volume24hUsd": 15103.3
+      "totalLiquidityUsd": 42015.21,
+      "volumeTotalUsd": 272501.33,
+      "volume24hUsd": 19116.31
     }
   },
   {
@@ -8272,9 +8398,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44726.89,
-      "volumeTotalUsd": 265011.23,
-      "volume24hUsd": 15026.06
+      "totalLiquidityUsd": 57096.37,
+      "volumeTotalUsd": 274909.66,
+      "volume24hUsd": 24924.5
     }
   },
   {
@@ -8316,9 +8442,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54677.45,
-      "volumeTotalUsd": 306120.51,
-      "volume24hUsd": 21038.29
+      "totalLiquidityUsd": 64732.6,
+      "volumeTotalUsd": 311246.9,
+      "volume24hUsd": 26162.3
     }
   },
   {
@@ -8360,9 +8486,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 43209.75,
-      "volumeTotalUsd": 221165.43,
-      "volume24hUsd": 21935.14
+      "totalLiquidityUsd": 49385.09,
+      "volumeTotalUsd": 230492.18,
+      "volume24hUsd": 26462.74
     }
   },
   {
@@ -8404,9 +8530,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44145.4,
-      "volumeTotalUsd": 269496.05,
-      "volume24hUsd": 13003.41
+      "totalLiquidityUsd": 45602.05,
+      "volumeTotalUsd": 273355.65,
+      "volume24hUsd": 16863
     }
   },
   {
@@ -8448,9 +8574,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42503.78,
-      "volumeTotalUsd": 235843.39,
-      "volume24hUsd": 17249.21
+      "totalLiquidityUsd": 50686.44,
+      "volumeTotalUsd": 247875.26,
+      "volume24hUsd": 29281.08
     }
   },
   {
@@ -8492,9 +8618,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41571.67,
-      "volumeTotalUsd": 249747.07,
-      "volume24hUsd": 13199.02
+      "totalLiquidityUsd": 45374.89,
+      "volumeTotalUsd": 252479.8,
+      "volume24hUsd": 15928.48
     }
   },
   {
@@ -8536,9 +8662,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 30082.32,
-      "volumeTotalUsd": 241714.08,
-      "volume24hUsd": 16115.3
+      "totalLiquidityUsd": 37162.05,
+      "volumeTotalUsd": 247758.17,
+      "volume24hUsd": 22159.39
     }
   },
   {
@@ -8580,9 +8706,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41703.93,
-      "volumeTotalUsd": 33089606.43,
-      "volume24hUsd": 17215.14
+      "totalLiquidityUsd": 48986.25,
+      "volumeTotalUsd": 33091910.41,
+      "volume24hUsd": 19319.12
     }
   },
   {
@@ -8624,9 +8750,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 37451.69,
-      "volumeTotalUsd": 269999.61,
-      "volume24hUsd": 16522.55
+      "totalLiquidityUsd": 42235.49,
+      "volumeTotalUsd": 272392.66,
+      "volume24hUsd": 18915.59
     }
   },
   {
@@ -8668,9 +8794,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38658.86,
-      "volumeTotalUsd": 1067881.72,
-      "volume24hUsd": 15132.44
+      "totalLiquidityUsd": 56447.08,
+      "volumeTotalUsd": 1069885.01,
+      "volume24hUsd": 17135.74
     }
   },
   {
@@ -8712,9 +8838,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45126.46,
-      "volumeTotalUsd": 222053.91,
-      "volume24hUsd": 15735.41
+      "totalLiquidityUsd": 48485.7,
+      "volumeTotalUsd": 225147.84,
+      "volume24hUsd": 18799.34
     }
   },
   {
@@ -8756,9 +8882,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49201.33,
-      "volumeTotalUsd": 799807.22,
-      "volume24hUsd": 15010.58
+      "totalLiquidityUsd": 52249.21,
+      "volumeTotalUsd": 801909.18,
+      "volume24hUsd": 17112.54
     }
   },
   {
@@ -8800,9 +8926,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41706.76,
-      "volumeTotalUsd": 237474.63,
-      "volume24hUsd": 16032.85
+      "totalLiquidityUsd": 44211.23,
+      "volumeTotalUsd": 241829.66,
+      "volume24hUsd": 20387.87
     }
   },
   {
@@ -8844,9 +8970,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41596.63,
-      "volumeTotalUsd": 209900.85,
-      "volume24hUsd": 15065.31
+      "totalLiquidityUsd": 43653.22,
+      "volumeTotalUsd": 211980.85,
+      "volume24hUsd": 17120.31
     }
   },
   {
@@ -8888,9 +9014,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44638.31,
-      "volumeTotalUsd": 747141.07,
-      "volume24hUsd": 15003.4
+      "totalLiquidityUsd": 46291.92,
+      "volumeTotalUsd": 749243.04,
+      "volume24hUsd": 17105.37
     }
   },
   {
@@ -8932,9 +9058,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42094.28,
-      "volumeTotalUsd": 257363.32,
-      "volume24hUsd": 15252.99
+      "totalLiquidityUsd": 44721.78,
+      "volumeTotalUsd": 260435.9,
+      "volume24hUsd": 18314.57
     }
   },
   {
@@ -8976,9 +9102,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41896.85,
-      "volumeTotalUsd": 310356.83,
-      "volume24hUsd": 15151.4
+      "totalLiquidityUsd": 44245.85,
+      "volumeTotalUsd": 317314.54,
+      "volume24hUsd": 22061.11
     }
   },
   {
@@ -9020,9 +9146,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 43695.18,
-      "volumeTotalUsd": 362059.92,
-      "volume24hUsd": 18488.82
+      "totalLiquidityUsd": 44159.25,
+      "volumeTotalUsd": 365142.54,
+      "volume24hUsd": 21571.44
     }
   },
   {
@@ -9064,9 +9190,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38635.86,
-      "volumeTotalUsd": 1736818.53,
-      "volume24hUsd": 17184.84
+      "totalLiquidityUsd": 40028.25,
+      "volumeTotalUsd": 1739915.77,
+      "volume24hUsd": 20267.68
     }
   },
   {
@@ -9108,9 +9234,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40160.41,
-      "volumeTotalUsd": 268613.58,
-      "volume24hUsd": 15002.21
+      "totalLiquidityUsd": 41394.1,
+      "volumeTotalUsd": 270975.54,
+      "volume24hUsd": 17364.17
     }
   },
   {
@@ -9152,9 +9278,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41826.76,
-      "volumeTotalUsd": 304822.93,
-      "volume24hUsd": 17519.47
+      "totalLiquidityUsd": 43869.53,
+      "volumeTotalUsd": 311952.99,
+      "volume24hUsd": 24625.53
     }
   },
   {
@@ -9196,9 +9322,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49174.87,
-      "volumeTotalUsd": 1884917.18,
-      "volume24hUsd": 15357.91
+      "totalLiquidityUsd": 51650.2,
+      "volumeTotalUsd": 1908372.88,
+      "volume24hUsd": 38813.62
     }
   },
   {
@@ -9240,9 +9366,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41404.45,
-      "volumeTotalUsd": 3684403.3,
-      "volume24hUsd": 1212542.92
+      "totalLiquidityUsd": 43438.54,
+      "volumeTotalUsd": 3707373.23,
+      "volume24hUsd": 1235512.85
     }
   },
   {
@@ -9284,9 +9410,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40794.54,
-      "volumeTotalUsd": 332560.41,
-      "volume24hUsd": 15132.2
+      "totalLiquidityUsd": 44234.01,
+      "volumeTotalUsd": 356147.92,
+      "volume24hUsd": 38689.71
     }
   },
   {
@@ -9328,9 +9454,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40179.32,
-      "volumeTotalUsd": 1169064.36,
-      "volume24hUsd": 15126.2
+      "totalLiquidityUsd": 42837.99,
+      "volumeTotalUsd": 1200717.35,
+      "volume24hUsd": 46755.19
     }
   },
   {
@@ -9372,9 +9498,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45894.34,
-      "volumeTotalUsd": 2285866.58,
-      "volume24hUsd": 15131.2
+      "totalLiquidityUsd": 48745.48,
+      "volumeTotalUsd": 2314928.14,
+      "volume24hUsd": 44163.77
     }
   },
   {
@@ -9416,9 +9542,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45565.75,
-      "volumeTotalUsd": 1737033.76,
-      "volume24hUsd": 15107.2
+      "totalLiquidityUsd": 47588.64,
+      "volumeTotalUsd": 1767806.73,
+      "volume24hUsd": 45875.17
     }
   },
   {
@@ -9460,9 +9586,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 50520.48,
-      "volumeTotalUsd": 448409.05,
-      "volume24hUsd": 15042.68
+      "totalLiquidityUsd": 53735.85,
+      "volumeTotalUsd": 474836.45,
+      "volume24hUsd": 41430.08
     }
   },
   {
@@ -9504,9 +9630,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 50469.52,
-      "volumeTotalUsd": 2556185.49,
-      "volume24hUsd": 15175.15
+      "totalLiquidityUsd": 54351.05,
+      "volumeTotalUsd": 2613746.87,
+      "volume24hUsd": 72736.53
     }
   },
   {
@@ -9546,9 +9672,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49133.79,
-      "volumeTotalUsd": 575115.22,
-      "volume24hUsd": 15009.75
+      "totalLiquidityUsd": 51118.37,
+      "volumeTotalUsd": 577217.19,
+      "volume24hUsd": 17111.71
     }
   },
   {
@@ -9590,9 +9716,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 124924.68,
-      "volumeTotalUsd": 2509799.3,
-      "volume24hUsd": 24537.88
+      "totalLiquidityUsd": 131960.13,
+      "volumeTotalUsd": 2543921.73,
+      "volume24hUsd": 52953.89
     }
   },
   {
@@ -9634,9 +9760,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 81899.8,
-      "volumeTotalUsd": 9559376.54,
-      "volume24hUsd": 13664.28
+      "totalLiquidityUsd": 110525.7,
+      "volumeTotalUsd": 9569485.8,
+      "volume24hUsd": 22920.63
     }
   },
   {
@@ -9678,9 +9804,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42953.37,
-      "volumeTotalUsd": 134354.31,
-      "volume24hUsd": 13.52
+      "totalLiquidityUsd": 42947.22,
+      "volumeTotalUsd": 135402.73,
+      "volume24hUsd": 1061.94
     }
   },
   {
@@ -9722,9 +9848,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33850.13,
-      "volumeTotalUsd": 100570.11,
-      "volume24hUsd": 10212.13
+      "totalLiquidityUsd": 33665.74,
+      "volumeTotalUsd": 101943.52,
+      "volume24hUsd": 11585.54
     }
   },
   {
@@ -9764,7 +9890,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42971.84,
+      "totalLiquidityUsd": 42927.69,
       "volumeTotalUsd": 1484384.17,
       "volume24hUsd": 17.94
     }
@@ -9808,9 +9934,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 180296.7,
-      "volumeTotalUsd": 464615.33,
-      "volume24hUsd": 10256.05
+      "totalLiquidityUsd": 181228.13,
+      "volumeTotalUsd": 465721.38,
+      "volume24hUsd": 10681.61
     }
   },
   {
@@ -9852,9 +9978,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 180166.89,
-      "volumeTotalUsd": 390310.3,
-      "volume24hUsd": 24763.12
+      "totalLiquidityUsd": 179580.58,
+      "volumeTotalUsd": 390505.5,
+      "volume24hUsd": 11451.78
     }
   },
   {
@@ -9896,9 +10022,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 153347.13,
-      "volumeTotalUsd": 125707.63,
-      "volume24hUsd": 27205.69
+      "totalLiquidityUsd": 174135.53,
+      "volumeTotalUsd": 146296.64,
+      "volume24hUsd": 37241.33
     }
   },
   {
@@ -9940,9 +10066,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 112382.57,
-      "volumeTotalUsd": 179243.75,
-      "volume24hUsd": 7435.33
+      "totalLiquidityUsd": 122833.23,
+      "volumeTotalUsd": 180529.19,
+      "volume24hUsd": 7291.7
     }
   },
   {
@@ -9984,9 +10110,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 169085.73,
-      "volumeTotalUsd": 116356.66,
-      "volume24hUsd": 11001.75
+      "totalLiquidityUsd": 182515.88,
+      "volumeTotalUsd": 120721.48,
+      "volume24hUsd": 15355.57
     }
   },
   {
@@ -10028,9 +10154,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 131982.19,
-      "volumeTotalUsd": 306618.79,
-      "volume24hUsd": 15347.56
+      "totalLiquidityUsd": 145631.76,
+      "volumeTotalUsd": 307300.02,
+      "volume24hUsd": 11684.02
     }
   },
   {
@@ -10072,9 +10198,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 63105.25,
-      "volumeTotalUsd": 236912.53,
-      "volume24hUsd": 4117.98
+      "totalLiquidityUsd": 75403.91,
+      "volumeTotalUsd": 236949.82,
+      "volume24hUsd": 4111.86
     }
   },
   {
@@ -10116,9 +10242,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 44633.66,
-      "volumeTotalUsd": 105972.99,
-      "volume24hUsd": 5291.8
+      "totalLiquidityUsd": 57104.04,
+      "volumeTotalUsd": 106085.27,
+      "volume24hUsd": 5404.09
     }
   },
   {
@@ -10160,9 +10286,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 51420.37,
-      "volumeTotalUsd": 196464.73,
-      "volume24hUsd": 4525.13
+      "totalLiquidityUsd": 64450.54,
+      "volumeTotalUsd": 196809.93,
+      "volume24hUsd": 4870.33
     }
   },
   {
@@ -10204,9 +10330,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40997.73,
-      "volumeTotalUsd": 128612.36,
-      "volume24hUsd": 9961.76
+      "totalLiquidityUsd": 53838.27,
+      "volumeTotalUsd": 128703.26,
+      "volume24hUsd": 9174.92
     }
   },
   {
@@ -10248,9 +10374,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 19659.25,
-      "volumeTotalUsd": 49433.67,
-      "volume24hUsd": 1616.01
+      "totalLiquidityUsd": 55262.64,
+      "volumeTotalUsd": 49470.07,
+      "volume24hUsd": 1562.41
     }
   },
   {
@@ -10292,9 +10418,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 22410.62,
-      "volumeTotalUsd": 112041.9,
-      "volume24hUsd": 5664.51
+      "totalLiquidityUsd": 57983.12,
+      "volumeTotalUsd": 114473.61,
+      "volume24hUsd": 8094.21
     }
   },
   {
@@ -10336,9 +10462,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 32077.83,
-      "volumeTotalUsd": 507843.63,
-      "volume24hUsd": 2327.58
+      "totalLiquidityUsd": 67596.66,
+      "volumeTotalUsd": 509079.67,
+      "volume24hUsd": 3562.62
     }
   },
   {
@@ -10380,9 +10506,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 31441.82,
-      "volumeTotalUsd": 1340747.37,
-      "volume24hUsd": 534.13
+      "totalLiquidityUsd": 67002.46,
+      "volumeTotalUsd": 1340784.73,
+      "volume24hUsd": 570.49
     }
   },
   {
@@ -10424,9 +10550,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21263.21,
-      "volumeTotalUsd": 11808379.5,
-      "volume24hUsd": 1652.09
+      "totalLiquidityUsd": 56776.37,
+      "volumeTotalUsd": 11808686.5,
+      "volume24hUsd": 1958.09
     }
   },
   {
@@ -10468,9 +10594,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 30937.08,
-      "volumeTotalUsd": 2728233.79,
-      "volume24hUsd": 5393.22
+      "totalLiquidityUsd": 66552.98,
+      "volumeTotalUsd": 2728559.79,
+      "volume24hUsd": 5636.22
     }
   },
   {
@@ -10512,9 +10638,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 22114.2,
+      "totalLiquidityUsd": 44657.99,
       "volumeTotalUsd": 32028790.79,
-      "volume24hUsd": 5914.68
+      "volume24hUsd": 5913.68
     }
   },
   {
@@ -10556,9 +10682,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 20042.25,
-      "volumeTotalUsd": 1705172.97,
-      "volume24hUsd": 5460.96
+      "totalLiquidityUsd": 55585.04,
+      "volumeTotalUsd": 1705492.97,
+      "volume24hUsd": 5779.96
     }
   },
   {
@@ -10600,9 +10726,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 31935.4,
-      "volumeTotalUsd": 7785626.33,
-      "volume24hUsd": 1193.73
+      "totalLiquidityUsd": 67722.55,
+      "volumeTotalUsd": 7785660.33,
+      "volume24hUsd": 1226.73
     }
   },
   {
@@ -10644,9 +10770,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 32176.86,
-      "volumeTotalUsd": 347921.69,
-      "volume24hUsd": 3385.39
+      "totalLiquidityUsd": 66760.24,
+      "volumeTotalUsd": 348113.64,
+      "volume24hUsd": 3574.34
     }
   },
   {
@@ -10688,9 +10814,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 36702.57,
-      "volumeTotalUsd": 4084818.15,
-      "volume24hUsd": 2440.71
+      "totalLiquidityUsd": 53814.19,
+      "volumeTotalUsd": 4085118.15,
+      "volume24hUsd": 2739.71
     }
   },
   {
@@ -10732,9 +10858,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16958.8,
+      "totalLiquidityUsd": 52746.6,
       "volumeTotalUsd": 180436.17,
-      "volume24hUsd": 1207.13
+      "volume24hUsd": 1206.13
     }
   },
   {
@@ -10776,9 +10902,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 17837.93,
-      "volumeTotalUsd": 638985.57,
-      "volume24hUsd": 2143.56
+      "totalLiquidityUsd": 53735.72,
+      "volumeTotalUsd": 639309.57,
+      "volume24hUsd": 2466.56
     }
   },
   {
@@ -10818,9 +10944,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11458.66,
-      "volumeTotalUsd": 5845186.17,
-      "volume24hUsd": 3371.92
+      "totalLiquidityUsd": 13033.66,
+      "volumeTotalUsd": 5845445.13,
+      "volume24hUsd": 3629.88
     }
   },
   {
@@ -10860,9 +10986,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 898.76,
-      "volumeTotalUsd": 50683.17,
-      "volume24hUsd": 523.31
+      "totalLiquidityUsd": 718.92,
+      "volumeTotalUsd": 50692.26,
+      "volume24hUsd": 503.86
     }
   },
   {
@@ -10902,9 +11028,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2429.74,
-      "volumeTotalUsd": 36558.83,
-      "volume24hUsd": 133.77
+      "totalLiquidityUsd": 2320.59,
+      "volumeTotalUsd": 36755.16,
+      "volume24hUsd": 317.9
     }
   },
   {
@@ -10946,9 +11072,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 13630.3,
-      "volumeTotalUsd": 207926.4,
-      "volume24hUsd": 121999.61
+      "totalLiquidityUsd": 15014.54,
+      "volumeTotalUsd": 209604.36,
+      "volume24hUsd": 98593.19
     }
   },
   {
@@ -10990,9 +11116,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 30055.26,
-      "volumeTotalUsd": 223283.07,
-      "volume24hUsd": 5233.89
+      "totalLiquidityUsd": 30058.19,
+      "volumeTotalUsd": 230489.86,
+      "volume24hUsd": 12084.56
     }
   },
   {
@@ -11034,9 +11160,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 124856.9,
-      "volumeTotalUsd": 2909333.19,
-      "volume24hUsd": 19419.18
+      "totalLiquidityUsd": 124362.13,
+      "volumeTotalUsd": 2916479.5,
+      "volume24hUsd": 23925.45
     }
   },
   {
@@ -11078,9 +11204,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 47857.43,
-      "volumeTotalUsd": 324116.44,
-      "volume24hUsd": 3508.3
+      "totalLiquidityUsd": 43695.46,
+      "volumeTotalUsd": 330375.01,
+      "volume24hUsd": 9766.86
     }
   },
   {
@@ -11122,9 +11248,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 38177.94,
-      "volumeTotalUsd": 347531.47,
-      "volume24hUsd": 427.54
+      "totalLiquidityUsd": 37133.03,
+      "volumeTotalUsd": 348017.39,
+      "volume24hUsd": 485.92
     }
   },
   {
@@ -11166,9 +11292,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 40678.22,
-      "volumeTotalUsd": 299469,
-      "volume24hUsd": 1.99
+      "totalLiquidityUsd": 40992.92,
+      "volumeTotalUsd": 299473.97,
+      "volume24hUsd": 6.96
     }
   },
   {
@@ -11210,9 +11336,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 30673.85,
-      "volumeTotalUsd": 339289.37,
-      "volume24hUsd": 3540.6
+      "totalLiquidityUsd": 27832.39,
+      "volumeTotalUsd": 339289.46,
+      "volume24hUsd": 3540.69
     }
   },
   {
@@ -11254,7 +11380,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 39017.01,
+      "totalLiquidityUsd": 38032.27,
       "volumeTotalUsd": 1402103.26,
       "volume24hUsd": 187.64
     }
@@ -11296,9 +11422,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 4335.54,
-      "volumeTotalUsd": 48682.32,
-      "volume24hUsd": 579.13
+      "totalLiquidityUsd": 4735.1,
+      "volumeTotalUsd": 50101.49,
+      "volume24hUsd": 1998.3
     }
   },
   {
@@ -11338,9 +11464,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11415.79,
-      "volumeTotalUsd": 37771.72,
-      "volume24hUsd": 746.26
+      "totalLiquidityUsd": 11506.75,
+      "volumeTotalUsd": 38177.23,
+      "volume24hUsd": 1138.37
     }
   },
   {
@@ -11382,9 +11508,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41255.39,
-      "volumeTotalUsd": 56676.23,
-      "volume24hUsd": 2060.85
+      "totalLiquidityUsd": 41121.28,
+      "volumeTotalUsd": 56826.99,
+      "volume24hUsd": 2208.89
     }
   },
   {
@@ -11426,9 +11552,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21342.45,
-      "volumeTotalUsd": 28018.69,
-      "volume24hUsd": 1176.95
+      "totalLiquidityUsd": 26357.3,
+      "volumeTotalUsd": 30440.69,
+      "volume24hUsd": 3566.15
     }
   },
   {
@@ -11470,9 +11596,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11121.43,
-      "volumeTotalUsd": 62216.12,
-      "volume24hUsd": 9032.05
+      "totalLiquidityUsd": 11535.71,
+      "volumeTotalUsd": 64029.4,
+      "volume24hUsd": 10690.99
     }
   },
   {
@@ -11514,9 +11640,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 15583.81,
+      "totalLiquidityUsd": 18179.62,
       "volumeTotalUsd": 482329.71,
-      "volume24hUsd": 12865.34
+      "volume24hUsd": 10756.11
     }
   },
   {
@@ -11558,7 +11684,7 @@
     "stats": {
       "totalLiquidityUsd": 2208.74,
       "volumeTotalUsd": 2155.75,
-      "volume24hUsd": 4.63
+      "volume24hUsd": 0.51
     }
   },
   {
@@ -11642,53 +11768,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 235.36,
-      "volumeTotalUsd": 19704.2,
-      "volume24hUsd": 17127.09
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/lol-jdg-wb-2026-01-29-match-winner",
-    "title": "Match Winner",
-    "question": "LoL: JD Gaming vs Weibo Gaming (BO3) - LPL Group Ascend",
-    "description": "This market refers to the LoL match between JD Gaming and Weibo Gaming in the LPL Group Ascend, scheduled for January 29 at 6:00AM ET.\n\nThis market will resolve to \"JD Gaming\" if JD Gaming win the match against Weibo Gaming.\n\nThis market will resolve to \"Weibo Gaming\" if Weibo Gaming win the match against JD Gaming.\n\nIf the match is canceled (not played at all), ends in a tie, or is delayed beyond 7 days from the scheduled date without a winner determined, this market will resolve to 50-50. \n\nIf the match begins but is not completed, and one team wins due to the opponent's forfeiture, disqualification, or walkover, this market will resolve to the team who wins. \n\nIf the match ends in a forfeit, disqualification, or walkover (team withdraws before the start and the other wins automatically), this market will resolve to 50-50. \n\nThe resolution source for this market will be official information from https://liquipedia.net/leagueoflegends/Main_Page.",
-    "status": "REGISTERED",
-    "isNegRisk": false,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x9b2c431d9ccf025c17bc24ec2bff0aab5c8efad77f5c06016aa371a4ecf8edfd",
-    "conditionId": "0xf101071d2be395bf8f34ede57175b4425d4840758461b7d497278314251ae1b5",
-    "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
-    "questionIndex": null,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [
-      "0x925d165d0e799b100fbda20c9417e668901c14458405fb43a1ea8114f40ac3be"
-    ],
-    "kalshiMarketTicker": null,
-    "categorySlug": "lol-jdg-wb-2026-01-29",
-    "createdAt": "2026-01-26T13:55:09.288Z",
-    "decimalPrecision": 2,
-    "id": 4775,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "JDG",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "53279658209326529563473208380129958919392095734080478818209143398531167450171"
-      },
-      {
-        "name": "WB",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "104451523038588253516763671165248273776064940599730617746280729675681656652784"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 454.09,
-      "volumeTotalUsd": 44698.12,
-      "volume24hUsd": 44547.48
+      "totalLiquidityUsd": 240.31,
+      "volumeTotalUsd": 20339.08,
+      "volume24hUsd": 16299.62
     }
   },
   {
@@ -11730,9 +11812,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 87634.79,
-      "volumeTotalUsd": 6869.19,
-      "volume24hUsd": 4093.37
+      "totalLiquidityUsd": 115025.64,
+      "volumeTotalUsd": 10323.94,
+      "volume24hUsd": 5231.66
     }
   },
   {
@@ -11774,9 +11856,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10908.32,
-      "volumeTotalUsd": 3701.85,
-      "volume24hUsd": 865.27
+      "totalLiquidityUsd": 9758.3,
+      "volumeTotalUsd": 5483.22,
+      "volume24hUsd": 2625.77
     }
   },
   {
@@ -11818,9 +11900,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9610.65,
-      "volumeTotalUsd": 16836.74,
-      "volume24hUsd": 7530.33
+      "totalLiquidityUsd": 7185.25,
+      "volumeTotalUsd": 17728.2,
+      "volume24hUsd": 8315.79
     }
   },
   {
@@ -11862,9 +11944,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 231366.71,
+      "totalLiquidityUsd": 292578.32,
       "volumeTotalUsd": 1861.19,
-      "volume24hUsd": 521.82
+      "volume24hUsd": 515.66
     }
   },
   {
@@ -11906,9 +11988,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14965.99,
-      "volumeTotalUsd": 18486.8,
-      "volume24hUsd": 11060.87
+      "totalLiquidityUsd": 31434.53,
+      "volumeTotalUsd": 19284.78,
+      "volume24hUsd": 11836.34
     }
   },
   {
@@ -11950,9 +12032,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 22888.37,
-      "volumeTotalUsd": 15394.33,
-      "volume24hUsd": 1923.53
+      "totalLiquidityUsd": 7422.65,
+      "volumeTotalUsd": 15490.73,
+      "volume24hUsd": 2019.93
     }
   },
   {
@@ -11994,9 +12076,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9715.39,
+      "totalLiquidityUsd": 15753.39,
       "volumeTotalUsd": 3114.3,
-      "volume24hUsd": 1841.97
+      "volume24hUsd": 665.75
     }
   },
   {
@@ -12038,7 +12120,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14872.53,
+      "totalLiquidityUsd": 21020.03,
       "volumeTotalUsd": 1138.99,
       "volume24hUsd": 7.03
     }
@@ -12082,9 +12164,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11261.91,
+      "totalLiquidityUsd": 17942.11,
       "volumeTotalUsd": 420.93,
-      "volume24hUsd": 281
+      "volume24hUsd": 33.37
     }
   },
   {
@@ -12126,7 +12208,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7450.52,
+      "totalLiquidityUsd": 8749.04,
       "volumeTotalUsd": 233.33,
       "volume24hUsd": 233.33
     }
@@ -12170,7 +12252,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2807.51,
+      "totalLiquidityUsd": 9348.55,
       "volumeTotalUsd": 1175.09,
       "volume24hUsd": 1175.09
     }
@@ -12214,9 +12296,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5011.37,
+      "totalLiquidityUsd": 6859.43,
       "volumeTotalUsd": 145.71,
-      "volume24hUsd": 145.71
+      "volume24hUsd": 45.71
     }
   },
   {
@@ -12258,9 +12340,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6427.08,
+      "totalLiquidityUsd": 7750.42,
       "volumeTotalUsd": 2075.83,
-      "volume24hUsd": 2013.33
+      "volume24hUsd": 1013.33
     }
   },
   {
@@ -12302,9 +12384,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11536.04,
+      "totalLiquidityUsd": 12785.04,
       "volumeTotalUsd": 318.4,
-      "volume24hUsd": 317.13
+      "volume24hUsd": 4.54
     }
   },
   {
@@ -12346,7 +12428,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5478.63,
+      "totalLiquidityUsd": 7950.67,
       "volumeTotalUsd": 888.76,
       "volume24hUsd": 12.5
     }
@@ -12390,7 +12472,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6925.4,
+      "totalLiquidityUsd": 8142.9,
       "volumeTotalUsd": 8.81,
       "volume24hUsd": 7.69
     }
@@ -12434,9 +12516,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3710.81,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 10174.8,
+      "volumeTotalUsd": 1.1,
+      "volume24hUsd": 1.1
     }
   },
   {
@@ -12478,7 +12560,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3812.19,
+      "totalLiquidityUsd": 10338.73,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -12520,7 +12602,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2967.6,
+      "totalLiquidityUsd": 4026.6,
       "volumeTotalUsd": 100,
       "volume24hUsd": 100
     }
@@ -12564,7 +12646,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54313.36,
+      "totalLiquidityUsd": 55887.24,
       "volumeTotalUsd": 2065.58,
       "volume24hUsd": 161.29
     }
@@ -12608,9 +12690,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 55299.52,
-      "volumeTotalUsd": 2083.55,
-      "volume24hUsd": 217.51
+      "totalLiquidityUsd": 55916.12,
+      "volumeTotalUsd": 4021.57,
+      "volume24hUsd": 2155.53
     }
   },
   {
@@ -12652,7 +12734,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54250.31,
+      "totalLiquidityUsd": 55340.95,
       "volumeTotalUsd": 9248.08,
       "volume24hUsd": 7749.62
     }
@@ -12696,9 +12778,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54930.61,
-      "volumeTotalUsd": 309.05,
-      "volume24hUsd": 12.24
+      "totalLiquidityUsd": 55100.76,
+      "volumeTotalUsd": 568.05,
+      "volume24hUsd": 271.24
     }
   },
   {
@@ -12740,7 +12822,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 54300.46,
+      "totalLiquidityUsd": 54963.43,
       "volumeTotalUsd": 1141.07,
       "volume24hUsd": 0
     }
@@ -12784,7 +12866,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 50586.71,
+      "totalLiquidityUsd": 57146.02,
       "volumeTotalUsd": 1414.77,
       "volume24hUsd": 0
     }
@@ -12828,7 +12910,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 50885.56,
+      "totalLiquidityUsd": 57311.45,
       "volumeTotalUsd": 25,
       "volume24hUsd": 0
     }
@@ -12872,7 +12954,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49809.9,
+      "totalLiquidityUsd": 55794.39,
       "volumeTotalUsd": 1764857.13,
       "volume24hUsd": 37.41
     }
@@ -12914,7 +12996,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21596.51,
+      "totalLiquidityUsd": 28805.26,
       "volumeTotalUsd": 29.18,
       "volume24hUsd": 0
     }
@@ -12956,7 +13038,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16104.71,
+      "totalLiquidityUsd": 12260.02,
       "volumeTotalUsd": 501.48,
       "volume24hUsd": 1.48
     }
@@ -12998,9 +13080,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5062.16,
-      "volumeTotalUsd": 1737.34,
-      "volume24hUsd": 31.33
+      "totalLiquidityUsd": 27194.24,
+      "volumeTotalUsd": 1843.94,
+      "volume24hUsd": 126.14
     }
   },
   {
@@ -13040,9 +13122,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5707.63,
-      "volumeTotalUsd": 47.25,
-      "volume24hUsd": 47.25
+      "totalLiquidityUsd": 6920.07,
+      "volumeTotalUsd": 690.07,
+      "volume24hUsd": 684.69
     }
   },
   {
@@ -13082,9 +13164,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7917.6,
-      "volumeTotalUsd": 5.71,
-      "volume24hUsd": 5.71
+      "totalLiquidityUsd": 14707.31,
+      "volumeTotalUsd": 707.34,
+      "volume24hUsd": 707.34
     }
   },
   {
@@ -13124,9 +13206,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 28793.41,
+      "totalLiquidityUsd": 23816.3,
       "volumeTotalUsd": 930.04,
-      "volume24hUsd": 430.04
+      "volume24hUsd": 330.04
     }
   },
   {
@@ -13166,9 +13248,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 20310.21,
-      "volumeTotalUsd": 302.5,
-      "volume24hUsd": 2.5
+      "totalLiquidityUsd": 10295.67,
+      "volumeTotalUsd": 2341.59,
+      "volume24hUsd": 2041.59
     }
   },
   {
@@ -13208,9 +13290,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14794.1,
+      "totalLiquidityUsd": 15212.9,
       "volumeTotalUsd": 3338.94,
-      "volume24hUsd": 990.69
+      "volume24hUsd": 1.99
     }
   },
   {
@@ -13250,9 +13332,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 33069.93,
-      "volumeTotalUsd": 3912.06,
-      "volume24hUsd": 2525.04
+      "totalLiquidityUsd": 31733.75,
+      "volumeTotalUsd": 4491.79,
+      "volume24hUsd": 3104.78
     }
   },
   {
@@ -13292,9 +13374,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3388.11,
-      "volumeTotalUsd": 4440.27,
-      "volume24hUsd": 2955.07
+      "totalLiquidityUsd": 12050.44,
+      "volumeTotalUsd": 4474.54,
+      "volume24hUsd": 1440.96
     }
   },
   {
@@ -13334,9 +13416,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 11619.7,
-      "volumeTotalUsd": 3144.27,
-      "volume24hUsd": 66
+      "totalLiquidityUsd": 57346.3,
+      "volumeTotalUsd": 3164.17,
+      "volume24hUsd": 85.9
     }
   },
   {
@@ -13376,9 +13458,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 859.43,
+      "totalLiquidityUsd": 140649.41,
       "volumeTotalUsd": 4400.13,
-      "volume24hUsd": 592.84
+      "volume24hUsd": 331.49
     }
   },
   {
@@ -13418,9 +13500,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 322.41,
-      "volumeTotalUsd": 4825.89,
-      "volume24hUsd": 1566.23
+      "totalLiquidityUsd": 20430.19,
+      "volumeTotalUsd": 8141.05,
+      "volume24hUsd": 4826.93
     }
   },
   {
@@ -13460,9 +13542,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 296.39,
-      "volumeTotalUsd": 3311.6,
-      "volume24hUsd": 2595.45
+      "totalLiquidityUsd": 20387.16,
+      "volumeTotalUsd": 3316.13,
+      "volume24hUsd": 2429.57
     }
   },
   {
@@ -13502,9 +13584,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 155.68,
+      "totalLiquidityUsd": 246.68,
       "volumeTotalUsd": 753.07,
-      "volume24hUsd": 465.03
+      "volume24hUsd": 440.47
     }
   },
   {
@@ -13544,9 +13626,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21.49,
+      "totalLiquidityUsd": 20196.49,
       "volumeTotalUsd": 498.67,
-      "volume24hUsd": 197.67
+      "volume24hUsd": 194.08
     }
   },
   {
@@ -13586,9 +13668,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 31.45,
+      "totalLiquidityUsd": 20111.45,
       "volumeTotalUsd": 14863.17,
-      "volume24hUsd": 7878.37
+      "volume24hUsd": 7774.24
     }
   },
   {
@@ -13628,9 +13710,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 57056.94,
+      "totalLiquidityUsd": 59617.96,
       "volumeTotalUsd": 911.73,
-      "volume24hUsd": 780.77
+      "volume24hUsd": 775.32
     }
   },
   {
@@ -13670,7 +13752,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 19136.19,
+      "totalLiquidityUsd": 22312.33,
       "volumeTotalUsd": 1984.9,
       "volume24hUsd": 138.52
     }
@@ -13712,7 +13794,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 27453.27,
+      "totalLiquidityUsd": 29692.83,
       "volumeTotalUsd": 627.02,
       "volume24hUsd": 17.07
     }
@@ -13754,7 +13836,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 41221.74,
+      "totalLiquidityUsd": 42378.33,
       "volumeTotalUsd": 13.24,
       "volume24hUsd": 1.99
     }
@@ -13796,9 +13878,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42477.61,
+      "totalLiquidityUsd": 43014.37,
       "volumeTotalUsd": 3368.82,
-      "volume24hUsd": 3357.94
+      "volume24hUsd": 0
     }
   },
   {
@@ -13838,7 +13920,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 42241.75,
+      "totalLiquidityUsd": 59126.88,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -13880,7 +13962,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 45152.25,
+      "totalLiquidityUsd": 61553.35,
       "volumeTotalUsd": 895.39,
       "volume24hUsd": 895.39
     }
@@ -13922,9 +14004,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 566363.44,
-      "volumeTotalUsd": 1600.33,
-      "volume24hUsd": 1033.13
+      "totalLiquidityUsd": 565625.83,
+      "volumeTotalUsd": 1759.34,
+      "volume24hUsd": 1192.14
     }
   },
   {
@@ -13966,9 +14048,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 47223.87,
-      "volumeTotalUsd": 1072.8,
-      "volume24hUsd": 272.01
+      "totalLiquidityUsd": 48023.18,
+      "volumeTotalUsd": 1275.79,
+      "volume24hUsd": 473.93
     }
   },
   {
@@ -14010,7 +14092,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 35254.61,
+      "totalLiquidityUsd": 35503.71,
       "volumeTotalUsd": 1148.92,
       "volume24hUsd": 568.48
     }
@@ -14054,9 +14136,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 23143.97,
+      "totalLiquidityUsd": 23243.97,
       "volumeTotalUsd": 1615.75,
-      "volume24hUsd": 994.57
+      "volume24hUsd": 448.49
     }
   },
   {
@@ -14098,9 +14180,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6247.12,
-      "volumeTotalUsd": 1080.23,
-      "volume24hUsd": 580.23
+      "totalLiquidityUsd": 6182.12,
+      "volumeTotalUsd": 1086.03,
+      "volume24hUsd": 586.03
     }
   },
   {
@@ -14142,7 +14224,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3177.37,
+      "totalLiquidityUsd": 3131.3,
       "volumeTotalUsd": 411,
       "volume24hUsd": 411
     }
@@ -14274,9 +14356,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5925.27,
+      "totalLiquidityUsd": 4738.27,
       "volumeTotalUsd": 6920.44,
-      "volume24hUsd": 2666.66
+      "volume24hUsd": 1462.89
     }
   },
   {
@@ -14358,9 +14440,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2200,
-      "volumeTotalUsd": 1229.21,
-      "volume24hUsd": 1098.4
+      "totalLiquidityUsd": 2124,
+      "volumeTotalUsd": 1529.21,
+      "volume24hUsd": 898.4
     }
   },
   {
@@ -14442,7 +14524,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2214.8,
+      "totalLiquidityUsd": 6234.8,
       "volumeTotalUsd": 300,
       "volume24hUsd": 300
     }
@@ -14484,7 +14566,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2067.5,
+      "totalLiquidityUsd": 41587.5,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -14526,9 +14608,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 564.5,
-      "volumeTotalUsd": 300,
-      "volume24hUsd": 300
+      "totalLiquidityUsd": 39086.81,
+      "volumeTotalUsd": 987.69,
+      "volume24hUsd": 987.69
     }
   },
   {
@@ -14568,9 +14650,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6592.32,
-      "volumeTotalUsd": 500,
-      "volume24hUsd": 500
+      "totalLiquidityUsd": 47647.31,
+      "volumeTotalUsd": 501.15,
+      "volume24hUsd": 501.15
     }
   },
   {
@@ -14610,9 +14692,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6563.81,
-      "volumeTotalUsd": 598.11,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 47407.99,
+      "volumeTotalUsd": 600.35,
+      "volume24hUsd": 2.24
     }
   },
   {
@@ -14652,9 +14734,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3025.5,
-      "volumeTotalUsd": 299.26,
-      "volume24hUsd": 299.26
+      "totalLiquidityUsd": 47537.5,
+      "volumeTotalUsd": 300.26,
+      "volume24hUsd": 300.26
     }
   },
   {
@@ -14694,9 +14776,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 25964.34,
-      "volumeTotalUsd": 609.33,
-      "volume24hUsd": 609.33
+      "totalLiquidityUsd": 18581.3,
+      "volumeTotalUsd": 793.92,
+      "volume24hUsd": 783.92
     }
   },
   {
@@ -14736,9 +14818,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14934.07,
-      "volumeTotalUsd": 1644.05,
-      "volume24hUsd": 50.5
+      "totalLiquidityUsd": 5023465.68,
+      "volumeTotalUsd": 1648.05,
+      "volume24hUsd": 54.5
     }
   },
   {
@@ -14778,7 +14860,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 23596.28,
+      "totalLiquidityUsd": 5020179,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -14820,7 +14902,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 24043.17,
+      "totalLiquidityUsd": 5223285.87,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -14864,9 +14946,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 20656.44,
-      "volumeTotalUsd": 76.32,
-      "volume24hUsd": 76.32
+      "totalLiquidityUsd": 20738.83,
+      "volumeTotalUsd": 80.49,
+      "volume24hUsd": 73.78
     }
   },
   {
@@ -14906,9 +14988,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 181707.5,
-      "volumeTotalUsd": 8621.87,
-      "volume24hUsd": 8537.78
+      "totalLiquidityUsd": 151169.06,
+      "volumeTotalUsd": 9298.08,
+      "volume24hUsd": 9185.37
     }
   },
   {
@@ -14948,9 +15030,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 112012.54,
-      "volumeTotalUsd": 3645.8,
-      "volume24hUsd": 3645.8
+      "totalLiquidityUsd": 94388.21,
+      "volumeTotalUsd": 5240.49,
+      "volume24hUsd": 5240.49
     }
   },
   {
@@ -14990,9 +15072,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 209535.8,
-      "volumeTotalUsd": 2387.97,
-      "volume24hUsd": 2345.27
+      "totalLiquidityUsd": 204755.64,
+      "volumeTotalUsd": 5981.19,
+      "volume24hUsd": 5928.49
     }
   },
   {
@@ -15032,9 +15114,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 119690.18,
-      "volumeTotalUsd": 842.74,
-      "volume24hUsd": 842.74
+      "totalLiquidityUsd": 124246.02,
+      "volumeTotalUsd": 885.7,
+      "volume24hUsd": 885.7
     }
   },
   {
@@ -15074,9 +15156,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 211498.31,
-      "volumeTotalUsd": 44533.65,
-      "volume24hUsd": 44491.48
+      "totalLiquidityUsd": 195681.49,
+      "volumeTotalUsd": 47863.66,
+      "volume24hUsd": 47761.56
     }
   },
   {
@@ -15116,9 +15198,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 89937.13,
-      "volumeTotalUsd": 4008.73,
-      "volume24hUsd": 4008.73
+      "totalLiquidityUsd": 87433.64,
+      "volumeTotalUsd": 12040.46,
+      "volume24hUsd": 12040.46
     }
   },
   {
@@ -15158,9 +15240,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 106110.44,
-      "volumeTotalUsd": 5908.79,
-      "volume24hUsd": 5903.79
+      "totalLiquidityUsd": 78979.85,
+      "volumeTotalUsd": 11925.31,
+      "volume24hUsd": 11920.31
     }
   },
   {
@@ -15200,9 +15282,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 285078.62,
-      "volumeTotalUsd": 2854.85,
-      "volume24hUsd": 2854.85
+      "totalLiquidityUsd": 228547.83,
+      "volumeTotalUsd": 15509.73,
+      "volume24hUsd": 15509.73
     }
   },
   {
@@ -15242,9 +15324,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3143.67,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 652,
+      "volumeTotalUsd": 333.33,
+      "volume24hUsd": 333.33
     }
   },
   {
@@ -15284,9 +15366,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3204.33,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 657,
+      "volumeTotalUsd": 285.71,
+      "volume24hUsd": 285.71
     }
   },
   {
@@ -15326,7 +15408,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2012.1,
+      "totalLiquidityUsd": 949.1,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -15368,7 +15450,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2351.44,
+      "totalLiquidityUsd": 1298.44,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -15410,7 +15492,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2080.77,
+      "totalLiquidityUsd": 1027.77,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -15452,7 +15534,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3011.44,
+      "totalLiquidityUsd": 2637.45,
       "volumeTotalUsd": 200,
       "volume24hUsd": 200
     }
@@ -15494,7 +15576,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2412.1,
+      "totalLiquidityUsd": 959.1,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -15536,9 +15618,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 499.02,
-      "volumeTotalUsd": 398,
-      "volume24hUsd": 398
+      "totalLiquidityUsd": 11634.04,
+      "volumeTotalUsd": 835.59,
+      "volume24hUsd": 835.59
     }
   },
   {
@@ -15886,53 +15968,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 183.02,
+      "totalLiquidityUsd": 283.02,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
-    }
-  },
-  {
-    "imageUrl": "https://bnb-predict-fun.s3.us-west-2.amazonaws.com/wta-sabalen-svitoli-2026-01-29-match-winner",
-    "title": "Match Winner",
-    "question": "Australian Open Women's: Aryna Sabalenka vs Elina Svitolina",
-    "description": "This market refers on the tennis match between Aryna Sabalenka and Elina Svitolina in the Australian Open WTA, scheduled for January 29 at 3:30AM ET.\n\nThis market will resolve to 'SBLKA' if Aryna Sabalenka advances against Elina Svitolina.\n\nThis market will resolve to 'SVTLN' if Elina Svitolina advances against Aryna Sabalenka.\n\nIf the match is canceled (not played at all), ends in a tie, or is delayed beyond 7 days from the scheduled date without a winner determined, this market will resolve to 50-50.\n\nIf the match begins but is not completed, and one player advances due to the opponent's retirement, default, or disqualification, this market will resolve to the player who advances.\n\nIf the match ends in a walkover (player withdraws before the start and the other advances automatically), this market will resolve to 50-50.\n\nThe primary resolution source will be official information from the Australian Open. A consensus of credible reporting may also be used.",
-    "status": "REGISTERED",
-    "isNegRisk": false,
-    "isYieldBearing": true,
-    "resolution": null,
-    "oracleQuestionId": "0x5042b104af6d306b1c30e02f88f4b8b3df6b66eae4559b85ac580a6b32e779bc",
-    "conditionId": "0x11ba85f47c3f029ad96e1a9f0561badeb509fd39d9b1936fd90d75e3a33d30e7",
-    "resolverAddress": "0x947cc06D38d3cB0a2BB5AdFB668b99B4FF53d7B4",
-    "questionIndex": null,
-    "spreadThreshold": 0.06,
-    "shareThreshold": 100,
-    "polymarketConditionIds": [
-      "0xedab0fd76ffebdf534326152cbb7347a3038d50f78bfa69afc28a964827b5693"
-    ],
-    "kalshiMarketTicker": null,
-    "categorySlug": "wta-sabalen-svitoli-2026-01-29",
-    "createdAt": "2026-01-28T22:38:31.612Z",
-    "decimalPrecision": 2,
-    "id": 5424,
-    "feeRateBps": 200,
-    "outcomes": [
-      {
-        "name": "SBLKA",
-        "indexSet": 1,
-        "status": null,
-        "onChainId": "17274419144176476275190329621888759060338473941800484275394029216713139226699"
-      },
-      {
-        "name": "SVTLN",
-        "indexSet": 2,
-        "status": null,
-        "onChainId": "93391383606375424628936777122827810555770118769344243243025012973405079167387"
-      }
-    ],
-    "stats": {
-      "totalLiquidityUsd": 695.3,
-      "volumeTotalUsd": 12867.71,
-      "volume24hUsd": 12867.71
     }
   },
   {
@@ -15974,9 +16012,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 72416.08,
-      "volumeTotalUsd": 40.22,
-      "volume24hUsd": 40.22
+      "totalLiquidityUsd": 107366.36,
+      "volumeTotalUsd": 912.23,
+      "volume24hUsd": 912.23
     }
   },
   {
@@ -16018,9 +16056,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 49215.84,
-      "volumeTotalUsd": 416.09,
-      "volume24hUsd": 416.09
+      "totalLiquidityUsd": 64563.91,
+      "volumeTotalUsd": 912.85,
+      "volume24hUsd": 912.85
     }
   },
   {
@@ -16062,7 +16100,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 55759.94,
+      "totalLiquidityUsd": 86573.11,
       "volumeTotalUsd": 277.77,
       "volume24hUsd": 277.77
     }
@@ -16106,9 +16144,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 48669.29,
-      "volumeTotalUsd": 1294.02,
-      "volume24hUsd": 1294.02
+      "totalLiquidityUsd": 90975.81,
+      "volumeTotalUsd": 2372.51,
+      "volume24hUsd": 2372.51
     }
   },
   {
@@ -16150,9 +16188,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 65879.84,
-      "volumeTotalUsd": 2,
-      "volume24hUsd": 2
+      "totalLiquidityUsd": 107381.09,
+      "volumeTotalUsd": 3.96,
+      "volume24hUsd": 3.96
     }
   },
   {
@@ -16194,9 +16232,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 58601.51,
-      "volumeTotalUsd": 2.2,
-      "volume24hUsd": 2.2
+      "totalLiquidityUsd": 53309.29,
+      "volumeTotalUsd": 302.19,
+      "volume24hUsd": 302.19
     }
   },
   {
@@ -16238,9 +16276,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7536.88,
-      "volumeTotalUsd": 43.48,
-      "volume24hUsd": 43.48
+      "totalLiquidityUsd": 7347.06,
+      "volumeTotalUsd": 632.09,
+      "volume24hUsd": 632.09
     }
   },
   {
@@ -16282,9 +16320,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 17412.73,
-      "volumeTotalUsd": 7.42,
-      "volume24hUsd": 7.42
+      "totalLiquidityUsd": 24174.7,
+      "volumeTotalUsd": 245.68,
+      "volume24hUsd": 245.68
     }
   },
   {
@@ -16326,9 +16364,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3576.28,
-      "volumeTotalUsd": 101.2,
-      "volume24hUsd": 101.2
+      "totalLiquidityUsd": 9064.83,
+      "volumeTotalUsd": 121.4,
+      "volume24hUsd": 121.4
     }
   },
   {
@@ -16370,9 +16408,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 1849.33,
-      "volumeTotalUsd": 705.82,
-      "volume24hUsd": 705.82
+      "totalLiquidityUsd": 2276.71,
+      "volumeTotalUsd": 2234.39,
+      "volume24hUsd": 2234.39
     }
   },
   {
@@ -16414,9 +16452,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14046.64,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 14062.97,
+      "volumeTotalUsd": 22.77,
+      "volume24hUsd": 22.77
     }
   },
   {
@@ -16458,9 +16496,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7528.33,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 8903.97,
+      "volumeTotalUsd": 484,
+      "volume24hUsd": 484
     }
   },
   {
@@ -16502,9 +16540,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8648.93,
-      "volumeTotalUsd": 20.2,
-      "volume24hUsd": 20.2
+      "totalLiquidityUsd": 6372.77,
+      "volumeTotalUsd": 45.4,
+      "volume24hUsd": 45.4
     }
   },
   {
@@ -16546,9 +16584,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 25297.18,
-      "volumeTotalUsd": 793.12,
-      "volume24hUsd": 793.12
+      "totalLiquidityUsd": 57801.65,
+      "volumeTotalUsd": 1757.63,
+      "volume24hUsd": 1757.63
     }
   },
   {
@@ -16590,9 +16628,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6933.27,
-      "volumeTotalUsd": 40,
-      "volume24hUsd": 40
+      "totalLiquidityUsd": 3370.14,
+      "volumeTotalUsd": 85.75,
+      "volume24hUsd": 85.75
     }
   },
   {
@@ -16634,9 +16672,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5839.59,
-      "volumeTotalUsd": 397.18,
-      "volume24hUsd": 397.18
+      "totalLiquidityUsd": 11098.82,
+      "volumeTotalUsd": 424.88,
+      "volume24hUsd": 424.88
     }
   },
   {
@@ -16678,9 +16716,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 21082.56,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 31947.68,
+      "volumeTotalUsd": 579.83,
+      "volume24hUsd": 579.83
     }
   },
   {
@@ -16722,9 +16760,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6715.14,
-      "volumeTotalUsd": 41.4,
-      "volume24hUsd": 41.4
+      "totalLiquidityUsd": 7351.04,
+      "volumeTotalUsd": 122.8,
+      "volume24hUsd": 122.8
     }
   },
   {
@@ -16766,9 +16804,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 4631.39,
-      "volumeTotalUsd": 571.67,
-      "volume24hUsd": 571.67
+      "totalLiquidityUsd": 5577.8,
+      "volumeTotalUsd": 661.87,
+      "volume24hUsd": 661.87
     }
   },
   {
@@ -16810,9 +16848,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 14626.49,
-      "volumeTotalUsd": 3.92,
-      "volume24hUsd": 3.92
+      "totalLiquidityUsd": 21001.41,
+      "volumeTotalUsd": 208,
+      "volume24hUsd": 208
     }
   },
   {
@@ -16854,9 +16892,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7280.74,
-      "volumeTotalUsd": 3.84,
-      "volume24hUsd": 3.84
+      "totalLiquidityUsd": 9698.04,
+      "volumeTotalUsd": 59.51,
+      "volume24hUsd": 59.51
     }
   },
   {
@@ -16898,7 +16936,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8180.82,
+      "totalLiquidityUsd": 10176.31,
       "volumeTotalUsd": 0,
       "volume24hUsd": 0
     }
@@ -16942,7 +16980,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5084.7,
+      "totalLiquidityUsd": 7639.06,
       "volumeTotalUsd": 874.61,
       "volume24hUsd": 874.61
     }
@@ -16986,9 +17024,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7580.83,
-      "volumeTotalUsd": 26.8,
-      "volume24hUsd": 26.8
+      "totalLiquidityUsd": 8901.99,
+      "volumeTotalUsd": 57.74,
+      "volume24hUsd": 57.74
     }
   },
   {
@@ -17030,9 +17068,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 16580.88,
-      "volumeTotalUsd": 31.98,
-      "volume24hUsd": 31.98
+      "totalLiquidityUsd": 30582.06,
+      "volumeTotalUsd": 1112.28,
+      "volume24hUsd": 1112.28
     }
   },
   {
@@ -17074,9 +17112,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 29546.59,
-      "volumeTotalUsd": 57.85,
-      "volume24hUsd": 57.85
+      "totalLiquidityUsd": 130466.13,
+      "volumeTotalUsd": 200.65,
+      "volume24hUsd": 200.65
     }
   },
   {
@@ -17118,9 +17156,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 4559.24,
-      "volumeTotalUsd": 61.2,
-      "volume24hUsd": 61.2
+      "totalLiquidityUsd": 6117.72,
+      "volumeTotalUsd": 81.6,
+      "volume24hUsd": 81.6
     }
   },
   {
@@ -17162,9 +17200,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3213.89,
-      "volumeTotalUsd": 674.97,
-      "volume24hUsd": 674.97
+      "totalLiquidityUsd": 3996.73,
+      "volumeTotalUsd": 1346.29,
+      "volume24hUsd": 1346.29
     }
   },
   {
@@ -17206,9 +17244,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 12618.23,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 25727.03,
+      "volumeTotalUsd": 48.83,
+      "volume24hUsd": 48.83
     }
   },
   {
@@ -17250,9 +17288,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 8257.25,
-      "volumeTotalUsd": 122.66,
-      "volume24hUsd": 122.66
+      "totalLiquidityUsd": 10680.89,
+      "volumeTotalUsd": 567.87,
+      "volume24hUsd": 567.87
     }
   },
   {
@@ -17294,9 +17332,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 10952.12,
-      "volumeTotalUsd": 230.1,
-      "volume24hUsd": 230.1
+      "totalLiquidityUsd": 15090.75,
+      "volumeTotalUsd": 291.3,
+      "volume24hUsd": 291.3
     }
   },
   {
@@ -17338,7 +17376,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 5223.92,
+      "totalLiquidityUsd": 4370.84,
       "volumeTotalUsd": 442.85,
       "volume24hUsd": 442.85
     }
@@ -17382,9 +17420,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7152.37,
-      "volumeTotalUsd": 178.6,
-      "volume24hUsd": 178.6
+      "totalLiquidityUsd": 6740.53,
+      "volumeTotalUsd": 213.95,
+      "volume24hUsd": 213.95
     }
   },
   {
@@ -17426,9 +17464,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 25749.62,
-      "volumeTotalUsd": 1226.85,
-      "volume24hUsd": 1226.85
+      "totalLiquidityUsd": 45271.7,
+      "volumeTotalUsd": 1415.15,
+      "volume24hUsd": 1415.15
     }
   },
   {
@@ -17470,9 +17508,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 9062.27,
-      "volumeTotalUsd": 3.27,
-      "volume24hUsd": 3.27
+      "totalLiquidityUsd": 7539.78,
+      "volumeTotalUsd": 1266.53,
+      "volume24hUsd": 1266.53
     }
   },
   {
@@ -17514,9 +17552,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3517.41,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 4322.88,
+      "volumeTotalUsd": 4.76,
+      "volume24hUsd": 4.76
     }
   },
   {
@@ -17558,7 +17596,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3885,
+      "totalLiquidityUsd": 5610.75,
       "volumeTotalUsd": 271.72,
       "volume24hUsd": 271.72
     }
@@ -17602,9 +17640,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3945.6,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 8964.84,
+      "volumeTotalUsd": 300,
+      "volume24hUsd": 300
     }
   },
   {
@@ -17646,9 +17684,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2921.45,
-      "volumeTotalUsd": 42.4,
-      "volume24hUsd": 42.4
+      "totalLiquidityUsd": 18278.17,
+      "volumeTotalUsd": 448.59,
+      "volume24hUsd": 448.59
     }
   },
   {
@@ -17690,9 +17728,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 4872.18,
-      "volumeTotalUsd": 43,
-      "volume24hUsd": 43
+      "totalLiquidityUsd": 9442.75,
+      "volumeTotalUsd": 132.2,
+      "volume24hUsd": 132.2
     }
   },
   {
@@ -17734,9 +17772,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 4961.08,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 15501.22,
+      "volumeTotalUsd": 317.39,
+      "volume24hUsd": 317.39
     }
   },
   {
@@ -17778,7 +17816,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2965.9,
+      "totalLiquidityUsd": 5163.69,
       "volumeTotalUsd": 20,
       "volume24hUsd": 20
     }
@@ -17822,7 +17860,7 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3486.21,
+      "totalLiquidityUsd": 6381.2,
       "volumeTotalUsd": 143.2,
       "volume24hUsd": 143.2
     }
@@ -17866,9 +17904,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 6615.3,
-      "volumeTotalUsd": 253.16,
-      "volume24hUsd": 253.16
+      "totalLiquidityUsd": 7744.86,
+      "volumeTotalUsd": 451.33,
+      "volume24hUsd": 451.33
     }
   },
   {
@@ -17910,9 +17948,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2859.72,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 6335,
+      "volumeTotalUsd": 20,
+      "volume24hUsd": 20
     }
   },
   {
@@ -17954,9 +17992,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2984.92,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 10277.14,
+      "volumeTotalUsd": 61.44,
+      "volume24hUsd": 61.44
     }
   },
   {
@@ -17998,9 +18036,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 3633.13,
-      "volumeTotalUsd": 0,
-      "volume24hUsd": 0
+      "totalLiquidityUsd": 5511.33,
+      "volumeTotalUsd": 100,
+      "volume24hUsd": 100
     }
   },
   {
@@ -18042,9 +18080,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 2415.23,
-      "volumeTotalUsd": 51.4,
-      "volume24hUsd": 51.4
+      "totalLiquidityUsd": 3212.82,
+      "volumeTotalUsd": 77,
+      "volume24hUsd": 77
     }
   },
   {
@@ -18086,9 +18124,9 @@
       }
     ],
     "stats": {
-      "totalLiquidityUsd": 7362.66,
-      "volumeTotalUsd": 71.62,
-      "volume24hUsd": 71.62
+      "totalLiquidityUsd": 21555.13,
+      "volumeTotalUsd": 284.25,
+      "volume24hUsd": 284.25
     }
   }
 ]

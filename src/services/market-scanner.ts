@@ -68,15 +68,17 @@ export class MarketScanner {
 
             // Fallback: Global search if category fails
             console.log("⚠️ Category match failed. Falling back to global search...");
-            const markets = await this.api.searchMarkets(`BTC/USD ${duration}`);
-            const activeMarkets = markets.filter((m: any) => !m.resolved && m.title.includes("BTC/USD"));
+            const groups = await this.api.searchMarkets(`BTC/USD ${duration}`);
+            const markets = groups.flatMap((g: any) => g.markets);
+            const activeMarkets = markets.filter((m: any) => m.status !== 'RESOLVED' && (m.question || m.title || "").includes("BTC/USD"));
 
-            const bestMatch = activeMarkets.find((m: any) =>
-                m.title.includes(dateStr) && (
-                    m.title.includes(timeRangeStr) ||
-                    m.title.includes(timeRangeStr.replace('-', ' - '))
-                )
-            );
+            const bestMatch = activeMarkets.find((m: any) => {
+                const title = m.question || m.title || "";
+                return title.includes(dateStr) && (
+                    title.includes(timeRangeStr) ||
+                    title.includes(timeRangeStr.replace('-', ' - '))
+                );
+            });
 
             if (bestMatch) {
                 console.log(`✅ Global Match Found: [${bestMatch.id}] ${bestMatch.title}`);

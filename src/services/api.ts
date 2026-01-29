@@ -53,44 +53,61 @@ export class ApiClient {
     }
 
     private async authenticate() {
-        try {
-            console.log("Getting auth message...");
-            const msgRes = await this.client.get('/v1/auth/message');
-            const message = msgRes.data.data.message;
-            console.log("Message to sign:", message);
+        let attempts = 0;
+        const maxAttempts = 5;
+        const delay = 5000;
 
-            let signature: string;
-            let signerAddress: string;
+        while (attempts < maxAttempts) {
+            try {
+                attempts++;
+                console.log(`Getting auth message (Attempt ${attempts}/${maxAttempts})...`);
+                const msgRes = await this.client.get('/v1/auth/message');
+                const message = msgRes.data.data.message;
+                console.log("Message to sign:", message);
 
-            if (CONFIG.PREDICT_ACCOUNT) {
-                console.log("Signing for Predict Account...");
-                // "The standard `signMessage` won't work" -> Use SDK helper
-                if (!this.orderBuilder) throw new Error("OrderBuilder not ready");
+                let signature: string;
+                let signerAddress: string;
 
-                signature = await this.orderBuilder.signPredictAccountMessage(message);
-                signerAddress = CONFIG.PREDICT_ACCOUNT;
-            } else {
-                console.log("Signing for EOA...");
-                signature = await this.wallet.signMessage(message);
-                signerAddress = this.wallet.address;
+                if (CONFIG.PREDICT_ACCOUNT) {
+                    console.log("Signing for Predict Account...");
+                    if (!this.orderBuilder) throw new Error("OrderBuilder not ready");
+                    signature = await this.orderBuilder.signPredictAccountMessage(message);
+                    signerAddress = CONFIG.PREDICT_ACCOUNT;
+                } else {
+                    console.log("Signing for EOA...");
+                    signature = await this.wallet.signMessage(message);
+                    signerAddress = this.wallet.address;
+                }
+
+                console.log("Signature generated. Sending auth request...");
+
+                const authRes = await this.client.post('/v1/auth', {
+                    signer: signerAddress,
+                    message,
+                    signature,
+                });
+
+                this.jwtToken = authRes.data.data.token;
+                this.client.defaults.headers.common['Authorization'] = `Bearer ${this.jwtToken}`;
+                console.log("✅ Authenticated successfully. JWT Token obtained.");
+                return;
+
+            } catch (error: any) {
+                const status = error.response?.status;
+                const errorBody = error.response?.data;
+                console.warn(`⚠️ Authentication attempt ${attempts} failed (Status: ${status}).`);
+
+                if (status === 502 || status === 503 || status === 504) {
+                    if (attempts < maxAttempts) {
+                        console.log(`🔄 Retrying in ${delay / 1000}s...`);
+                        await new Promise(r => setTimeout(r, delay));
+                        continue;
+                    }
+                }
+
+                console.error("Authentication failed:", errorBody || error.message);
+                throw error;
             }
-
-            console.log("Signature generated:", signature);
-            console.log("Sending auth request for signer:", signerAddress);
-
-            const authRes = await this.client.post('/v1/auth', {
-                signer: signerAddress,
-                message,
-                signature,
-            });
-
-            this.jwtToken = authRes.data.data.token;
-            this.client.defaults.headers.common['Authorization'] = `Bearer ${this.jwtToken}`;
-            console.log("✅ Authenticated successfully. JWT Token obtained.");
-
-        } catch (error: any) {
-            console.error("Authentication failed:", error.response?.data || error.message);
-            throw error;
         }
     }
 
@@ -276,18 +293,110 @@ export class ApiClient {
 
 
 
-    async getMarket(marketId: number) {
-        const res = await this.client.get(`/v1/markets/${marketId}`);
-        return res.data.data;
+    async getActivity(limit: number = 50): Promise<any[]> {
+        try {
+            const res = await this.client.get(`/v1/account/activity`, {
+                params: { first: limit }
+            });
+            return res.data.data || [];
+        } catch (e: any) {
+            return [];
+        }
+    }
+
+    private allActiveMarketsCache: any[] | null = null;
+    private lastMarketFetch = 0;
+    private readonly CACHE_TTL = 2 * 60 * 1000; // 2 minutes
+    private categoryCache = new Map<string, any>();
+
+    async getCategory(slug: string) {
+        if (this.categoryCache.has(slug)) return this.categoryCache.get(slug);
+        try {
+            const res = await this.client.get(`/v1/categories/${slug}`);
+            const cat = res.data.data;
+            this.categoryCache.set(slug, cat);
+            return cat;
+        } catch (e) {
+            return null;
+        }
     }
 
     async searchMarkets(query: string) {
-        // predict.fun API uses /v1/markets?search=... or similar filters
-        // Based on docs, GET /v1/markets accepts query params
-        const res = await this.client.get(`/v1/markets`, {
-            params: { search: query, limit: 10 }
+        // Fetch all active markets if cache is stale
+        if (!this.allActiveMarketsCache || (Date.now() - this.lastMarketFetch) > this.CACHE_TTL) {
+            console.log("🔄 Refreshing active markets cache for search...");
+            const allActive: any[] = [];
+            let cursor: string | null = null;
+            let hasMore = true;
+
+            while (hasMore) {
+                const res = await this.getMarkets(100, cursor);
+                if (!res || !res.success) break;
+
+                const batch = res.data || [];
+                if (batch.length === 0) break;
+
+                // Only keep non-resolved markets
+                const activeBatch = batch.filter((m: any) => m.status !== 'RESOLVED');
+                allActive.push(...activeBatch);
+
+                cursor = res.cursor;
+                if (!cursor || batch.length < 100) hasMore = false;
+                if (allActive.length > 5000) break; // Safety
+            }
+            this.allActiveMarketsCache = allActive;
+            this.lastMarketFetch = Date.now();
+            console.log(`✅ Cached ${allActive.length} active markets.`);
+        }
+
+        const normalizedQuery = query.toLowerCase();
+        const searchWords = normalizedQuery.split(/[^a-z0-9]/).filter(w => w.length > 1);
+
+        // Filter locally for better accuracy
+        const matches = this.allActiveMarketsCache.filter(m => {
+            const title = (m.question || m.title || "").toLowerCase();
+            const id = String(m.id);
+            const slug = (m.categorySlug || "").toLowerCase();
+            const desc = (m.description || "").toLowerCase();
+            const combined = `${title} ${id} ${slug} ${desc}`;
+
+            // If query is strictly numeric, check ID exact match
+            if (/^\d+$/.test(normalizedQuery) && id === normalizedQuery) return true;
+
+            // Otherwise, check if all search words are present in the combined string
+            return searchWords.every(word => combined.includes(word));
         });
-        return res.data.data;
+
+        // Group by categorySlug
+        const groupsMap = new Map<string, any[]>();
+        for (const m of matches) {
+            const slug = m.categorySlug || 'uncategorized';
+            if (!groupsMap.has(slug)) groupsMap.set(slug, []);
+            groupsMap.get(slug)!.push(m);
+        }
+
+        // Sort groups by total volume and return as list
+        const groups = Array.from(groupsMap.entries()).map(([slug, markets]) => {
+            const firstMarket = markets[0];
+            let title = firstMarket.question || firstMarket.title || slug;
+
+            // If the title is just a number range or too short, use the slug as the name
+            if (/^\d+([-\s]\d+)?(\+)?$/.test(title) || title.length < 5) {
+                title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
+
+            return {
+                slug,
+                title,
+                markets: markets.sort((a, b) => (a.questionIndex || 0) - (b.questionIndex || 0))
+            };
+        });
+
+        return groups.sort((a, b) => {
+            const volA = a.markets.reduce((sum, m) => sum + (m.stats?.volume24hUsd || 0), 0);
+            const volB = b.markets.reduce((sum, m) => sum + (m.stats?.volume24hUsd || 0), 0);
+            return volB - volA;
+        }).slice(0, 10);
     }
 
     getAddress(): string {
@@ -385,42 +494,107 @@ export class ApiClient {
         }
     }
 
-    async getActivity(limit: number = 50): Promise<any[]> {
+    private marketCache = new Map<number, any>();
+
+    async getMarket(marketId: number) {
+        if (this.marketCache.has(marketId)) return this.marketCache.get(marketId);
         try {
-            const res = await this.client.get(`/v1/account/activity?limit=${limit}`);
+            const res = await this.client.get(`/v1/markets/${marketId}`);
+            const mkt = res.data.data;
+            this.marketCache.set(marketId, mkt);
+            return mkt;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async getEnrichedOpenOrders() {
+        const orders = await this.getOpenOrders();
+        const enriched = [];
+
+        for (const orderItem of orders) {
+            const ord = orderItem.order || orderItem;
+            const mktId = orderItem.marketId || ord.marketId;
+
+            if (mktId) {
+                const market = await this.getMarket(mktId);
+                const enrichedItem = { ...orderItem, market };
+
+                // Find outcome name from tokenId
+                if (market && market.outcomes && ord.tokenId) {
+                    const outcome = market.outcomes.find((o: any) => o.tokenId === ord.tokenId);
+                    enrichedItem.outcome = outcome;
+                }
+                enriched.push(enrichedItem);
+            } else {
+                enriched.push(orderItem);
+            }
+        }
+        return enriched;
+    }
+
+    async getMatchEvents(limit: number = 50) {
+        try {
+            // Updated endpoint based on docs: /v1/orders/match-events
+            const signer = CONFIG.PREDICT_ACCOUNT || this.wallet.address;
+            const res = await this.client.get('/v1/orders/match-events', {
+                params: { first: limit, signer }
+            });
             return res.data.data || [];
         } catch (e: any) {
-            console.error("Failed to fetch activity:", e.response?.data || e.message);
-            return [];
+            // Fallback: If 404, try /v1/orders/matches
+            try {
+                const signer = CONFIG.PREDICT_ACCOUNT || this.wallet.address;
+                const res = await this.client.get('/v1/orders/matches', { params: { first: limit, signer } });
+                return res.data.data || [];
+            } catch (e2) {
+                return [];
+            }
         }
     }
 
     async getVolumeStats(): Promise<{ today: number, week: number }> {
         try {
-            // Fetch enough activity to cover a week. Limit 100 might be enough for moderate traders.
-            const activities = await this.getActivity(100);
+            // Fetch more activities for a more accurate volume (farming bots generate many events)
+            const activities = await this.getActivity(1000);
 
-            const now = new Date();
-            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-            const startOfWeek = now.getTime() - (7 * 24 * 60 * 60 * 1000);
+            const now = new Date().getTime();
+            const oneDayAgo = now - (24 * 60 * 60 * 1000);
+            const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
 
             let today = 0;
             let week = 0;
 
             for (const act of activities) {
-                // Check relevant activity types for volume
-                if (act.type === 'TRADE' || act.type === 'ORDER_FILLED' || act.type === 'ORDER_MATCH') {
-                    const val = parseFloat(act.valueUsd || '0');
+                const type = act.name || act.type || "";
+                const upperType = type.toUpperCase();
+                const isVolumeEvent = ['MATCH', 'TRADE', 'ORDER_MATCH', 'ORDER_FILLED', 'FILL', 'CONVERSION'].includes(upperType);
+
+                if (isVolumeEvent) {
+                    const val = parseFloat(act.valueUsd || act.value || '0');
                     const time = new Date(act.createdAt).getTime();
 
-                    if (time >= startOfDay) today += val;
-                    if (time >= startOfWeek) week += val;
+                    if (time >= oneDayAgo) today += val;
+                    if (time >= oneWeekAgo) week += val;
                 }
             }
 
-            return { today, week };
+            // Also check match events if activities missed some
+            const matches = await this.getMatchEvents(100);
+            for (const match of matches) {
+                const val = parseFloat(match.valueUsd || match.value || '0');
+                const time = new Date(match.executedAt || match.createdAt).getTime();
+
+                // Avoid double counting by ID
+                const isDuplicate = activities.some(a => a.id === match.id);
+                if (!isDuplicate) {
+                    if (time >= oneDayAgo) today += val;
+                    if (time >= oneWeekAgo) week += val;
+                }
+            }
+
+            return { today: Math.round(today * 100) / 100, week: Math.round(week * 100) / 100 };
         } catch (e) {
-            console.error("Failed to calc volume:", e);
             return { today: 0, week: 0 };
         }
     }

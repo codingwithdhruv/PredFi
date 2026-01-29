@@ -4,6 +4,7 @@ import { CONFIG } from '../config';
 import WebSocket from 'ws';
 import { Side } from '@predictdotfun/sdk';
 import { parseUnits, ethers } from 'ethers';
+import { sendAlert, escapeMarkdown } from '../services/telegram-bot';
 
 interface PricePoint {
     timestamp: number;
@@ -175,11 +176,13 @@ export class DipArbBot {
 
     private async initMarket() {
         const market = await this.api.getMarket(this.marketId);
-        console.log(`Target Market: ${market.title}`);
+        const title = market.question || market.title || `Market #${this.marketId}`;
+        console.log(`Target Market: ${title}`);
 
         await this.api.ensureCorrectContract(market);
 
         this.marketParams = {
+            marketTitle: title,
             yesToken: market.outcomes[0],
             noToken: market.outcomes[1],
             isNegRisk: market.isNegRisk,
@@ -379,6 +382,14 @@ export class DipArbBot {
                 this.leg1Side = side;
                 this.leg1Time = Date.now();
                 console.log(`✅ LEG 1 FILLED. Waiting for ${side === 'YES' ? 'NO' : 'YES'}...`);
+
+                const alertMsg = `💰 *DIP BUY (Leg 1)*\n\n` +
+                    `*Market*: ${escapeMarkdown(this.marketParams.marketTitle || `Market #${this.marketId}`)}\n` +
+                    `*Side*: ${escapeMarkdown(side)}\n` +
+                    `*Price*: $${escapeMarkdown(price.toFixed(3))}\n` +
+                    `*Qty*: ${finalShares}\n\n` +
+                    `⏳ Waiting for Leg 2 (Hedge)\\.\\.\\.`;
+                sendAlert(alertMsg);
             } else {
                 console.error("❌ Leg 1 Failed:", res);
                 this.phase = 'MONITORING'; // Unlock
@@ -433,6 +444,13 @@ export class DipArbBot {
                     this.leg1Side = null;
                     this.leg1FillPrice = 0;
                 }, 10000);
+
+                const alertMsg = `🎯 *ARB LOCKED (Leg 2)*\n\n` +
+                    `*Market*: ${escapeMarkdown(this.marketParams.marketTitle || `Market #${this.marketId}`)}\n` +
+                    `*Side*: ${escapeMarkdown(side)}\n` +
+                    `*Price*: $${escapeMarkdown(price.toFixed(3))}\n\n` +
+                    `💰 *Est. Profit*: $${escapeMarkdown(profit.toFixed(2))}`;
+                sendAlert(alertMsg);
             }
         } catch (e) {
             console.error("Leg 2 Failed");
