@@ -20,7 +20,17 @@ export class ApiClient {
         this.wallet = new ethers.Wallet(CONFIG.PRIVATE_KEY);
     }
 
+    // Helper to check init status
+    public isInitialized(): boolean {
+        return this.orderBuilder !== null && this.jwtToken !== null;
+    }
+
+    public getJwt(): string | null {
+        return this.jwtToken;
+    }
+
     async init() {
+        if (this.isInitialized()) return;
         try {
             console.log("Initializing ApiClient...");
             console.log("EOA Address:", this.wallet.address);
@@ -103,6 +113,10 @@ export class ApiClient {
         try {
             // 1. Fetch Orderbook
             const orderbook = await this.getMarketOrderBook(marketId);
+
+            console.log(`DEBUG: placeMarketOrder - Side: ${side}, QtyWei: ${quantityWei}, Bids: ${orderbook.bids.length}, Asks: ${orderbook.asks.length}`);
+            if (orderbook.bids.length > 0) console.log(`DEBUG: Best Bid: ${orderbook.bids[0][0]}, Size: ${orderbook.bids[0][1]}`);
+            if (orderbook.asks.length > 0) console.log(`DEBUG: Best Ask: ${orderbook.asks[0][0]}, Size: ${orderbook.asks[0][1]}`);
 
             // 2. Calculate Order Amounts
             const { makerAmount, takerAmount, pricePerShare } = this.orderBuilder.getMarketOrderAmounts(
@@ -244,9 +258,7 @@ export class ApiClient {
         return ethers.formatEther(balance);
     }
 
-    getJwt() {
-        return this.jwtToken;
-    }
+
 
     async getMarket(marketId: number) {
         const res = await this.client.get(`/v1/markets/${marketId}`);

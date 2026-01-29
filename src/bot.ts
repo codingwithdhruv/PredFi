@@ -32,47 +32,34 @@ export class MarketMaker {
     private currentBid: number = 0;
     private currentAsk: number = 0;
 
-    constructor() {
-        this.api = new ApiClient();
-        this.marketId = CONFIG.MARKET_ID;
+    // Volatility State
+    private requoteCount: number = 0;
+    private lastRequoteReset: number = Date.now();
+    private isTradingHalted: boolean = false; // Hard Kill Switch
+    private isDumping: boolean = false; // Lock for dump routine
+
+    constructor(marketId: number, existingApi?: ApiClient) {
+        this.api = existingApi || new ApiClient();
+        this.marketId = marketId;
         this.ws = null as any;
     }
 
     async start() {
-        console.log("Starting Points Farming Bot for Market ID:", this.marketId);
+        console.log(`Starting Points Farming Bot for Market ID: ${this.marketId}`);
 
-        await this.api.init();
+        if (!this.api.isInitialized()) {
+            await this.api.init();
+        }
+
         try {
-            console.log("Checking approvals...");
+            console.log(`[Market ${this.marketId}] Checking approvals...`);
             await this.api.setApprovals();
-            console.log("✅ Approvals set.");
+            console.log(`✅ [Market ${this.marketId}] Approvals set.`);
         } catch (e) {
-            console.error("⚠️ Failed to set approvals (might be already set or RPC error):", e);
+            console.error(`⚠️ [Market ${this.marketId}] Failed to set approvals:`, e);
         }
 
-        // Log Balances
-        try {
-            const signer = this.api.getSignerAddress();
-            const trader = this.api.getTraderAddress();
-            const bnb = await this.api.getBNBBalance();
-            const usdt = await this.api.getUSDTBalance();
-
-            console.log(`\n┌──────────────── BALANCE SUMMARY ────────────────┐`);
-            console.log(`│ Signer (EOA): ${signer.slice(0, 10)}...${signer.slice(-8)} │`);
-            console.log(`│ Trader (SMT): ${trader.slice(0, 10)}...${trader.slice(-8)} │`);
-            console.log(`├─────────────────────────────────────────────────┤`);
-            console.log(`│ EOA: ${Number(bnb).toFixed(4).padStart(12)} BNB (Gas)          │`);
-            console.log(`│ SMT: ${Number(usdt).toFixed(2).padStart(12)} USDT (Collateral)   │`);
-            console.log(`└─────────────────────────────────────────────────┘\n`);
-
-            if (Number(usdt) < CONFIG.SIZE * 0.2) { // Rough check if even one leg fits
-                console.warn("⚠️  WARNING: Trader balance is very low. Bot may fail to place orders.");
-            }
-        } catch (e) {
-            console.error("Failed to fetch balances:", e);
-        }
-
-        console.log("Connecting to WebSocket...");
+        console.log(`[Market ${this.marketId}] Connecting to WebSocket...`);
         const wsSocket = new WebSocket(CONFIG.WS_URL, {
             headers: { 'x-api-key': CONFIG.API_KEY }
         });
@@ -81,11 +68,10 @@ export class MarketMaker {
         // Init Params & Patch SDK
         await this.initMarketParams();
         if (!this.marketParams) {
-            console.error("Failed to initialize market params. Exiting.");
+            console.error(`[Market ${this.marketId}] Failed to initialize market params. Exiting.`);
             return;
         }
 
-        // await this.cleanupExistingOrders(); // Moved inside cleanupExistingPositions loop
         await this.cleanupExistingPositions();
 
         const channel: Channel = { name: 'predictOrderbook', marketId: this.marketId };
@@ -95,24 +81,25 @@ export class MarketMaker {
             }
         });
 
-        const jwt = this.api.getJwt();
-        if (jwt) {
-            const walletChannel: Channel = { name: 'predictWalletEvents', jwt };
-            this.ws.subscribe(walletChannel, (msg) => {
-                if (msg.data) {
-                    this.onWalletEvent(msg.data as PredictWalletEvents);
-                }
-            });
-        }
+        // JWT subscription is now handled in main() for shared API client
+        // const jwt = this.api.getJwt();
+        // if (jwt) {
+        //     const walletChannel: Channel = { name: 'predictWalletEvents', jwt };
+        //     this.ws.subscribe(walletChannel, (msg) => {
+        //         if (msg.data) {
+        //             this.onWalletEvent(msg.data as PredictWalletEvents);
+        //         }
+        //     });
+        // }
 
         this.isRunning = true;
-        console.log("Bot is running. Strategy: Yield Bearing + Exit-On-Fill.");
+        console.log(`[Market ${this.marketId}] Bot is running.`);
     }
 
     private async initMarketParams() {
         try {
             const market = await this.api.getMarket(this.marketId);
-            console.log(`Market Found: ${market.title} (Yield Bearing: ${market.isYieldBearing})`);
+            console.log(`[Market ${this.marketId}] Found: ${market.title}`);
             const outcomeYes = market.outcomes[0];
             const outcomeNo = market.outcomes[1];
 
@@ -134,92 +121,65 @@ export class MarketMaker {
                 shareThreshold: market.shareThreshold || 50,
                 ctAddress: ctAddress
             };
-
-            console.log("Points Parameters:", JSON.stringify(this.marketParams, null, 2));
         } catch (e) {
-            console.error("Error fetching market details:", e);
+            console.error(`[Market ${this.marketId}] Error fetching details:`, e);
         }
     }
 
     private async cleanupExistingOrders() {
-        console.log("Cleaning up existing orders...");
+        // We only cancel orders related to THIS market (global cancel would hurt other instance)
+        // Ideally API allows filtering by marketId, but if not, we must be careful.
+        // For safety/simplicity in V2, we just cancel local activeOrders if known,
+        // OR we can fetch open orders and filter by market.
+
         const orders = await this.api.getOpenOrders();
-        const myOrders = orders.filter((o: any) => o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase());
+        // Filter by Market ID if possible? Standard API might not verify market ID easily in OpenOrders list
+        // Update: predict.fun API Order object usually has marketID or tokenId.
+        // We will do a best effort filter by tokenId if available.
+
+        const myOrders = orders.filter((o: any) =>
+            o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase() &&
+            (o.tokenId === this.marketParams?.yesTokenId || o.tokenId === this.marketParams?.noTokenId)
+        );
 
         if (myOrders.length === 0) return;
 
         const ids = myOrders.map((o: any) => o.id);
-        console.log(`Canceling ${ids.length} existing orders...`);
+        console.log(`[Market ${this.marketId}] Canceling ${ids.length} existing orders...`);
         await this.api.removeOrders(ids);
     }
 
     private async cleanupExistingPositions() {
         if (!this.marketParams) return;
+        console.log(`[Market ${this.marketId}] 🧹 Cleanup check...`);
 
-        console.log("🧹 Starting Initial Portfolio Cleanup...");
-
-        let attempt = 0;
-        const maxAttempts = 5;
-
-        while (attempt < maxAttempts) {
-            attempt++;
-
-            // 1. Cancel any open orders first (prevent interference)
-            await this.cleanupExistingOrders();
-
-            // 2. Fetch current positions
-            const positions = await this.api.getPositions();
-            if (!positions || !Array.isArray(positions)) {
-                console.warn("Positions API invalid. Retrying...");
-                await new Promise(r => setTimeout(r, 2000));
-                continue;
-            }
-
-            // 3. Filter for THIS market
-            const myPositions = positions.filter((p: any) => p?.market?.id === this.marketId);
-
-            if (myPositions.length === 0) {
-                console.log("✅ No matching positions found. Clean.");
-                return; // SUCCESS - Exit function
-            }
-
-            console.log(`⚠️ Found ${myPositions.length} positions to dump (Attempt ${attempt}/${maxAttempts})...`);
-
-            // 4. Dump each position
-            for (const pos of myPositions) {
-                const balanceWei = BigInt(pos.amount);
-                if (balanceWei > 0n) {
-                    // Determine Outcome
-                    let outcome: 'YES' | 'NO' = 'YES';
-                    if (pos.outcome?.name?.toUpperCase() === 'NO') outcome = 'NO';
-                    else if (pos.outcome?.name?.toUpperCase() === 'YES') outcome = 'YES';
-                    else {
-                        const onChainId = pos.outcome?.onChainId?.toLowerCase();
-                        if (onChainId === this.marketParams.noTokenId.toLowerCase()) outcome = 'NO';
-                    }
-
-                    const qtyStr = ethers.formatUnits(balanceWei, 18);
-                    console.log(`🔥 DUMPING [${outcome}] - Amount: ${qtyStr}`);
-
-                    // Call exit (Market Order)
-                    await this.exitPosition(outcome, qtyStr);
-                }
-            }
-
-            // 5. Wait for settlement/API update
-            console.log("⏳ Waiting 3s for update...");
-            await new Promise(r => setTimeout(r, 3000));
-        }
-
-        console.error("❌ Failed to clean positions after max attempts. Proceeding with caution...");
+        // Similar logic to before, simplified
+        await this.dumpInventory();
     }
 
-    private requoteCount: number = 0;
-    private lastRequoteReset: number = Date.now();
-    private volatilityMultiplier: number = 0;
-
     async onOrderbookUpdate(ob: OrderbookData) {
-        if (!this.isRunning || !this.marketParams || this.isExiting) return;
+        if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted) return;
+        if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted || this.isDumping) return;
+
+        // Volatility Kill-Switch Reset Window (10s)
+        if (Date.now() - this.lastRequoteReset > 10000) {
+            this.requoteCount = 0;
+            this.lastRequoteReset = Date.now();
+        }
+
+        // Volatility Kill-Switch Check
+        if (this.requoteCount > 5) {
+            console.error(`[Market ${this.marketId}] ⚠️ KILL-SWITCH. Halting 10s...`);
+            this.isTradingHalted = true;
+            await this.cancelAllOrders();
+            setTimeout(() => {
+                console.log(`[Market ${this.marketId}] ✅ Resuming.`);
+                this.isTradingHalted = false;
+                this.requoteCount = 0;
+            }, 10000);
+            return;
+        }
+
         if (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL) return;
         if (ob.bids.length === 0 || ob.asks.length === 0) return;
 
@@ -230,37 +190,61 @@ export class MarketMaker {
 
         const precision = this.marketParams.decimalPrecision;
         const tickSize = 1 / Math.pow(10, precision);
-        const snappedMid = Math.round(mid / tickSize) * tickSize;
-        const maxThreshold = this.marketParams.spreadThreshold;
 
-        let spreadRatio = 0.33;
-        if (this.volatilityMultiplier > 0) spreadRatio = 0.49;
+        // ---------------------------------------------------------
+        // Smart Liquidity Placement Logic
+        // ---------------------------------------------------------
 
-        const halfSpread = maxThreshold * spreadRatio;
+        const minDist = CONFIG.MIN_DIST_FROM_MID;
 
-        let targetBid = snappedMid - halfSpread;
-        let targetAsk = snappedMid + halfSpread;
+        // Calculate safe bound prices
+        const maxSafeBid = mid - minDist;
+        const minSafeAsk = mid + minDist;
 
-        targetBid = Math.ceil(targetBid * Math.pow(10, precision)) / Math.pow(10, precision);
-        targetAsk = Math.floor(targetAsk * Math.pow(10, precision)) / Math.pow(10, precision);
+        let targetBid = maxSafeBid;
+        let targetAsk = minSafeAsk;
 
+        // 1. Scan BIDS for a "Liquidity Wall" to join
+        let foundWallBid = false;
+        for (const [price, size] of ob.bids) {
+            if (price <= maxSafeBid) {
+                targetBid = price;
+                // Optional: Prioritize large walls?
+                // if (size >= CONFIG.LIQUIDITY_SCAN_THRESHOLD) { ... }
+                foundWallBid = true;
+                break; // Found the best (highest) safe bid
+            }
+        }
+
+        // 2. Scan ASKS for a "Liquidity Wall" to join
+        let foundWallAsk = false;
+        // Asks are usually sorted ascending, but let's be safe or just iterate logic
+        // predict.fun API asks are Price ASC (lowest first)
+        for (const [price, size] of ob.asks) {
+            if (price >= minSafeAsk) {
+                targetAsk = price;
+                foundWallAsk = true;
+                break; // Found the best (lowest) safe ask
+            }
+        }
+
+        // 3. Fallback Snap
+        targetBid = Math.floor(targetBid * Math.pow(10, precision)) / Math.pow(10, precision);
+        targetAsk = Math.ceil(targetAsk * Math.pow(10, precision)) / Math.pow(10, precision);
+
+        // Sanity: Ensure we are at least 1 tick away from mid if spread is huge
+        if (targetBid >= mid) targetBid = mid - tickSize;
+        if (targetAsk <= mid) targetAsk = mid + tickSize;
+
+        // Final Snap
         targetBid = Number(targetBid.toFixed(precision));
         targetAsk = Number(targetAsk.toFixed(precision));
 
-        // Volatility Logic
-        if (this.requoteCount >= 3) {
-            this.volatilityMultiplier = 1;
-        }
-
-        // Sanity Checks
+        // Sanity Bounds
         if (targetBid <= tickSize) targetBid = tickSize;
         if (targetAsk >= (1 - tickSize)) targetAsk = 1 - tickSize;
-        if (targetBid >= targetAsk) {
-            targetBid = snappedMid - tickSize;
-            targetAsk = snappedMid + tickSize;
-        }
 
-        // Prevent crossing the BOOK
+        // Prevent crossing the BOOK (Double Check)
         if (targetBid >= bestAsk) targetBid = bestAsk - tickSize;
         if (targetAsk <= bestBid) targetAsk = bestBid + tickSize;
 
@@ -269,8 +253,8 @@ export class MarketMaker {
 
         if (bidDiff > CONFIG.REQUOTE_THRESHOLD || askDiff > CONFIG.REQUOTE_THRESHOLD) {
             this.requoteCount++;
-            if (this.volatilityMultiplier > 0) {
-                console.log(`⚠️ High Volatility Detected! Re-quote count: ${this.requoteCount}.`);
+            if (this.requoteCount > 2) {
+                console.log(`[Market ${this.marketId}] ⚠️ Volatility ${this.requoteCount}/5.`);
             }
         } else {
             return;
@@ -280,131 +264,201 @@ export class MarketMaker {
         console.log(`\n┌──────────────────────────────────────────────────────────┐`);
         console.log(`│ MARKET UPDATE [${timestamp}]`.padEnd(58) + `│`);
         console.log(`├──────────────────┬───────────────────┬───────────────────┤`);
-        console.log(`│ Mid Price: ${mid.toFixed(3).padEnd(5)} │ Spread: ${(currentSpread * 100).toFixed(1).padStart(4)}¢ │ Snapped: ${snappedMid.toFixed(3).padEnd(5)} │`);
+        console.log(`│ Mid Price: ${mid.toFixed(3).padEnd(5)} │ Spread: ${(currentSpread * 100).toFixed(1).padStart(4)}¢ │ Safe Bid: ${maxSafeBid.toFixed(3).padEnd(5)} │`);
         console.log(`├──────────────────┴─────────┬─────────┴───────────────────┤`);
-        console.log(`│ Target Bid: ${targetBid.toFixed(3).padEnd(14)} │ Target Ask: ${targetAsk.toFixed(3).padEnd(14)} │`);
+        console.log(`│ Target Bid: ${targetBid.toFixed(3).padEnd(14)} (${foundWallBid ? 'Wall' : 'Calc'}) │ Target Ask: ${targetAsk.toFixed(3).padEnd(14)} (${foundWallAsk ? 'Wall' : 'Calc'}) │`);
         console.log(`└────────────────────────────┴─────────────────────────────┘`);
 
         await this.updateOrders(targetBid, targetAsk);
-
         this.currentBid = targetBid;
         this.currentAsk = targetAsk;
         this.lastOrderTime = Date.now();
     }
 
-    async updateOrders(bidPrice: number, askPrice: number) {
-        if (!this.marketParams) return;
+    private async cancelAllOrders() {
+        if (this.activeOrders.length === 0) return;
 
-        // Soft remove previous
-        if (this.activeOrders.length > 0) {
-            await this.api.removeOrders(this.activeOrders);
+        try {
+            const ordersToCancel = [...this.activeOrders];
             this.activeOrders = [];
+            await this.api.removeOrders(ordersToCancel);
+        } catch (e) {
+            console.error(`[Market ${this.marketId}] Error canceling:`, e);
+        }
+    }
+
+    async updateOrders(bidPrice: number, askPrice: number) {
+        if (!this.marketParams || this.isTradingHalted || this.isExiting) return;
+
+        // 1. Strict Cancel Before Replace
+        if (this.activeOrders.length > 0) {
+            await this.cancelAllOrders();
         }
 
-        // Strategy: Dual Buy (Long YES + Long NO)
-        const noBidPrice = 1 - askPrice;
+        // 2. Strict Exposure Control Check
+        let currentPosYes = 0;
+        let currentPosNo = 0;
 
-        const priceYes = Number(bidPrice.toFixed(this.marketParams.decimalPrecision));
-        const priceNo = Number(noBidPrice.toFixed(this.marketParams.decimalPrecision));
-
-        const priceYesStr = priceYes.toFixed(this.marketParams.decimalPrecision);
-        const priceNoStr = priceNo.toFixed(this.marketParams.decimalPrecision);
-
-        const priceYesWei = parseUnits(priceYesStr, 18);
-        const priceNoWei = parseUnits(priceNoStr, 18);
-
-        // Dynamic Sizing: Scale down to fit balance
-        let size = CONFIG.SIZE;
         try {
-            const balanceStr = await this.api.getUSDTBalance();
-            const balance = parseFloat(balanceStr);
-
-            // We need enough for BOTH legs (YES and NO) if they are placed as separate orders
-            // Total USDT needed roughly: size * (priceYes + priceNo) + fees
-            const totalRequiredPerShare = priceYes + priceNo;
-            const maxAffordableSize = (balance * 0.95) / totalRequiredPerShare; // 5% buffer for fees
-
-            if (size > maxAffordableSize) {
-                size = Math.floor(maxAffordableSize * 100) / 100;
-                if (size > 0) {
-                    console.log(`⚠️  Balancing: Scaling size down from ${CONFIG.SIZE} to ${size} to fit ${balance.toFixed(2)} USDT balance.`);
-                }
+            const positions = await this.api.getPositions();
+            const myPositions = positions.filter((p: any) => p?.market?.id === this.marketId);
+            for (const pos of myPositions) {
+                const bal = parseFloat(ethers.formatUnits(pos.amount, 18));
+                const isNo = pos.outcome?.name?.toUpperCase() === 'NO' || pos.outcome?.onChainId?.toLowerCase() === this.marketParams.noTokenId.toLowerCase();
+                if (isNo) currentPosNo += bal;
+                else currentPosYes += bal;
             }
         } catch (e) {
-            console.warn("Failed to check balance for sizing, using default.");
+            console.warn(`[Market ${this.marketId}] Failed to fetch positions. Exposure check skipped.`);
         }
 
-        if (size <= 0) {
-            console.warn("❌ SKIP: Insufficient balance to place even the smallest order.");
+        const maxExposure = CONFIG.SIZE;
+        const allowedYes = Math.max(0, maxExposure - currentPosYes);
+        const allowedNo = Math.max(0, maxExposure - currentPosNo);
+
+        if (allowedYes <= 1 && allowedNo <= 1) {
+            console.log(`[Market ${this.marketId}] 🛑 Max Exposure Reached (${currentPosYes.toFixed(1)}/${currentPosNo.toFixed(1)}). Skipping quotes.`);
             return;
         }
 
-        const sizeWei = parseUnits(size.toString(), 18);
+        const priceYes = Number(bidPrice.toFixed(this.marketParams.decimalPrecision));
+        const priceNo = Number((1 - askPrice).toFixed(this.marketParams.decimalPrecision));
+
+        const priceYesWei = parseUnits(priceYes.toString(), 18);
+        const priceNoWei = parseUnits(priceNo.toString(), 18);
+
+        // Scale down to allowed
+        const sizeYes = Math.min(CONFIG.SIZE, allowedYes);
+        const sizeNo = Math.min(CONFIG.SIZE, allowedNo);
+
+        if (sizeYes < 1 && sizeNo < 1) return;
+
+        const promises = [];
+
+        // Quote YES if allowed
+        if (sizeYes >= 1) {
+            const sizeWei = parseUnits(Math.floor(sizeYes).toString(), 18);
+            promises.push(this.api.placeLimitOrder(priceYesWei, sizeWei, Side.BUY, this.marketParams.yesTokenId, this.marketParams.isNegRisk, this.marketParams.isYieldBearing, this.marketParams.feeRateBps));
+        }
+
+        // Quote NO if allowed
+        if (sizeNo >= 1) {
+            const sizeWei = parseUnits(Math.floor(sizeNo).toString(), 18);
+            promises.push(this.api.placeLimitOrder(priceNoWei, sizeWei, Side.BUY, this.marketParams.noTokenId, this.marketParams.isNegRisk, this.marketParams.isYieldBearing, this.marketParams.feeRateBps));
+        }
 
         try {
-            process.stdout.write(`📡 Re-quoting: [YES @ ${priceYes.toFixed(3)}] [NO @ ${priceNo.toFixed(3)}] size=${size} ... `);
-            const results = await Promise.allSettled([
-                this.api.placeLimitOrder(priceYesWei, sizeWei, Side.BUY, this.marketParams.yesTokenId, this.marketParams.isNegRisk, this.marketParams.isYieldBearing, this.marketParams.feeRateBps),
-                this.api.placeLimitOrder(priceNoWei, sizeWei, Side.BUY, this.marketParams.noTokenId, this.marketParams.isNegRisk, this.marketParams.isYieldBearing, this.marketParams.feeRateBps)
-            ]);
+            process.stdout.write(`[Market ${this.marketId}] Quoting: YES@${priceYes} (x${Math.floor(sizeYes)}) | NO@${priceNo} (x${Math.floor(sizeNo)}) ... `);
+            const results = await Promise.allSettled(promises);
 
-            results.forEach((res, index) => {
-                const token = index === 0 ? 'YES' : 'NO';
-                if (res.status === 'fulfilled') {
-                    if (res.value && res.value.success) {
-                        this.activeOrders.push(res.value.data.orderId);
-                    } else if (res.value && res.value.error?._tag === 'InsufficientCollateral') {
-                        // Already logged in ApiClient
-                    } else {
-                        console.error(`\n❌ [${token}] Order failed:`, JSON.stringify(res.value));
-                    }
-                } else {
-                    console.error(`\n❌ [${token}] Order failed:`, res.reason?.message || res.reason);
+            results.forEach((res) => {
+                if (res.status === 'fulfilled' && res.value?.success) {
+                    this.activeOrders.push(res.value.data.orderId);
                 }
             });
-            process.stdout.write(`DONE (Active: ${this.activeOrders.length})\n`);
+            process.stdout.write(`Active: ${this.activeOrders.length}\n`);
         } catch (e) {
-            console.error("\nRe-quote wrapper failed:", e);
+            console.error(`[Market ${this.marketId}] Re-quote error:`, e);
         }
     }
 
     private async onWalletEvent(event: PredictWalletEvents) {
-        // Handle "FILL" events - EMERGENCY EXIT
+        // Handle "FILL" events - TRIGGER ONLY
         if (event.type === 'orderTransactionSuccess') {
-            const outcome = event.details.outcome; // 'YES' or 'NO'
+            const outcome = event.details.outcome;
             const price = parseFloat(event.details.price);
-            const qtyStr = event.details.quantity; // "10.0"
+            const qtyStr = event.details.quantity;
 
-            const timestamp = new Date().toLocaleTimeString();
-            console.log(`\n🚨🚨🚨 FILL ALERT [${timestamp}] 🚨🚨🚨`);
-            console.log(`┌──────────────────────────────────────────────────┐`);
-            console.log(`│ OUTCOME: ${outcome.padEnd(39)} │`);
-            console.log(`│ PRICE:   ${price.toFixed(3).padEnd(39)} │`);
-            console.log(`│ QTY:     ${qtyStr.padEnd(39)} │`);
-            console.log(`└──────────────────────────────────────────────────┘`);
-            console.log("🛑 Canceling ALL orders and Exiting Position immediately...");
+            console.log(`\n🚨 FILL HINT: ${outcome} @ ${price} (Qty: ${qtyStr})`);
+            console.log(`🛑 SETTING HARD STOP. Signaling Dump Loop...`);
 
             this.isExiting = true; // Block new orders
+            this.isTradingHalted = true; // Hard Halt
 
-            // 1. Cancel everything first to stop bleeding
-            await this.api.removeOrders(this.activeOrders);
-            this.activeOrders = [];
-
-            // 2. Exit (Sell Back)
-            await this.exitPosition(outcome, qtyStr);
-
-            // 3. Reset state
-            this.currentBid = 0;
-            this.currentAsk = 0;
-            this.requoteCount = 0;
+            // Trigger dump strictly if not already running
+            if (!this.isDumping) {
+                this.dumpInventory(); // Fire and forget (it handles async looping)
+            } else {
+                console.log(`⚠️ Dump already in progress. Ignoring duplicate trigger.`);
+            }
         }
+    }
+
+    private async dumpInventory() {
+        if (!this.marketParams) return;
+        this.isDumping = true;
+
+        console.log(`[Market ${this.marketId}] 🧹 STARTING AUTHORITATIVE DUMP LOOP...`);
+
+        // Hard Loop until clean
+        while (true) {
+            // 1. Cancel everything first to stop the bleeding
+            await this.cancelAllOrders();
+
+            // 2. Fetch authoritative state
+            let positions = [];
+            try {
+                positions = await this.api.getPositions();
+            } catch (e) {
+                console.warn("API Error getting positions, retrying...");
+                await new Promise(r => setTimeout(r, 1000));
+                continue;
+            }
+
+            const myPositions = positions.filter((p: any) => p?.market?.id === this.marketId);
+
+            let totalShares = 0n;
+            const dustThreshold = parseUnits("0.1", 18); // 0.1 Share Dust
+
+            for (const pos of myPositions) {
+                const balanceWei = BigInt(pos.amount);
+                // Only count substantial positions
+                if (balanceWei > dustThreshold) {
+                    totalShares += balanceWei;
+                }
+            }
+
+            // BREAK CONDITION: Clean!
+            if (totalShares === 0n) {
+                console.log(`[Market ${this.marketId}] ✅ Inventory Clean (Shares < 0.1). Break.`);
+                break;
+            }
+
+            console.log(`⚠️ Dirty Inventory Detected. Cleaning ${myPositions.length} positions...`);
+
+            for (const pos of myPositions) {
+                const balanceWei = BigInt(pos.amount);
+                if (balanceWei > dustThreshold) {
+                    let outcome: 'YES' | 'NO' = 'YES';
+                    if (pos.outcome?.name?.toUpperCase() === 'NO' || pos.outcome?.onChainId?.toLowerCase() === this.marketParams.noTokenId.toLowerCase()) outcome = 'NO';
+
+                    const qtyStr = ethers.formatUnits(balanceWei, 18);
+                    console.log(`[Market ${this.marketId}] 🔥 DUMP: ${outcome} x ${qtyStr} ...`);
+
+                    // Attempt execute
+                    await this.exitPosition(outcome, qtyStr);
+                }
+            }
+
+            // Wait for settlement/block
+            console.log("⏳ Waiting 2s for confirmation...");
+            await new Promise(r => setTimeout(r, 2000));
+        }
+
+        this.isDumping = false;
+
+        // Resume after cooldown
+        console.log(`[Market ${this.marketId}] ✅ Dump Loop Finished. Cooling down 5s...`);
+        setTimeout(() => {
+            console.log(`[Market ${this.marketId}] 🟢 Resuming Market Making.`);
+            this.isExiting = false;
+            this.isTradingHalted = false;
+            this.requoteCount = 0;
+        }, 5000);
     }
 
     private async exitPosition(filledOutcome: 'YES' | 'NO', quantityStr: string) {
         if (!this.marketParams) return;
-
-        console.log(`EXIT: Selling ${quantityStr} of ${filledOutcome} via Market Order (DUMP)...`);
-
         const tokenIdToSell = filledOutcome === 'YES' ? this.marketParams.yesTokenId : this.marketParams.noTokenId;
         const sizeWei = parseUnits(quantityStr, 18);
 
@@ -418,22 +472,80 @@ export class MarketMaker {
                 this.marketParams.isYieldBearing,
                 this.marketParams.feeRateBps
             );
-
-            if (res.success) {
-                console.log("✅ Exit Order placed successfully (ID: " + res.data.orderId + ")");
-            } else {
-                console.error("❌ Exit Order failed!", JSON.stringify(res));
-            }
+            if (!res.success) console.error(`[Market ${this.marketId}] Exit Failed:`, JSON.stringify(res));
         } catch (e) {
-            console.error("Critical error during exit:", e);
-        } finally {
-            // Reset isExiting if set, after a delay
-            setTimeout(() => {
-                if (this.isExiting) {
-                    console.log("🔄 Resuming Market Making...");
-                    this.isExiting = false;
-                }
-            }, 5000);
+            console.error(`[Market ${this.marketId}] Exit Error:`, e);
         }
     }
+}
+
+// Main Entry
+export async function runBot() {
+    console.log("🚀 Starting Multi-Market Bot...");
+    const api = new ApiClient();
+    await api.init(); // Shared API instance
+
+    // Log Balances (once for the shared API client)
+    try {
+        const signer = api.getSignerAddress();
+        const trader = api.getTraderAddress();
+        const bnb = await api.getBNBBalance();
+        const usdt = await api.getUSDTBalance();
+
+        console.log(`\n┌──────────────── BALANCE SUMMARY ────────────────┐`);
+        console.log(`│ Signer (EOA): ${signer.slice(0, 10)}...${signer.slice(-8)} │`);
+        console.log(`│ Trader (SMT): ${trader.slice(0, 10)}...${trader.slice(-8)} │`);
+        console.log(`├─────────────────────────────────────────────────┤`);
+        console.log(`│ EOA: ${Number(bnb).toFixed(4).padStart(12)} BNB (Gas)          │`);
+        console.log(`│ SMT: ${Number(usdt).toFixed(2).padStart(12)} USDT (Collateral)   │`);
+        console.log(`└─────────────────────────────────────────────────┘\n`);
+
+        if (Number(usdt) < CONFIG.SIZE * 0.2) { // Rough check if even one leg fits
+            console.warn("⚠️  WARNING: Trader balance is very low. Bot may fail to place orders.");
+        }
+    } catch (e) {
+        console.error("Failed to fetch balances:", e);
+    }
+
+    const bots: MarketMaker[] = [];
+
+    // Bot 1
+    if (CONFIG.MARKET_ID) {
+        bots.push(new MarketMaker(CONFIG.MARKET_ID, api));
+    }
+
+    // Bot 2
+    if (CONFIG.MARKET_ID_2) {
+        bots.push(new MarketMaker(CONFIG.MARKET_ID_2, api));
+    }
+
+    if (bots.length === 0) {
+        console.error("❌ No Market IDs configured.");
+        return;
+    }
+
+    // Subscribe to wallet events once for the shared API client
+    const wsSocket = new WebSocket(CONFIG.WS_URL, {
+        headers: { 'x-api-key': CONFIG.API_KEY }
+    });
+    const ws = new RealtimeClient(wsSocket, { maxConnAttempts: 10, maxRetryInterval: 5000 });
+    const jwt = api.getJwt();
+    if (jwt) {
+        const walletChannel: Channel = { name: 'predictWalletEvents', jwt };
+        ws.subscribe(walletChannel, (msg) => {
+            if (msg.data) {
+                // Distribute wallet events to all bots
+                bots.forEach(bot => bot['onWalletEvent'](msg.data as PredictWalletEvents));
+            }
+        });
+    } else {
+        console.warn("⚠️ JWT not available. Wallet events will not be received.");
+    }
+
+    // Start all
+    bots.forEach(bot => bot.start());
+}
+
+if (require.main === module) {
+    runBot();
 }

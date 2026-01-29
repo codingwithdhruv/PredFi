@@ -10,6 +10,7 @@ export const CONFIG = {
     API_BASE_URL: process.env.API_BASE_URL || 'https://api.predict.fun',
     WS_URL: process.env.WS_URL || 'wss://ws.predict.fun/ws',
     MARKET_ID: parseInt(process.env.MARKET_ID || '0'),
+    MARKET_ID_2: process.env.MARKET_ID_2 ? parseInt(process.env.MARKET_ID_2) : undefined,
     SPREAD: parseFloat(process.env.SPREAD || '0.04'), // Default spread for farming
     SIZE: parseFloat(process.env.SIZE || '50'), // Min 50 shares for points
     PRICE_ADJUST_INTERVAL: 1000,
@@ -18,6 +19,8 @@ export const CONFIG = {
     REQUOTE_THRESHOLD: 0.005,      // 0.5% (50 basis points) change triggers requote
     MAX_ORDERS: 10,
     PREDICT_ACCOUNT: process.env.PREDICT_ACCOUNT?.trim(), // Optional: Correct EOA address or Smart Wallet address
+    MIN_DIST_FROM_MID: parseFloat(process.env.MIN_DIST_FROM_MID || '0.03'), // Min 3 cents away from mid
+    LIQUIDITY_SCAN_THRESHOLD: parseFloat(process.env.LIQUIDITY_SCAN_THRESHOLD || '500'), // Join walls > 500 shares
 };
 
 if (CONFIG.PREDICT_ACCOUNT && !CONFIG.PREDICT_ACCOUNT.startsWith('0x')) {
