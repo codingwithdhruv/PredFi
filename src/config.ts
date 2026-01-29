@@ -22,7 +22,7 @@ export const CONFIG = {
     MIN_DIST_FROM_MID: parseFloat(process.env.MIN_DIST_FROM_MID || '0.03'), // Min 3 cents away from mid
     MAX_DIST_FROM_MID: parseFloat(process.env.MAX_DIST_FROM_MID || '0.10'), // Max 10 cents away from mid (Stale)
     LIQUIDITY_SCAN_THRESHOLD: parseFloat(process.env.LIQUIDITY_SCAN_THRESHOLD || '500'), // Join walls > 500 shares
-    SAFETY_DELAY_AFTER_CANCEL: 2000, // 2s delay after cancelling before placing new orders
+    SAFETY_DELAY_AFTER_CANCEL: 10000, // 10s delay after cancelling before placing new orders
 
     // DIP STRATEGY SETTINGS
     DIP_MAX_RISK_PCT: parseFloat(process.env.DIP_MAX_RISK_PCT || '0.15'),

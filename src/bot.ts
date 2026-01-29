@@ -37,6 +37,7 @@ export class MarketMaker {
     private lastRequoteReset: number = Date.now();
     private isTradingHalted: boolean = false; // Hard Kill Switch
     private isDumping: boolean = false; // Lock for dump routine
+    private isUpdating: boolean = false; // Concurrency Lock for updateOrders
 
     // Monitoring State
     private lastQuotedBid: number | null = null;
@@ -93,10 +94,37 @@ export class MarketMaker {
             }
         });
 
+        // Monitor Open Orders (Health Check)
+        this.startOpenOrderMonitor();
+
         this.startMonitoringLoop();
 
         this.isRunning = true;
         console.log(`[Market ${this.marketId}] Bot is running.`);
+    }
+
+    private startOpenOrderMonitor() {
+        // Periodic Health Check for Zombie Orders (10s)
+        setInterval(async () => {
+            if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted) return;
+
+            try {
+                const orders = await this.api.getOpenOrders();
+                const myOrders = orders.filter((o: any) =>
+                    o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase() &&
+                    (o.order?.tokenId === this.marketParams?.yesTokenId || o.order?.tokenId === this.marketParams?.noTokenId)
+                );
+
+                if (myOrders.length > 2) {
+                    console.warn(`[Market ${this.marketId}] ⚠️ ZOMBIE ALERT: Found ${myOrders.length} active orders (Expected <= 2). Force Cleaning...`);
+                    await this.cancelAllOrders();
+                } else if (myOrders.length > 0) {
+                    // Debug log occasionally? No, keep it quiet unless error.
+                }
+            } catch (e) {
+                console.error(`[Market ${this.marketId}] Monitor Error:`, e);
+            }
+        }, 10000);
     }
 
     private startMonitoringLoop() {
@@ -182,18 +210,28 @@ export class MarketMaker {
             const orders = await this.api.getOpenOrders();
             const myOrders = orders.filter((o: any) =>
                 o.order?.maker?.toLowerCase() === this.api.getAddress().toLowerCase() &&
-                (o.tokenId === this.marketParams?.yesTokenId || o.tokenId === this.marketParams?.noTokenId)
+                (o.order?.tokenId === this.marketParams?.yesTokenId || o.order?.tokenId === this.marketParams?.noTokenId)
             );
 
-            if (myOrders.length === 0) {
-                // Also clear local activeOrders if they drift
+            // Hybrid Check: Merge API orders with Local Active Orders to handle Lag
+            const apiIds = myOrders.map((o: any) => String(o.id));
+            const localIds = this.activeOrders.map(id => String(id));
+            const uniqueIds = Array.from(new Set([...apiIds, ...localIds]));
+
+            if (uniqueIds.length === 0) {
+                // Truly Clean
                 this.activeOrders = [];
-                return false; // Clean
+                process.stdout.write(`[Market ${this.marketId}] 🧹 Checking status... ✅ Clean\n`);
+                return false;
             }
 
-            const ids = myOrders.map((o: any) => o.id);
-            console.log(`[Market ${this.marketId}] 🛑 Strict Cancel: Removing ${ids.length} open orders...`);
-            await this.api.removeOrders(ids);
+            process.stdout.write(`[Market ${this.marketId}] 🧹 Checking status... 🛑 Dirty (${uniqueIds.length} orders). Cancelling... `);
+
+            if (uniqueIds.length > 0) {
+                await this.api.removeOrders(uniqueIds);
+                process.stdout.write(`✅ Done\n`);
+            }
+
             this.activeOrders = [];
             return true; // Had orders, cancelled them
         } catch (e) {
@@ -211,131 +249,138 @@ export class MarketMaker {
     }
 
     async onOrderbookUpdate(ob: OrderbookData) {
-        if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted) return;
         if (!this.isRunning || !this.marketParams || this.isExiting || this.isTradingHalted || this.isDumping) return;
 
-        // Volatility Kill-Switch Reset Window (10s)
-        if (Date.now() - this.lastRequoteReset > 10000) {
-            this.requoteCount = 0;
-            this.lastRequoteReset = Date.now();
-        }
+        // Concurrency Lock: Skip if already running an update cycle
+        if (this.isUpdating) return;
+        this.isUpdating = true;
 
-        // Volatility Kill-Switch Check
-        if (this.requoteCount > 5) {
-            console.error(`[Market ${this.marketId}] ⚠️ KILL-SWITCH. Halting 10s...`);
-            this.isTradingHalted = true;
-            await this.cancelAllOrders();
-            setTimeout(() => {
-                console.log(`[Market ${this.marketId}] ✅ Resuming.`);
-                this.isTradingHalted = false;
+        try {
+            // Volatility Kill-Switch Reset Window (10s)
+            if (Date.now() - this.lastRequoteReset > 10000) {
                 this.requoteCount = 0;
-            }, 10000);
-            return;
-        }
-
-        // TIME CHECK: Skip if too fast, UNLESS we have a pending DRIFT alert (Safety)
-        if (!this.needsRequote && (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL)) return;
-
-        if (ob.bids.length === 0 || ob.asks.length === 0) return;
-
-        const bestBid = ob.bids[0][0];
-        const bestAsk = ob.asks[0][0];
-        const mid = (bestBid + bestAsk) / 2;
-        const currentSpread = bestAsk - bestBid;
-
-        const precision = this.marketParams.decimalPrecision;
-        const tickSize = 1 / Math.pow(10, precision);
-
-        // ---------------------------------------------------------
-        // Smart Liquidity Placement Logic
-        // ---------------------------------------------------------
-
-        const minDist = CONFIG.MIN_DIST_FROM_MID;
-
-        // Calculate safe bound prices
-        const maxSafeBid = mid - minDist;
-        const minSafeAsk = mid + minDist;
-
-        let targetBid = maxSafeBid;
-        let targetAsk = minSafeAsk;
-
-        // 1. Scan BIDS for a "Liquidity Wall" to join
-        let foundWallBid = false;
-        for (const [price, size] of ob.bids) {
-            if (price <= maxSafeBid) {
-                targetBid = price;
-                foundWallBid = true;
-                break;
+                this.lastRequoteReset = Date.now();
             }
-        }
 
-        // 2. Scan ASKS for a "Liquidity Wall" to join
-        let foundWallAsk = false;
-        for (const [price, size] of ob.asks) {
-            if (price >= minSafeAsk) {
-                targetAsk = price;
-                foundWallAsk = true;
-                break;
-            }
-        }
-
-        // 3. Fallback Snap
-        targetBid = Math.floor(targetBid * Math.pow(10, precision)) / Math.pow(10, precision);
-        targetAsk = Math.ceil(targetAsk * Math.pow(10, precision)) / Math.pow(10, precision);
-
-        // Sanity: Ensure we are at least 1 tick away from mid if spread is huge
-        if (targetBid >= mid) targetBid = mid - tickSize;
-        if (targetAsk <= mid) targetAsk = mid + tickSize;
-
-        // Final Snap
-        targetBid = Number(targetBid.toFixed(precision));
-        targetAsk = Number(targetAsk.toFixed(precision));
-
-        // Sanity Bounds
-        if (targetBid <= tickSize) targetBid = tickSize;
-        if (targetAsk >= (1 - tickSize)) targetAsk = 1 - tickSize;
-
-        // Prevent crossing the BOOK (Double Check)
-        if (targetBid >= bestAsk) targetBid = bestAsk - tickSize;
-        if (targetAsk <= bestBid) targetAsk = bestBid + tickSize;
-
-        const bidDiff = Math.abs(targetBid - this.currentBid);
-        const askDiff = Math.abs(targetAsk - this.currentAsk);
-
-        // If 'needsRequote' is false, apply standard threshold check
-        // If 'needsRequote' is true, we force update anyway
-        if (!this.needsRequote) {
-            if (bidDiff > CONFIG.REQUOTE_THRESHOLD || askDiff > CONFIG.REQUOTE_THRESHOLD) {
-                this.requoteCount++;
-                if (this.requoteCount > 2) {
-                    console.log(`[Market ${this.marketId}] ⚠️ Volatility ${this.requoteCount}/5.`);
-                }
-            } else {
+            // Volatility Kill-Switch Check
+            if (this.requoteCount > 5) {
+                console.error(`[Market ${this.marketId}] ⚠️ KILL-SWITCH. Halting 10s...`);
+                this.isTradingHalted = true;
+                await this.cancelAllOrders();
+                setTimeout(() => {
+                    console.log(`[Market ${this.marketId}] ✅ Resuming.`);
+                    this.isTradingHalted = false;
+                    this.requoteCount = 0;
+                }, 10000);
                 return;
             }
+
+            // TIME CHECK: Skip if too fast, UNLESS we have a pending DRIFT alert (Safety)
+            if (!this.needsRequote && (Date.now() - this.lastOrderTime < CONFIG.PRICE_ADJUST_INTERVAL)) return;
+
+            if (ob.bids.length === 0 || ob.asks.length === 0) return;
+
+            const bestBid = ob.bids[0][0];
+            const bestAsk = ob.asks[0][0];
+            const mid = (bestBid + bestAsk) / 2;
+            const currentSpread = bestAsk - bestBid;
+
+            const precision = this.marketParams.decimalPrecision;
+            const tickSize = 1 / Math.pow(10, precision);
+
+            // ---------------------------------------------------------
+            // Smart Liquidity Placement Logic
+            // ---------------------------------------------------------
+
+            const minDist = CONFIG.MIN_DIST_FROM_MID;
+
+            // Calculate safe bound prices
+            const maxSafeBid = mid - minDist;
+            const minSafeAsk = mid + minDist;
+
+            let targetBid = maxSafeBid;
+            let targetAsk = minSafeAsk;
+
+            // 1. Scan BIDS for a "Liquidity Wall" to join
+            let foundWallBid = false;
+            for (const [price, size] of ob.bids) {
+                if (price <= maxSafeBid) {
+                    targetBid = price;
+                    foundWallBid = true;
+                    break;
+                }
+            }
+
+            // 2. Scan ASKS for a "Liquidity Wall" to join
+            let foundWallAsk = false;
+            for (const [price, size] of ob.asks) {
+                if (price >= minSafeAsk) {
+                    targetAsk = price;
+                    foundWallAsk = true;
+                    break;
+                }
+            }
+
+            // 3. Fallback Snap
+            targetBid = Math.floor(targetBid * Math.pow(10, precision)) / Math.pow(10, precision);
+            targetAsk = Math.ceil(targetAsk * Math.pow(10, precision)) / Math.pow(10, precision);
+
+            // Sanity: Ensure we are at least 1 tick away from mid if spread is huge
+            if (targetBid >= mid) targetBid = mid - tickSize;
+            if (targetAsk <= mid) targetAsk = mid + tickSize;
+
+            // Final Snap
+            targetBid = Number(targetBid.toFixed(precision));
+            targetAsk = Number(targetAsk.toFixed(precision));
+
+            // Sanity Bounds
+            if (targetBid <= tickSize) targetBid = tickSize;
+            if (targetAsk >= (1 - tickSize)) targetAsk = 1 - tickSize;
+
+            // Prevent crossing the BOOK (Double Check)
+            if (targetBid >= bestAsk) targetBid = bestAsk - tickSize;
+            if (targetAsk <= bestBid) targetAsk = bestBid + tickSize;
+
+            const bidDiff = Math.abs(targetBid - this.currentBid);
+            const askDiff = Math.abs(targetAsk - this.currentAsk);
+
+            // If 'needsRequote' is false, apply standard threshold check
+            // If 'needsRequote' is true, we force update anyway
+            if (!this.needsRequote) {
+                if (bidDiff > CONFIG.REQUOTE_THRESHOLD || askDiff > CONFIG.REQUOTE_THRESHOLD) {
+                    this.requoteCount++;
+                    if (this.requoteCount > 2) {
+                        console.log(`[Market ${this.marketId}] ⚠️ Volatility ${this.requoteCount}/5.`);
+                    }
+                } else {
+                    return;
+                }
+            }
+
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(`\n┌──────────────────────────────────────────────────────────┐`);
+            console.log(`│ MARKET UPDATE [${timestamp}]`.padEnd(58) + `│`);
+            console.log(`├──────────────────┬───────────────────┬───────────────────┤`);
+            console.log(`│ Mid Price: ${mid.toFixed(3).padEnd(5)} │ Spread: ${(currentSpread * 100).toFixed(1).padStart(4)}¢ │ Safe Bid: ${maxSafeBid.toFixed(3).padEnd(5)} │`);
+            console.log(`├──────────────────┴─────────┬─────────┴───────────────────┤`);
+            console.log(`│ Target Bid: ${targetBid.toFixed(3).padEnd(14)} (${foundWallBid ? 'Wall' : 'Calc'}) │ Target Ask: ${targetAsk.toFixed(3).padEnd(14)} (${foundWallAsk ? 'Wall' : 'Calc'}) │`);
+            console.log(`└────────────────────────────┴─────────────────────────────┘`);
+
+            await this.updateOrders(targetBid, targetAsk);
+
+            // UPDATE STATE
+            this.currentBid = targetBid;
+            this.currentAsk = targetAsk;
+
+            // Track the Authoritative "Currently on Book" Price
+            this.lastQuotedBid = targetBid;
+            this.lastQuotedAsk = targetAsk;
+
+            this.lastOrderTime = Date.now();
+            this.needsRequote = false; // Reset Drift Flag
+        } finally {
+            this.isUpdating = false;
         }
-
-        const timestamp = new Date().toLocaleTimeString();
-        console.log(`\n┌──────────────────────────────────────────────────────────┐`);
-        console.log(`│ MARKET UPDATE [${timestamp}]`.padEnd(58) + `│`);
-        console.log(`├──────────────────┬───────────────────┬───────────────────┤`);
-        console.log(`│ Mid Price: ${mid.toFixed(3).padEnd(5)} │ Spread: ${(currentSpread * 100).toFixed(1).padStart(4)}¢ │ Safe Bid: ${maxSafeBid.toFixed(3).padEnd(5)} │`);
-        console.log(`├──────────────────┴─────────┬─────────┴───────────────────┤`);
-        console.log(`│ Target Bid: ${targetBid.toFixed(3).padEnd(14)} (${foundWallBid ? 'Wall' : 'Calc'}) │ Target Ask: ${targetAsk.toFixed(3).padEnd(14)} (${foundWallAsk ? 'Wall' : 'Calc'}) │`);
-        console.log(`└────────────────────────────┴─────────────────────────────┘`);
-
-        await this.updateOrders(targetBid, targetAsk);
-
-        // UPDATE STATE
-        this.currentBid = targetBid;
-        this.currentAsk = targetAsk;
-
-        // Track the Authoritative "Currently on Book" Price
-        this.lastQuotedBid = targetBid;
-        this.lastQuotedAsk = targetAsk;
-
-        this.lastOrderTime = Date.now();
-        this.needsRequote = false; // Reset Drift Flag
     }
 
 

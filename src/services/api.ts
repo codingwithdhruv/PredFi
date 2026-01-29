@@ -236,13 +236,29 @@ export class ApiClient {
     }
 
     async getOpenOrders() {
-        const res = await this.client.get('/v1/orders');
-        return res.data.data;
+        try {
+            const res = await this.client.get('/v1/orders');
+            return res.data.data;
+        } catch (e: any) {
+            console.error(`[API] getOpenOrders Error:`, e.response?.data || e.message);
+            throw e;
+        }
     }
 
     async removeOrders(orderIds: string[]) {
-        const res = await this.client.post('/v1/orders/remove', { data: { ids: orderIds } });
-        return res.data;
+        try {
+            const res = await this.client.post('/v1/orders/remove', { data: { ids: orderIds } });
+
+            if (res.data?.success === false) {
+                console.error(`[API] Remove Orders Failed:`, JSON.stringify(res.data));
+                throw new Error(`Remove Orders Failed: ${res.data?.error || 'Unknown'}`);
+            }
+
+            return res.data;
+        } catch (e: any) {
+            console.error(`[API] Remove Orders Exception:`, e.response?.data || e.message);
+            throw e;
+        }
     }
 
     async getUSDTBalance(): Promise<string> {
